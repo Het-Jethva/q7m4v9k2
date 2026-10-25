@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-25T04:32:10.1252519Z",
+  "title": "Design System: Northline",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Forecast green"
+      },
+      "evergreen": {
+        "role": "primary",
+        "displayName": "Shell evergreen"
+      },
+      "actual": {
+        "role": "secondary",
+        "displayName": "Retrospective orange"
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Warm off-white"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Evergreen ink"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted text"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Divider"
+      },
+      "note": {
+        "role": "neutral",
+        "displayName": "Vintage note"
+      },
+      "focus": {
+        "role": "secondary",
+        "displayName": "Keyboard focus"
+      },
+      "available": {
+        "role": "primary",
+        "displayName": "Available status text"
+      },
+      "missing": {
+        "role": "secondary",
+        "displayName": "Missing status text"
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page heading",
+        "purpose": "Delivery-day and page headings. Reduces to 28px at the mobile breakpoint."
+      },
+      "title": {
+        "displayName": "Section heading",
+        "purpose": "Chart and table headings."
+      },
+      "body": {
+        "displayName": "Body and controls",
+        "purpose": "Explanations, filters, tables, and navigation."
+      },
+      "metric": {
+        "displayName": "Metric value",
+        "purpose": "Decision totals and accuracy values with tabular numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "switch-thumb",
+        "value": "0 1px 3px #253e3230",
+        "purpose": "Separates the white thumb from the switch track."
+      },
+      {
+        "name": "selected-unit",
+        "value": "0 1px 4px #253e3210",
+        "purpose": "Marks the selected unit button."
+      },
+      {
+        "name": "chart-tooltip",
+        "value": "0 6px 22px #183e2910",
+        "purpose": "Separates a chart tooltip from the plot."
+      }
+    ],
+    "motion": [
+      {
+        "name": "hover",
+        "value": "background 0.18s",
+        "purpose": "Navigation and button hover states."
+      },
+      {
+        "name": "switch",
+        "value": "transform 0.2s",
+        "purpose": "Moves the switch thumb. Reduced motion disables transitions and animations."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-min",
+        "value": "1450px"
+      },
+      {
+        "name": "compact-max",
+        "value": "1150px"
+      },
+      {
+        "name": "tablet-max",
+        "value": "900px"
+      },
+      {
+        "name": "mobile-max",
+        "value": "650px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered actions such as CSV export.",
+      "html": "<button class=\"ds-secondary\">Download CSV</button>",
+      "css": ".ds-secondary{font:600 11px 'DM Sans',sans-serif;color:var(--ink,#253e32);background:var(--paper,#fff);border:1px solid #d8dfd3;border-radius:6px;min-height:37px;padding:9px 13px;cursor:pointer;transition:background .18s}.ds-secondary:hover{background:#eff4e9;border-color:#becdbb}.ds-secondary:focus-visible{outline:2px solid #b27436;outline-offset:4px}.ds-secondary:disabled{opacity:.35;cursor:not-allowed}"
+    },
+    {
+      "name": "Date field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A labeled native date field used in accuracy filters.",
+      "html": "<label class=\"ds-field\" for=\"ds-date\">From date<input id=\"ds-date\" type=\"date\" value=\"2026-01-01\" min=\"2026-01-01\" max=\"2026-01-31\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:600 10px 'DM Sans',sans-serif;color:#4f6154}.ds-field input{font:400 12px 'DM Sans',sans-serif;color:var(--ink,#253e32);background:var(--paper,#fff);border:1px solid #dce3d7;border-radius:5px;padding:8px;height:34px}.ds-field input:focus-visible{outline:2px solid #b27436;outline-offset:4px}"
+    },
+    {
+      "name": "Desktop navigation item",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "The active page in the evergreen desktop shell.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Preview navigation\"><button class=\"ds-nav-item\" aria-current=\"page\">Forecast desk</button></nav>",
+      "css": ".ds-nav{padding:18px;background:var(--sidebar,#193d30)}.ds-nav-item{font:600 13px 'DM Sans',sans-serif;text-align:left;border:0;border-radius:6px;padding:13px;width:100%;color:#f2f5df;background:#315241;cursor:pointer;transition:background .18s}.ds-nav-item:hover{background:#234a3b}.ds-nav-item:focus-visible{outline:2px solid #b27436;outline-offset:4px}"
+    },
+    {
+      "name": "Vintage chip",
+      "kind": "chip",
+      "refersTo": "vintage-chip",
+      "description": "A compact, non-interactive source-vintage label.",
+      "html": "<span class=\"ds-chip\">DECISION VINTAGE</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;font:400 8px 'DM Sans',sans-serif;letter-spacing:.04em;color:#5b7752;border:1px solid #d2ddc8;white-space:nowrap;padding:5px 7px;border-radius:4px}"
+    },
+    {
+      "name": "Chart container",
+      "kind": "card",
+      "refersTo": "chart-container",
+      "description": "A bordered container for a forecast chart and its controls.",
+      "html": "<section class=\"ds-chart\"><h2>Wind generation <span>Next-day delivery</span></h2><p>Forecast at cutoff</p><div class=\"ds-legend\"><span></span>Forecast</div></section>",
+      "css": ".ds-chart{background:var(--paper,#fff);border:1px solid var(--border,#e1e6de);border-radius:10px;padding:23px 24px 15px;color:var(--ink,#253e32)}.ds-chart h2{margin:0;font:700 17px/1.4 Manrope,sans-serif;letter-spacing:-.025em}.ds-chart h2 span{font:400 12px 'DM Sans',sans-serif;color:#61715c;letter-spacing:0;margin-left:9px}.ds-chart p{font:400 10px/1.7 'DM Sans',sans-serif;color:#61715c;margin:5px 0}.ds-legend{display:flex;align-items:center;gap:6px;margin-top:25px;font:400 10px 'DM Sans',sans-serif;color:#61715c}.ds-legend span{width:18px;height:2px;background:var(--green,#2d7658)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Ordnance Survey analytical workspace",
+    "overview": "Northline is a compact analyst workspace. Evergreen navigation frames a warm off-white work area. Charts and aligned numeric tables carry the evidence, with source context beside the values. The chosen identity is recorded in docs/DESIGN_DIRECTION.md with concept-seed reference seed:0c8db3b6dd8a642a.",
+    "keyCharacteristics": [
+      "Evergreen shell and warm off-white workspace.",
+      "Manrope headings with DM Sans controls and tables.",
+      "Green forecasts, orange retrospective actuals, and visible missing-data gaps."
+    ],
+    "rules": [],
+    "dos": [
+      "Do keep forecast green and actual orange consistent across charts and legends.",
+      "Do show units and London time beside the values or controls they qualify.",
+      "Do retain keyboard focus, selected control states, null gaps, and textual status labels.",
+      "Do keep source explanations beside the evidence they describe."
+    ],
+    "donts": [
+      "Don't connect missing observations or substitute a zero for a gap.",
+      "Don't enable retrospective actuals by default.",
+      "Don't add decorative map illustrations or a decorative grid to express the identity."
+    ]
+  }
+}

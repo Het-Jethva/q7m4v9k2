@@ -1,0 +1,15 @@
+.git
+.venv
+node_modules
+dist
+.firecrawl
+.audit
+.impeccable
+.vercel
+test-results
+playwright-report
+__pycache__
+.pytest_cache
+*.pdf
+*.log
+.env*

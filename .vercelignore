@@ -1,0 +1,13 @@
+.venv
+.env*
+.firecrawl
+.audit
+.impeccable
+test-results
+playwright-report
+tests
+e2e
+*.pdf
+*.log
+__pycache__
+.pytest_cache

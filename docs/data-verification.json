@@ -1,0 +1,17 @@
+{
+  "snapshot_sha256": "de6db29066f1431918bfa10a74d18ea42bc656036f875ab6b863768ac79ffa40",
+  "raw_responses_verified": 64,
+  "forecast_observations_verified": 17864,
+  "actual_observations_verified": 1488,
+  "decision_cutoffs": [
+    "00:00",
+    "09:00",
+    "12:00",
+    "23:59"
+  ],
+  "hourly_intervals_checked": 2976,
+  "missing_forecasts": 62,
+  "missing_actual_pairs": 0,
+  "api_replays_verified": 124,
+  "live_source_responses_verified": []
+}

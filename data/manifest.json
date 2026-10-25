@@ -1,0 +1,589 @@
+{
+  "schema_version": 1,
+  "retrieved_at": "2026-10-25T04:13:07.790942+00:00",
+  "snapshot_sha256": "de6db29066f1431918bfa10a74d18ea42bc656036f875ab6b863768ac79ffa40",
+  "decision_from": "2026-01-01",
+  "decision_to": "2026-01-31",
+  "delivery_from": "2026-01-02",
+  "delivery_to": "2026-02-01",
+  "forecast_count": 17864,
+  "actual_count": 1488,
+  "sources": [
+    {
+      "id": "WINDFOR-2025-12-30",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2025-12-30T00%3A00%3A00Z&publishDateTimeTo=2025-12-31T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:51.068034+00:00",
+      "sha256": "c385cb1e794c230185c31b0cfb931b4c9a2764cf2c1bc1461caac0d5e1a2c2a9",
+      "raw_path": "data/raw/WINDFOR-2025-12-30.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2025-12-31",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2025-12-31T00%3A00%3A00Z&publishDateTimeTo=2026-01-01T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:50.948631+00:00",
+      "sha256": "fd23186984084e41570d8f3895b912e4c0ec034d54d3e1553bfc1e6cbca50982",
+      "raw_path": "data/raw/WINDFOR-2025-12-31.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-01",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-01T00%3A00%3A00Z&publishDateTimeTo=2026-01-02T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:50.889874+00:00",
+      "sha256": "5c70f8994f0a4bdc2fef6de699a53320a5d568dc515154b40933fa8362046cc4",
+      "raw_path": "data/raw/WINDFOR-2026-01-01.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-02",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-02T00%3A00%3A00Z&publishDateTimeTo=2026-01-03T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:50.958586+00:00",
+      "sha256": "23c58bbcb18bc731cb40d70860eaaa953b6ca49a6df5934763eca5ef8b2cf90f",
+      "raw_path": "data/raw/WINDFOR-2026-01-02.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-03",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-03T00%3A00%3A00Z&publishDateTimeTo=2026-01-04T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:51.944504+00:00",
+      "sha256": "5eefbe5490290b20abaa1cf76bb3db36b28e8b530affbf071a7bad2eb84b0a29",
+      "raw_path": "data/raw/WINDFOR-2026-01-03.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-04",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-04T00%3A00%3A00Z&publishDateTimeTo=2026-01-05T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:51.863276+00:00",
+      "sha256": "7047c1237868ade4636a01b08a69d359fc1dc1646654974e6c50d09c806e2cb4",
+      "raw_path": "data/raw/WINDFOR-2026-01-04.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-05",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-05T00%3A00%3A00Z&publishDateTimeTo=2026-01-06T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.018194+00:00",
+      "sha256": "071b2d6de3fb8867b0b0cfc506b5fcbfcc220c610847c9dca9c1ba7f6a1bb664",
+      "raw_path": "data/raw/WINDFOR-2026-01-05.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-06",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-06T00%3A00%3A00Z&publishDateTimeTo=2026-01-07T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.024083+00:00",
+      "sha256": "fd9574e7622b368aae89b8c85bc88b14596f0ab2d637b659942a82a15176e243",
+      "raw_path": "data/raw/WINDFOR-2026-01-06.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-07",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-07T00%3A00%3A00Z&publishDateTimeTo=2026-01-08T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.743926+00:00",
+      "sha256": "7312c679a22c651f55ed18839e15f7636b9c020f59a3efed232548651fdbaea2",
+      "raw_path": "data/raw/WINDFOR-2026-01-07.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-08",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-08T00%3A00%3A00Z&publishDateTimeTo=2026-01-09T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.897163+00:00",
+      "sha256": "05dc93590d3f44ed10706353e14ea3ee8e661b001b016105f14af74337923113",
+      "raw_path": "data/raw/WINDFOR-2026-01-08.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-09",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-09T00%3A00%3A00Z&publishDateTimeTo=2026-01-10T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.963092+00:00",
+      "sha256": "e80c6487f6672f1abfc3fc1a361b0b8f41bb8e6f7ae185380e807f5dda8be478",
+      "raw_path": "data/raw/WINDFOR-2026-01-09.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-10",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-10T00%3A00%3A00Z&publishDateTimeTo=2026-01-11T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:52.972166+00:00",
+      "sha256": "c927f7ead62de423de5c6600883f0488424a0df399fd06d7a9e2356961777124",
+      "raw_path": "data/raw/WINDFOR-2026-01-10.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-11",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-11T00%3A00%3A00Z&publishDateTimeTo=2026-01-12T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:53.751729+00:00",
+      "sha256": "0acd90eb269583b5fbd9f358e39b76932c3643224c64ee72dc28957fa9977353",
+      "raw_path": "data/raw/WINDFOR-2026-01-11.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-12",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-12T00%3A00%3A00Z&publishDateTimeTo=2026-01-13T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:54.009344+00:00",
+      "sha256": "7f17243806e336a108c99e9f3f02b8b5441c43474cc0998642b09f867aa8532f",
+      "raw_path": "data/raw/WINDFOR-2026-01-12.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-13",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-13T00%3A00%3A00Z&publishDateTimeTo=2026-01-14T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:53.906495+00:00",
+      "sha256": "6fec3644426feec9eb6f0e634a7e6a11c3b720976246e1c1b9fe415bcd1cfa1c",
+      "raw_path": "data/raw/WINDFOR-2026-01-13.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-14",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-14T00%3A00%3A00Z&publishDateTimeTo=2026-01-15T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:54.026519+00:00",
+      "sha256": "37358009876280f32035d11c26e6db1f9953674514db1cc23f8326de7b217130",
+      "raw_path": "data/raw/WINDFOR-2026-01-14.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-15",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-15T00%3A00%3A00Z&publishDateTimeTo=2026-01-16T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:54.697344+00:00",
+      "sha256": "665fcbfe7c0798034473693fa06019f5a4dfa2986ea1acbe340ce20ff561a040",
+      "raw_path": "data/raw/WINDFOR-2026-01-15.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-16",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-16T00%3A00%3A00Z&publishDateTimeTo=2026-01-17T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:54.842390+00:00",
+      "sha256": "d03f411172e79e15ccf1b33cf05935eedc8781d1c82b3a7ddb43f2007fe9691f",
+      "raw_path": "data/raw/WINDFOR-2026-01-16.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-17",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-17T00%3A00%3A00Z&publishDateTimeTo=2026-01-18T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:55.074402+00:00",
+      "sha256": "241c6fb7b8796ec931ddf51c6debede31075855dbba49cd6f26ef8e60086376e",
+      "raw_path": "data/raw/WINDFOR-2026-01-17.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-18",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-18T00%3A00%3A00Z&publishDateTimeTo=2026-01-19T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:54.985508+00:00",
+      "sha256": "0209dc81f4aca1f4812d61edc1a8c71243501f8f5f87b98d8ead55eda74ec4ce",
+      "raw_path": "data/raw/WINDFOR-2026-01-18.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-19",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-19T00%3A00%3A00Z&publishDateTimeTo=2026-01-20T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:55.681957+00:00",
+      "sha256": "63c77d1b550aa2bdc11c61a06787231490c8448212da030db537da405e6f04c1",
+      "raw_path": "data/raw/WINDFOR-2026-01-19.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-20",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-20T00%3A00%3A00Z&publishDateTimeTo=2026-01-21T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:55.881342+00:00",
+      "sha256": "e28633e28560b3e006f42452622ca35f500a5629687e6b11481162e196961057",
+      "raw_path": "data/raw/WINDFOR-2026-01-20.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-21",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-21T00%3A00%3A00Z&publishDateTimeTo=2026-01-22T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:56.023129+00:00",
+      "sha256": "e8d1e4a55fafd22cc581dda8ea97152d3778c87c9b4f238af68b91fe15ef1691",
+      "raw_path": "data/raw/WINDFOR-2026-01-21.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-22",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-22T00%3A00%3A00Z&publishDateTimeTo=2026-01-23T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:56.089376+00:00",
+      "sha256": "9e33bf649f878427d34341f19a72579e20b398aef70ae2a233aa8f595505b178",
+      "raw_path": "data/raw/WINDFOR-2026-01-22.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-23",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-23T00%3A00%3A00Z&publishDateTimeTo=2026-01-24T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:56.721507+00:00",
+      "sha256": "c2929b55439665f48b8ae40c0aace04d3959189ee84d7f505b1fd8d228dc71f7",
+      "raw_path": "data/raw/WINDFOR-2026-01-23.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-24",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-24T00%3A00%3A00Z&publishDateTimeTo=2026-01-25T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:56.837690+00:00",
+      "sha256": "6d4614f482f01f2bd37a74b63a27a133729f0efd4ce27d1a9648db36d3cdf2d6",
+      "raw_path": "data/raw/WINDFOR-2026-01-24.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-25",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-25T00%3A00%3A00Z&publishDateTimeTo=2026-01-26T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:56.948527+00:00",
+      "sha256": "2cce49c740304b963f1a358812aebd86265ab3a76cf502ab08f1fd29acb73973",
+      "raw_path": "data/raw/WINDFOR-2026-01-25.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-26",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-26T00%3A00%3A00Z&publishDateTimeTo=2026-01-27T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:57.157390+00:00",
+      "sha256": "f5198688e19046705d4f66516f1374f8200830f2599d166b655283d102b7e3f1",
+      "raw_path": "data/raw/WINDFOR-2026-01-26.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-27",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-27T00%3A00%3A00Z&publishDateTimeTo=2026-01-28T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:57.728612+00:00",
+      "sha256": "392a9f801793119c7fef3085f0f9bd63d7e9d0d297f0d006c49c0ce67f2d0709",
+      "raw_path": "data/raw/WINDFOR-2026-01-27.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-28",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-28T00%3A00%3A00Z&publishDateTimeTo=2026-01-29T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:57.825603+00:00",
+      "sha256": "577f83ba066bbc077b82a8bef626919575b255f7700c333214f61d14240812c7",
+      "raw_path": "data/raw/WINDFOR-2026-01-28.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-29",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-29T00%3A00%3A00Z&publishDateTimeTo=2026-01-30T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:58.011873+00:00",
+      "sha256": "91e2f9a91c1b93e418562df2cce59a3961e547c9f985d534bd2f72f8c94b1d4b",
+      "raw_path": "data/raw/WINDFOR-2026-01-29.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-30",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-30T00%3A00%3A00Z&publishDateTimeTo=2026-01-31T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:58.694067+00:00",
+      "sha256": "88566e34fa709ddf2706f6e783cae11f492d7eeac327b5b73a8833b220b85c1e",
+      "raw_path": "data/raw/WINDFOR-2026-01-30.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "WINDFOR-2026-01-31",
+      "dataset": "WINDFOR",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2026-01-31T00%3A00%3A00Z&publishDateTimeTo=2026-02-01T00%3A00%3A00Z",
+      "retrieved_at": "2026-10-25T04:12:58.751265+00:00",
+      "sha256": "e69da535c624cecc4a6a3392a23db40ec211f1b6ffcef98e5742a861cf03c650",
+      "raw_path": "data/raw/WINDFOR-2026-01-31.json.gz",
+      "record_count": 584
+    },
+    {
+      "id": "FUELHH-2026-01-02",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-02&settlementDateTo=2026-01-02",
+      "retrieved_at": "2026-10-25T04:12:58.923225+00:00",
+      "sha256": "2352f3898cf4b2a02d72e33342e009acc54096526e22fbdd0a4ce55a2b79b4a5",
+      "raw_path": "data/raw/FUELHH-2026-01-02.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-03",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-03&settlementDateTo=2026-01-03",
+      "retrieved_at": "2026-10-25T04:12:59.113990+00:00",
+      "sha256": "5368fa2cce3d93dca7d5cec8b9b88c4651bd6db304888cd931b9f56f3f2cfb77",
+      "raw_path": "data/raw/FUELHH-2026-01-03.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-04",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-04&settlementDateTo=2026-01-04",
+      "retrieved_at": "2026-10-25T04:12:59.905199+00:00",
+      "sha256": "08469ab5a26951608a771d646ea89393f67fb5a4841f7b2d6e0a7f57c0590779",
+      "raw_path": "data/raw/FUELHH-2026-01-04.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-05",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-05&settlementDateTo=2026-01-05",
+      "retrieved_at": "2026-10-25T04:13:00.038161+00:00",
+      "sha256": "207dca546a938d0c530586398ec749cf4771bfcf76ce08aa388b8e401995145e",
+      "raw_path": "data/raw/FUELHH-2026-01-05.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-06",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-06&settlementDateTo=2026-01-06",
+      "retrieved_at": "2026-10-25T04:13:00.157655+00:00",
+      "sha256": "4d1f313fb714228e3129e8a13c862421860aef04f8e87d635fd65e8fe06c1b49",
+      "raw_path": "data/raw/FUELHH-2026-01-06.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-07",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-07&settlementDateTo=2026-01-07",
+      "retrieved_at": "2026-10-25T04:13:00.382678+00:00",
+      "sha256": "3cbb63af38ee6f30cb1966424a111448ab7a37099388fc634a792e1803b0fff3",
+      "raw_path": "data/raw/FUELHH-2026-01-07.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-08",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-08&settlementDateTo=2026-01-08",
+      "retrieved_at": "2026-10-25T04:13:01.088428+00:00",
+      "sha256": "9e7bcfc446a487d796760c3481030a2bb1706298d72f71156b509d778010f9fb",
+      "raw_path": "data/raw/FUELHH-2026-01-08.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-09",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-09&settlementDateTo=2026-01-09",
+      "retrieved_at": "2026-10-25T04:13:01.336010+00:00",
+      "sha256": "8225799426145d6ca2fb1522d7c8ec6f7dae6e89ae84b50a2266496ae4ab0811",
+      "raw_path": "data/raw/FUELHH-2026-01-09.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-10",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-10&settlementDateTo=2026-01-10",
+      "retrieved_at": "2026-10-25T04:13:01.286191+00:00",
+      "sha256": "c1e17ec790b0412f51ab763312157d4644dbcad5778ee45466075c19a816b878",
+      "raw_path": "data/raw/FUELHH-2026-01-10.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-11",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-11&settlementDateTo=2026-01-11",
+      "retrieved_at": "2026-10-25T04:13:01.569941+00:00",
+      "sha256": "91fa0efca8a5fdc39de69748637db26ce2b24e9051885452c792a0c6546826bf",
+      "raw_path": "data/raw/FUELHH-2026-01-11.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-12",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-12&settlementDateTo=2026-01-12",
+      "retrieved_at": "2026-10-25T04:13:02.207735+00:00",
+      "sha256": "e868884ed4da4d100a82b4967a0326639d958da33c772f291c664fe481e41c0a",
+      "raw_path": "data/raw/FUELHH-2026-01-12.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-13",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-13&settlementDateTo=2026-01-13",
+      "retrieved_at": "2026-10-25T04:13:02.369137+00:00",
+      "sha256": "d77bbac5c8024189d20723e74d30e537dff22e5b789e9d7c6015c322c3e52f67",
+      "raw_path": "data/raw/FUELHH-2026-01-13.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-14",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-14&settlementDateTo=2026-01-14",
+      "retrieved_at": "2026-10-25T04:13:02.409997+00:00",
+      "sha256": "3b1c9842ddea93017595c7f57f0e6826b3caee1c653d96806326f18f6777840e",
+      "raw_path": "data/raw/FUELHH-2026-01-14.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-15",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-15&settlementDateTo=2026-01-15",
+      "retrieved_at": "2026-10-25T04:13:02.644684+00:00",
+      "sha256": "2390c5dc95eba07fc3dcc05bf078426d48b01f6d31776f1d878afa37a977716e",
+      "raw_path": "data/raw/FUELHH-2026-01-15.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-16",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-16&settlementDateTo=2026-01-16",
+      "retrieved_at": "2026-10-25T04:13:03.317543+00:00",
+      "sha256": "0783bea737ee7f79d665804c5fed87995ccabede168ba6f524b78e3fb9d92efd",
+      "raw_path": "data/raw/FUELHH-2026-01-16.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-17",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-17&settlementDateTo=2026-01-17",
+      "retrieved_at": "2026-10-25T04:13:03.458676+00:00",
+      "sha256": "c7acc9091aff84e05360892bcada5ffc383e3d9f5f0719327090f0f2c571644d",
+      "raw_path": "data/raw/FUELHH-2026-01-17.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-18",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-18&settlementDateTo=2026-01-18",
+      "retrieved_at": "2026-10-25T04:13:03.508708+00:00",
+      "sha256": "d77d973006e885cecb9e55e5a210a0d0ffdd7d6bb018ce877d9846ca7a45dddd",
+      "raw_path": "data/raw/FUELHH-2026-01-18.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-19",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-19&settlementDateTo=2026-01-19",
+      "retrieved_at": "2026-10-25T04:13:03.723129+00:00",
+      "sha256": "4ea315236764ee830cbba2e666e71174dc5bab72c425586cd864038867e67363",
+      "raw_path": "data/raw/FUELHH-2026-01-19.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-20",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-20&settlementDateTo=2026-01-20",
+      "retrieved_at": "2026-10-25T04:13:04.408118+00:00",
+      "sha256": "128c6c5fd6cac4f4bb9654c727b0039ed36263d706d65fc17cd4e158c3ad1322",
+      "raw_path": "data/raw/FUELHH-2026-01-20.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-21",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-21&settlementDateTo=2026-01-21",
+      "retrieved_at": "2026-10-25T04:13:04.519397+00:00",
+      "sha256": "08c7acff50f6677fbd7029ac243f52e41335e6e040f38beead604a35ec03811b",
+      "raw_path": "data/raw/FUELHH-2026-01-21.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-22",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-22&settlementDateTo=2026-01-22",
+      "retrieved_at": "2026-10-25T04:13:04.756464+00:00",
+      "sha256": "169c8779013dec89fb22b85a6309f4f9e9b2e06689f30b3828def4aa6d1546ab",
+      "raw_path": "data/raw/FUELHH-2026-01-22.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-23",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-23&settlementDateTo=2026-01-23",
+      "retrieved_at": "2026-10-25T04:13:04.824753+00:00",
+      "sha256": "a59559ce19285a038bce3309645b1fca92d5043f98aa601028f36c9faf254734",
+      "raw_path": "data/raw/FUELHH-2026-01-23.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-24",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-24&settlementDateTo=2026-01-24",
+      "retrieved_at": "2026-10-25T04:13:05.551220+00:00",
+      "sha256": "712a7d4000199a4005a908720333cca9e9d33380a02ec85548fcd763ca79845c",
+      "raw_path": "data/raw/FUELHH-2026-01-24.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-25",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-25&settlementDateTo=2026-01-25",
+      "retrieved_at": "2026-10-25T04:13:05.586755+00:00",
+      "sha256": "f578b5b60b999d519a49e891f84ee98c82be7ccec9909131e21e93fe1cad8c4f",
+      "raw_path": "data/raw/FUELHH-2026-01-25.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-26",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-26&settlementDateTo=2026-01-26",
+      "retrieved_at": "2026-10-25T04:13:05.897001+00:00",
+      "sha256": "d520cb2e4b9565132d2db903885d2e8c3f9037d76186c2d5467f3121f48e2bbe",
+      "raw_path": "data/raw/FUELHH-2026-01-26.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-27",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-27&settlementDateTo=2026-01-27",
+      "retrieved_at": "2026-10-25T04:13:05.921677+00:00",
+      "sha256": "6f2a8725e3b85f2817ac6fb65b464db03e5ea8c376749fb5264e054d2526a08c",
+      "raw_path": "data/raw/FUELHH-2026-01-27.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-28",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-28&settlementDateTo=2026-01-28",
+      "retrieved_at": "2026-10-25T04:13:06.698165+00:00",
+      "sha256": "2d50828ca52ac543f1cf56ec1f05ff0a9b887782bf4eb3856922f4a2a8c57338",
+      "raw_path": "data/raw/FUELHH-2026-01-28.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-29",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-29&settlementDateTo=2026-01-29",
+      "retrieved_at": "2026-10-25T04:13:06.666774+00:00",
+      "sha256": "85dae123bc68a820c397548e6b636320f7e09b24da591530918d871bf9526438",
+      "raw_path": "data/raw/FUELHH-2026-01-29.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-30",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-30&settlementDateTo=2026-01-30",
+      "retrieved_at": "2026-10-25T04:13:07.207123+00:00",
+      "sha256": "dc5316d3f88466fff5b16a60432b5b4d3f88b0f3e2fd38a8ce58486a8fe740e7",
+      "raw_path": "data/raw/FUELHH-2026-01-30.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-01-31",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-01-31&settlementDateTo=2026-01-31",
+      "retrieved_at": "2026-10-25T04:13:07.116101+00:00",
+      "sha256": "e1d8355c0c14411fabaac5f5ce05f31c84284527cd878239dec4a52e60a0049a",
+      "raw_path": "data/raw/FUELHH-2026-01-31.json.gz",
+      "record_count": 960
+    },
+    {
+      "id": "FUELHH-2026-02-01",
+      "dataset": "FUELHH",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2026-02-01&settlementDateTo=2026-02-01",
+      "retrieved_at": "2026-10-25T04:13:07.790942+00:00",
+      "sha256": "13e2a9b8f44d87000fc4b3b80bee515759bf4ca10fc9705405c8018fb216ef94",
+      "raw_path": "data/raw/FUELHH-2026-02-01.json.gz",
+      "record_count": 960
+    }
+  ]
+}
