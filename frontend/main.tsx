@@ -145,7 +145,6 @@ function App() {
           </span>
           northline<span className="brand-dot">.</span>
         </a>
-        <div className="workspace-label">ENERGY INTELLIGENCE</div>
         <nav aria-label="Main navigation">
           {nav.map((item) => (
             <button
@@ -165,14 +164,7 @@ function App() {
             <Database size={17} />
             <span>January 2026 archive</span>
           </div>
-          <p>
-            GB national wind.
-            <br />A clearer view of day ahead.
-          </p>
-          <div className="sidebar-foot">
-            Historical research workspace
-            <ArrowUpRight size={15} />
-          </div>
+          <p>GB national wind.</p>
         </div>
       </aside>
       <div className="workspace">
@@ -202,13 +194,6 @@ function App() {
                     ? "Forecast accuracy"
                     : "The evidence behind the forecast"}
               </h1>
-              <p>
-                {tab === "forecast"
-                  ? "The forecast you had. For the decision you faced."
-                  : tab === "accuracy"
-                    ? "Measure the gap between the forecast and what happened."
-                    : "A reproducible view of national wind, with every assumption in the open."}
-              </p>
             </div>
             {tab !== "methodology" && (
               <a
@@ -561,7 +546,7 @@ function Metric({
         <SoftValue value={value} />
         <span className="metric-unit">{unit}</span>
       </div>
-      <div className="metric-detail">{detail}</div>
+      {detail && <div className="metric-detail">{detail}</div>}
     </div>
   );
 }
@@ -582,13 +567,13 @@ function MetricsRow({
         label="Mean absolute error"
         value={powerText(metrics.mae_mw, unit)}
         unit={metrics.mae_mw === null ? "" : unit}
-        detail="Typical absolute hourly miss"
+        detail=""
       />
       <Metric
         label="Root mean squared error"
         value={powerText(metrics.rmse_mw, unit)}
         unit={metrics.rmse_mw === null ? "" : unit}
-        detail="More weight on larger misses"
+        detail=""
       />
       <Metric
         label="Mean bias"
@@ -642,7 +627,7 @@ function Forecast({
           label="Peak forecast"
           value={powerText(data.peak_forecast_mw, unit)}
           unit={data.peak_forecast_mw === null ? "" : unit}
-          detail="Highest hourly forecast"
+          detail=""
         />
         <Metric
           label="Forecast range"
@@ -652,7 +637,7 @@ function Forecast({
               : `${powerText(data.min_forecast_mw, unit)} – ${powerText(data.peak_forecast_mw, unit)}`
           }
           unit={data.min_forecast_mw === null ? "" : unit}
-          detail="Minimum to maximum"
+          detail=""
         />
         <Metric
           label="Forecast coverage"
@@ -821,14 +806,12 @@ function Forecast({
               : "No eligible forecast issue"}
           </strong>
           <p>
-            For each delivery hour, the latest forecast published at or before{" "}
-            {data.cutoff} on{" "}
-            {dateText(data.decision_date, { day: "numeric", month: "short" })}{" "}
-            is selected.
+            Each hour uses its latest forecast available by {data.cutoff} on{" "}
+            {dateText(data.decision_date, { day: "numeric", month: "short" })},
             {data.oldest_publish_time &&
             data.oldest_publish_time !== data.latest_publish_time
-              ? ` Multiple vintages are used, starting ${issueText(data.oldest_publish_time)}.`
-              : " No later update fills a gap."}
+              ? ` with issues starting ${issueText(data.oldest_publish_time)} and no later updates filling gaps.`
+              : " with no later updates filling gaps."}
           </p>
         </div>
         <span className="vintage-chip">
@@ -864,10 +847,6 @@ function Forecast({
         <div className="section-heading">
           <div>
             <h2>Interval detail</h2>
-            <p>
-              The selected forecast and its publication evidence for every
-              delivery hour.
-            </p>
           </div>
           <a className="text-link" href={exportUrl} download>
             Download data <ArrowDownToLine size={14} />
@@ -1111,10 +1090,8 @@ function AccuracyPage({
         <div>
           <strong>Historical evidence, with its limits</strong>
           <p>
-            Metrics pool all matched hourly observations. Actuals are
-            retrospective and may include revisions. This January sample
-            describes past errors; it is not a trained risk model or a future
-            uncertainty band.
+            Matched-hour metrics use retrospective, possibly revised actuals
+            from January and describe in-sample errors, not future uncertainty.
           </p>
         </div>
         <span className="vintage-chip">IN-SAMPLE</span>
@@ -1123,10 +1100,6 @@ function AccuracyPage({
         <div className="section-heading">
           <div>
             <h2>Day by day</h2>
-            <p>
-              Open a decision to inspect its selected vintages and actual
-              half-hours.
-            </p>
           </div>
           <a className="text-link" href={exportUrl} download>
             Download data <ArrowDownToLine size={14} />

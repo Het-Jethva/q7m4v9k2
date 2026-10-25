@@ -139,17 +139,11 @@ input {
 .brand-dot {
   color: #c7d8a0;
 }
-.workspace-label {
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  font-weight: 500;
-  color: #b1c4b6;
-  margin: 20px 10px 39px;
-}
 .sidebar nav {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  margin-top: 36px;
 }
 .nav-item {
   display: flex;
@@ -194,15 +188,6 @@ input {
   line-height: 1.8;
   color: #b4c7ba;
   margin: 14px 0 25px;
-}
-.sidebar-foot {
-  border-top: 1px solid #3d5a48;
-  padding-top: 17px;
-  color: #b4c7ba;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
 }
 .workspace {
   margin-left: 218px;
@@ -1069,9 +1054,6 @@ details summary {
   .brand {
     font-size: 23px;
   }
-  .workspace-label {
-    font-size: 8px;
-  }
   .nav-item {
     font-size: 12px;
   }
@@ -1138,16 +1120,9 @@ details summary {
     gap: 8px;
     font-size: 11px;
   }
-  .workspace-label {
-    margin-left: 6px;
-    font-size: 7px;
-  }
   .sidebar-bottom {
     padding-left: 6px;
     padding-right: 6px;
-  }
-  .sidebar-foot {
-    font-size: 8px;
   }
   .archive-mark {
     font-size: 9px;
@@ -1255,14 +1230,6 @@ details summary {
   .brand-symbol {
     width: 26px;
     margin-right: 6px;
-  }
-  .workspace-label {
-    position: absolute;
-    right: 22px;
-    top: 28px;
-    margin: 0;
-    font-size: 7px;
-    letter-spacing: 0.1em;
   }
   .sidebar nav {
     flex-direction: row;
