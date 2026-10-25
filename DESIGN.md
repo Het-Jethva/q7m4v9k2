@@ -2,14 +2,14 @@
 name: Northline
 description: A restrained workspace for historical national wind forecast decisions.
 colors:
-  primary: "#2d7658"
-  evergreen: "#193d30"
+  primary: "#187b55"
+  evergreen: "#142e25"
   actual: "#c47736"
-  neutral-bg: "#f8f9f5"
+  neutral-bg: "#f4f6f2"
   paper: "#fff"
-  ink: "#253e32"
-  muted: "#637269"
-  border: "#e1e6de"
+  ink: "#1d342a"
+  muted: "#58695e"
+  border: "#dce3da"
   note: "#edf2e7"
   focus: "#b27436"
   available: "#456e3b"
@@ -17,13 +17,13 @@ colors:
 typography:
   headline:
     fontFamily: "Manrope, sans-serif"
-    fontSize: "33px"
+    fontSize: "38px"
     fontWeight: 700
     lineHeight: 1.25
     letterSpacing: "-0.035em"
   title:
     fontFamily: "Manrope, sans-serif"
-    fontSize: "17px"
+    fontSize: "19px"
     fontWeight: 700
     lineHeight: 1.4
     letterSpacing: "-0.025em"
@@ -32,7 +32,7 @@ typography:
     fontWeight: 400
   metric:
     fontFamily: "Manrope, sans-serif"
-    fontSize: "27px"
+    fontSize: "30px"
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "-0.035em"
@@ -40,7 +40,7 @@ rounded:
   input: "5px"
   button: "6px"
   note: "7px"
-  chart: "10px"
+  chart: "14px"
 spacing:
   compact: "8px"
   medium: "16px"
@@ -62,8 +62,8 @@ components:
     rounded: "{rounded.chart}"
     padding: "23px 24px 15px"
   navigation-active:
-    backgroundColor: "#315241"
-    textColor: "#f2f5df"
+    backgroundColor: "#d4ef94"
+    textColor: "#173524"
     rounded: "{rounded.button}"
     padding: "13px 13px"
   vintage-chip:
@@ -90,7 +90,7 @@ The available and missing status colors are darker text treatments. Status label
 
 Manrope carries headings, identity, and metric values. DM Sans carries controls, tables, and explanatory copy. Both use a sans-serif fallback. Tables and metric values use tabular numerals.
 
-The headline reduces to 28px on mobile. Section titles use the title token. Most desktop control and table text is compact, between 10px and 13px. Units are smaller than their metric values and remain explicit.
+The headline reduces to 30px on mobile. Section titles use the title token. Most desktop control and table text is compact, between 10px and 13px. Units are smaller than their metric values and remain explicit.
 
 ## Layout
 
@@ -100,7 +100,7 @@ At 650px and below, the sidebar becomes a header with horizontal navigation. The
 
 ## Elevation & Depth
 
-Borders, pale fills, and rules separate most content. Shadows are limited to switch thumbs, selected unit buttons, and chart tooltips. There is no elevated card grid. Hover transitions last 0.18 seconds. Switch transitions last 0.2 seconds. Reduced motion disables animations and transitions.
+Borders, pale fills, and rules separate most content. Shadows are limited to switch thumbs, selected unit buttons, and chart tooltips. There is no elevated card grid. Hover transitions use the 150ms quick token. The unit selector uses a 250ms sliding indicator. Changed metric values cross-blur in place for 150ms while their width eases for 240ms. Switch transitions last 0.2 seconds. Reduced motion disables animations and transitions.
 
 ## Shapes
 
@@ -127,3 +127,13 @@ The interval table aligns numeric columns to the right. Missing observations rem
 - Don't connect missing observations or substitute a zero for a gap.
 - Don't enable retrospective actuals by default.
 - Don't add decorative map illustrations or a decorative grid to express the identity.
+
+## Interface refinement, October 2026
+
+The refinement preserves the evergreen analyst workspace and all product behavior. The active navigation item uses pale lime (`#d4ef94`) with dark green text (`#173524`). Forecast lines use `#187b55`, and the chart area uses a transparent `#31a46c` wash. The main surface is `#f4f6f2`, with a deeper `#142e25` sidebar and `#1d342a` primary ink.
+
+The visual reference was [Vibrant Design](https://vibrant.design/), inspected in the browser: precise small controls, clear typography, and consistent surface separation. Northline remains an Operate surface; ornamental effects and imagery would compete with the forecast.
+
+Transitions.dev snippets for sliding tabs and soft text swaps are installed in `frontend/motion.css`, retaining their reduced-motion guards. The React unit control owns pill position and resets it without animation on resize. Metric text changes use the snippet's computed timing values, cancel pending cleanup on rapid changes, and hide outgoing values from assistive technology. Charts remain immediate and preserve null gaps.
+
+On phones, chart controls form one horizontal row below the title, tables scroll inside their container, and two equal-width metric columns remain stable in GW and MW. Forecast ranges use a smaller 19px numeric size to fit their longer values. Native date/time controls remain intact.

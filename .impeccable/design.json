@@ -56,7 +56,7 @@
     "typographyMeta": {
       "headline": {
         "displayName": "Page heading",
-        "purpose": "Delivery-day and page headings. Reduces to 28px at the mobile breakpoint."
+        "purpose": "Delivery-day and page headings. Reduces to 30px at the mobile breakpoint."
       },
       "title": {
         "displayName": "Section heading",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Area,
@@ -45,6 +45,7 @@ import "@fontsource/dm-sans/latin-700.css";
 import "@fontsource/manrope/latin-500.css";
 import "@fontsource/manrope/latin-600.css";
 import "@fontsource/manrope/latin-700.css";
+import "./motion.css";
 import "./styles.css";
 
 type Tab = "forecast" | "accuracy" | "methodology";
@@ -435,13 +436,61 @@ function UnitControl({
   unit: Unit;
   setUnit: (unit: Unit) => void;
 }) {
+  const bar = useRef<HTMLDivElement>(null);
+  const initialized = useRef(false);
+  useLayoutEffect(() => {
+    const container = bar.current;
+    const pill = container?.querySelector<HTMLElement>(".t-tabs-pill");
+    if (!container || !pill) return;
+    const move = (animate: boolean) => {
+      const selected = container.querySelector<HTMLButtonElement>(
+        '[aria-pressed="true"]',
+      );
+      if (!selected) return;
+      const previous = pill.style.transition;
+      if (!animate) pill.style.transition = "none";
+      pill.style.transform = `translateX(${selected.offsetLeft}px)`;
+      pill.style.width = `${selected.offsetWidth}px`;
+      if (!animate) {
+        void pill.offsetWidth;
+        pill.style.transition = previous;
+      }
+    };
+    move(initialized.current);
+    initialized.current = true;
+  }, [unit]);
+  useLayoutEffect(() => {
+    const container = bar.current;
+    if (!container) return;
+    const observer = new ResizeObserver(() => {
+      const pill = container.querySelector<HTMLElement>(".t-tabs-pill");
+      const selected = container.querySelector<HTMLButtonElement>(
+        '[aria-pressed="true"]',
+      );
+      if (!pill || !selected) return;
+      const previous = pill.style.transition;
+      pill.style.transition = "none";
+      pill.style.transform = `translateX(${selected.offsetLeft}px)`;
+      pill.style.width = `${selected.offsetWidth}px`;
+      void pill.offsetWidth;
+      pill.style.transition = previous;
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
   return (
-    <div className="segmented" role="group" aria-label="Power unit">
+    <div
+      ref={bar}
+      className="segmented t-tabs"
+      role="group"
+      aria-label="Power unit"
+    >
+      <span className="t-tabs-pill" aria-hidden="true" />
       {(["GW", "MW"] satisfies Unit[]).map((value) => (
         <button
           key={value}
           aria-pressed={unit === value}
-          className={unit === value ? "selected" : ""}
+          className={`t-tab ${unit === value ? "selected" : ""}`}
           onClick={() => setUnit(value)}
         >
           {value}
@@ -450,6 +499,50 @@ function UnitControl({
     </div>
   );
 }
+function SoftValue({ value }: { value: string }) {
+  const element = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const el = element.current;
+    if (!el) return;
+    const previous = el.dataset.text ?? value;
+    el.dataset.text = value;
+    if (
+      previous === value ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.textContent = value;
+      return;
+    }
+    const old = document.createElement("span");
+    old.className = "t-text-soft-old";
+    old.setAttribute("aria-hidden", "true");
+    old.textContent = previous;
+    const next = document.createElement("span");
+    next.className = "t-text-soft-new";
+    next.textContent = value;
+    const oldWidth = el.getBoundingClientRect().width;
+    el.classList.remove("is-swapping");
+    el.replaceChildren(old, next);
+    const nextWidth = next.getBoundingClientRect().width;
+    el.style.width = `${oldWidth}px`;
+    void el.offsetWidth;
+    el.classList.add("is-swapping");
+    el.style.width = `${nextWidth}px`;
+    const styles = getComputedStyle(document.documentElement);
+    const ms = (name: string) => parseFloat(styles.getPropertyValue(name)) || 0;
+    const timer = window.setTimeout(
+      () => {
+        el.classList.remove("is-swapping");
+        el.style.removeProperty("width");
+        el.textContent = value;
+      },
+      Math.max(ms("--text-soft-dur"), ms("--text-soft-resize-dur")) + 40,
+    );
+    return () => window.clearTimeout(timer);
+  }, [value]);
+  return <span className="t-text-soft metric-number" ref={element} />;
+}
+
 function Metric({
   label,
   value,
@@ -462,11 +555,11 @@ function Metric({
   detail: string;
 }) {
   return (
-    <div className="metric">
+    <div className="metric" data-label={label}>
       <div className="metric-label">{label}</div>
       <div className="metric-value">
-        {value}
-        <span>{unit}</span>
+        <SoftValue value={value} />
+        <span className="metric-unit">{unit}</span>
       </div>
       <div className="metric-detail">{detail}</div>
     </div>
@@ -633,8 +726,8 @@ function Forecast({
             >
               <defs>
                 <linearGradient id="forecast-fill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2f7459" stopOpacity={0.16} />
-                  <stop offset="100%" stopColor="#2f7459" stopOpacity={0.015} />
+                  <stop offset="0%" stopColor="#31a46c" stopOpacity={0.22} />
+                  <stop offset="100%" stopColor="#31a46c" stopOpacity={0.015} />
                 </linearGradient>
               </defs>
               <CartesianGrid
@@ -684,7 +777,7 @@ function Forecast({
               <Line
                 type="linear"
                 dataKey="forecast"
-                stroke="#2d7658"
+                stroke="#187b55"
                 strokeWidth={2.6}
                 dot={false}
                 activeDot={{ r: 4, stroke: "#fff", strokeWidth: 2 }}
