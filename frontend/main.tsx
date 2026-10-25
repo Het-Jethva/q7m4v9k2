@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Area,
@@ -32,9 +32,9 @@ import {
   useApi,
 } from "./api";
 import type { Accuracy, Meta, Metrics, Replay } from "./api";
-import "./motion.css";
 import "./styles.css";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -79,7 +79,13 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 const forecastChartConfig = {
@@ -181,7 +187,7 @@ function App() {
 
   return (
     <Tabs
-      className="app-shell"
+      className="min-h-screen gap-0"
       value={tab}
       onValueChange={(value) => {
         if (
@@ -192,20 +198,20 @@ function App() {
           setTab(value);
       }}
     >
-      <header className="app-header">
+      <header className="flex flex-wrap items-center gap-6 border-b px-5 py-4 md:gap-12 md:px-8">
         <a
-          className="brand"
+          className="flex items-center gap-2 text-xl font-semibold tracking-tight"
           href="#main"
           aria-label="Northline home"
           onClick={() => setTab("forecast")}
         >
-          <Wind strokeWidth={1.8} /> northline
-          <span className="brand-dot">.</span>
+          <Wind className="size-6 text-primary" /> northline
+          <span className="-ml-2 text-primary">.</span>
         </a>
         <TabsList
           variant="line"
           aria-label="Main navigation"
-          className="main-navigation"
+          className="order-3 sm:order-none"
         >
           {nav.map((item) => (
             <TabsTrigger key={item.id} value={item.id}>
@@ -213,7 +219,7 @@ function App() {
             </TabsTrigger>
           ))}
         </TabsList>
-        <div className="archive-status">
+        <div className="ml-auto flex flex-col items-end gap-1">
           <Badge variant="secondary">January 2026 archive</Badge>
           <Badge variant={meta.kind === "error" ? "destructive" : "outline"}>
             {meta.kind === "ready"
@@ -224,11 +230,11 @@ function App() {
           </Badge>
         </div>
       </header>
-      <div className="workspace">
+      <div className="mx-auto w-full max-w-screen-2xl px-5 pt-6 md:px-8 md:pt-8">
         <main id="main" tabIndex={-1}>
-          <div className="page-heading">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <div>
-              <h1>
+              <h1 className="text-2xl font-semibold tracking-tight">
                 {tab === "forecast"
                   ? "Wind forecast"
                   : tab === "accuracy"
@@ -238,7 +244,7 @@ function App() {
             </div>
             {tab !== "methodology" && (
               <Button asChild variant="outline">
-                <a className="export-button" href={exportUrl} download>
+                <a href={exportUrl} download>
                   <ArrowDownToLine data-icon="inline-start" />
                   Export CSV
                 </a>
@@ -246,18 +252,18 @@ function App() {
             )}
           </div>
           {tab !== "methodology" && (
-            <Card className="filter-card">
+            <Card className="mb-8">
               <CardContent>
                 <FieldGroup
-                  className="filter-bar"
+                  className="flex-row flex-wrap items-end gap-6"
                   aria-label="Forecast filters"
                 >
                   {tab === "forecast" ? (
-                    <Field className="decision-field">
+                    <Field className="w-full shrink-0 sm:w-60">
                       <FieldLabel htmlFor="decision-date">
                         Purchase decision
                       </FieldLabel>
-                      <InputGroup className="date-control">
+                      <InputGroup>
                         <InputGroupAddon>
                           <InputGroupButton
                             size="icon-xs"
@@ -291,7 +297,7 @@ function App() {
                     </Field>
                   ) : (
                     <>
-                      <Field>
+                      <Field className="w-full sm:w-48">
                         <FieldLabel htmlFor="from-date">
                           First decision
                         </FieldLabel>
@@ -305,10 +311,10 @@ function App() {
                           onInput={changeFrom}
                         />
                       </Field>
-                      <span className="range-arrow">
-                        <ArrowRight />
+                      <span className="hidden pb-2 text-muted-foreground sm:block">
+                        <ArrowRight className="size-4" />
                       </span>
-                      <Field>
+                      <Field className="w-full sm:w-48">
                         <FieldLabel htmlFor="to-date">Last decision</FieldLabel>
                         <Input
                           id="to-date"
@@ -322,11 +328,11 @@ function App() {
                       </Field>
                     </>
                   )}
-                  <Field className="cutoff-field">
+                  <Field className="w-full shrink-0 sm:w-48">
                     <FieldLabel htmlFor="cutoff-time">
                       Decision cutoff <span>London time</span>
                     </FieldLabel>
-                    <div className="time-control">
+                    <div>
                       <Input
                         id="cutoff-time"
                         type="time"
@@ -337,15 +343,15 @@ function App() {
                       />
                     </div>
                   </Field>
-                  <div className="filter-explanation">
+                  <div className="flex w-full items-center gap-3 text-sm text-muted-foreground lg:ml-auto lg:w-auto">
                     {tab === "forecast" ? (
                       <>
-                        <span className="delivery-icon">
-                          <ArrowRight />
+                        <span className="text-primary">
+                          <ArrowRight className="size-4" />
                         </span>
                         <div>
                           Next-day delivery
-                          <strong>
+                          <strong className="block">
                             {dateText(shiftDate(decision, 1), {
                               weekday: "short",
                               day: "numeric",
@@ -357,12 +363,14 @@ function App() {
                       </>
                     ) : (
                       <>
-                        <span className="delivery-icon">
-                          <BarChart3 />
+                        <span className="text-primary">
+                          <BarChart3 className="size-4" />
                         </span>
                         <div>
                           Historical comparison
-                          <strong>Hourly, matched observations</strong>
+                          <strong className="block">
+                            Hourly, matched observations
+                          </strong>
                         </div>
                       </>
                     )}
@@ -415,8 +423,8 @@ function App() {
               <Methodology meta={meta.kind === "ready" ? meta.data : null} />
             )}
           </TabsContent>
-          <Separator className="footer-separator" />
-          <footer className="page-footer">
+          <Separator className="mt-8" />
+          <footer className="flex flex-col items-start justify-between gap-3 py-4 text-sm text-muted-foreground md:flex-row md:items-center">
             <span>
               Northline <span>·</span> GB wind intelligence
             </span>
@@ -452,7 +460,11 @@ function RequestState({
 }) {
   if (kind === "loading")
     return (
-      <div className="request-state" role="status" aria-label={label}>
+      <div
+        className="flex min-h-80 flex-col items-center justify-center gap-4 py-6"
+        role="status"
+        aria-label={label}
+      >
         <span className="sr-only">{label}</span>
         <Skeleton className="h-5 w-48" />
         <Skeleton className="h-64 w-full" />
@@ -460,7 +472,10 @@ function RequestState({
       </div>
     );
   return (
-    <Empty className="request-state" role="alert">
+    <Empty
+      className="flex min-h-80 flex-col items-center justify-center gap-4 py-6"
+      role="alert"
+    >
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <CircleAlert />
@@ -508,50 +523,6 @@ function UnitControl({
     </ToggleGroup>
   );
 }
-function SoftValue({ value }: { value: string }) {
-  const element = useRef<HTMLSpanElement>(null);
-  useLayoutEffect(() => {
-    const el = element.current;
-    if (!el) return;
-    const previous = el.dataset.text ?? value;
-    el.dataset.text = value;
-    if (
-      previous === value ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      el.textContent = value;
-      return;
-    }
-    const old = document.createElement("span");
-    old.className = "t-text-soft-old";
-    old.setAttribute("aria-hidden", "true");
-    old.textContent = previous;
-    const next = document.createElement("span");
-    next.className = "t-text-soft-new";
-    next.textContent = value;
-    const oldWidth = el.getBoundingClientRect().width;
-    el.classList.remove("is-swapping");
-    el.replaceChildren(old, next);
-    const nextWidth = next.getBoundingClientRect().width;
-    el.style.width = `${oldWidth}px`;
-    void el.offsetWidth;
-    el.classList.add("is-swapping");
-    el.style.width = `${nextWidth}px`;
-    const styles = getComputedStyle(document.documentElement);
-    const ms = (name: string) => parseFloat(styles.getPropertyValue(name)) || 0;
-    const timer = window.setTimeout(
-      () => {
-        el.classList.remove("is-swapping");
-        el.style.removeProperty("width");
-        el.textContent = value;
-      },
-      Math.max(ms("--text-soft-dur"), ms("--text-soft-resize-dur")) + 40,
-    );
-    return () => window.clearTimeout(timer);
-  }, [value]);
-  return <span className="t-text-soft metric-number" ref={element} />;
-}
-
 function Metric({
   label,
   value,
@@ -564,14 +535,20 @@ function Metric({
   detail: string;
 }) {
   return (
-    <div className="metric" data-label={label}>
-      <div className="metric-label">{label}</div>
-      <div className="metric-value">
-        <SoftValue value={value} />
-        <span className="metric-unit">{unit}</span>
-      </div>
-      {detail && <div className="metric-detail">{detail}</div>}
-    </div>
+    <Card size="sm">
+      <CardHeader>
+        <CardDescription>{label}</CardDescription>
+        <CardTitle>
+          <span className="text-2xl tabular-nums">{value}</span>{" "}
+          <span className="text-muted-foreground">{unit}</span>
+        </CardTitle>
+      </CardHeader>
+      {detail && (
+        <CardContent>
+          <CardDescription>{detail}</CardDescription>
+        </CardContent>
+      )}
+    </Card>
   );
 }
 function MetricsRow({
@@ -579,14 +556,21 @@ function MetricsRow({
   unit,
   coverage,
   expected,
+  layout = "rail",
 }: {
   metrics: Metrics;
   unit: Unit;
   coverage: number;
   expected: number;
+  layout?: "rail" | "summary";
 }) {
   return (
-    <div className="metrics-row accuracy-metrics">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-4 sm:grid-cols-2",
+        layout === "summary" ? "lg:grid-cols-4" : "lg:grid-cols-1",
+      )}
+    >
       <Metric
         label="Mean absolute error"
         value={powerText(metrics.mae_mw, unit)}
@@ -640,11 +624,11 @@ function Forecast({
   }));
   return (
     <>
-      <div className="analysis-layout">
-        <section className="chart-section">
-          <div className="section-heading">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(240px,1fr)]">
+        <section className="min-w-0">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2>
+              <h2 className="text-lg font-semibold tracking-tight">
                 Delivery profile{" "}
                 <span>
                   {dateText(data.delivery_date, {
@@ -653,10 +637,12 @@ function Forecast({
                   })}
                 </span>
               </h2>
-              <p>National wind generation, hourly · London time</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                National wind generation, hourly · London time
+              </p>
             </div>
-            <div className="chart-controls">
-              <FieldGroup className="actuals-control">
+            <div className="flex flex-wrap items-center gap-4">
+              <FieldGroup className="w-auto min-w-52 shrink-0">
                 <Field orientation="horizontal">
                   <Checkbox
                     id="show-actuals"
@@ -671,9 +657,11 @@ function Forecast({
               <UnitControl unit={unit} setUnit={setUnit} />
             </div>
           </div>
-          <p className="chart-unit">{unit}</p>
+          <p className="mt-4 text-right text-sm text-muted-foreground">
+            {unit}
+          </p>
           {data.forecast_hours === 0 && (
-            <Alert className="inline-notice">
+            <Alert className="col-span-full my-4">
               <CircleAlert />
               <AlertDescription>
                 No eligible forecast was published before this cutoff. Choose a
@@ -682,7 +670,7 @@ function Forecast({
             </Alert>
           )}
           <div
-            className="chart-wrap"
+            className="h-72 w-full sm:h-80"
             role="img"
             aria-label={`Hourly wind forecast for ${dateText(data.delivery_date)} in ${unit}${actuals ? ", compared with retrospective actual generation" : ""}. Exact values appear in the interval table below.`}
           >
@@ -695,64 +683,26 @@ function Forecast({
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
               >
-                <defs>
-                  <linearGradient
-                    id="forecast-fill"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop
-                      offset="0%"
-                      stopColor="var(--color-forecast)"
-                      stopOpacity={0.22}
-                    />
-                    <stop
-                      offset="100%"
-                      stopColor="var(--color-forecast)"
-                      stopOpacity={0.015}
-                    />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  stroke="var(--border)"
-                  vertical={false}
-                  strokeDasharray="3 4"
-                />
+                <CartesianGrid vertical={false} />
                 <XAxis
                   dataKey="hour"
                   tickLine={false}
                   axisLine={false}
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   minTickGap={45}
                   dy={12}
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   width={48}
                   domain={[0, "auto"]}
                 />
                 <ChartTooltip
                   content={
                     <ChartTooltipContent
-                      labelFormatter={(label) => `${String(label)} · London`}
-                      formatter={(value, name) => (
-                        <div className="flex w-full items-center justify-between gap-6">
-                          <span className="text-muted-foreground">
-                            {name === "forecast"
-                              ? forecastChartConfig.forecast.label
-                              : forecastChartConfig.actual.label}
-                          </span>
-                          <span className="font-medium tabular-nums">
-                            {value === null || value === undefined
-                              ? "Unavailable"
-                              : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`}
-                          </span>
-                        </div>
-                      )}
+                      labelFormatter={(label) =>
+                        `${String(label)} · London · ${unit}`
+                      }
                     />
                   }
                 />
@@ -760,7 +710,8 @@ function Forecast({
                   type="linear"
                   dataKey="forecast"
                   stroke="none"
-                  fill="url(#forecast-fill)"
+                  fill="var(--color-forecast)"
+                  fillOpacity={0.15}
                   isAnimationActive={false}
                   connectNulls={false}
                   tooltipType="none"
@@ -796,9 +747,9 @@ function Forecast({
               </ComposedChart>
             </ChartContainer>
           </div>
-          <div className="chart-bottom">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>
-              <Clock3 />
+              <Clock3 className="inline size-4" />
               00:00 to 23:00, hourly delivery starts
             </span>
             <span>
@@ -808,7 +759,7 @@ function Forecast({
             </span>
           </div>
         </section>
-        <div className="metrics-row">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
           <Metric
             label="Average forecast"
             value={powerText(data.mean_forecast_mw, unit)}
@@ -843,7 +794,7 @@ function Forecast({
           />
         </div>
       </div>
-      <Alert role="note" className="vintage-note">
+      <Alert role="note" className="mt-6">
         <AlertDescription>
           <div>
             <strong>
@@ -851,7 +802,7 @@ function Forecast({
                 ? `Selected issue ${issueText(data.latest_publish_time)}`
                 : "No eligible forecast issue"}
             </strong>
-            <p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Each hour uses its latest forecast available by {data.cutoff} on{" "}
               {dateText(data.decision_date, { day: "numeric", month: "short" })}
               ,
@@ -861,15 +812,17 @@ function Forecast({
                 : " with no later updates filling gaps."}
             </p>
           </div>
-          <Badge variant="outline" className="vintage-chip">
+          <Badge variant="outline" className="mt-2">
             WINDFOR <ArrowUpRight />
           </Badge>
         </AlertDescription>
       </Alert>
-      <section className="table-section">
-        <div className="section-heading">
+      <section className="mt-8">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2>Interval detail</h2>
+            <h2 className="text-lg font-semibold tracking-tight">
+              Interval detail
+            </h2>
           </div>
           <Button variant="link" size="sm" asChild>
             <a href={exportUrl} download>
@@ -877,7 +830,7 @@ function Forecast({
             </a>
           </Button>
         </div>
-        <div className="table-scroll">
+        <div className="max-w-full">
           <Table
             containerProps={{
               tabIndex: 0,
@@ -887,15 +840,15 @@ function Forecast({
             <TableHeader>
               <TableRow>
                 <TableHead scope="col">Delivery hour</TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   Forecast, {unit}
                 </TableHead>
                 {actuals && (
                   <>
-                    <TableHead scope="col" className="numeric">
+                    <TableHead scope="col" className="text-right tabular-nums">
                       Actual, {unit}
                     </TableHead>
-                    <TableHead scope="col" className="numeric">
+                    <TableHead scope="col" className="text-right tabular-nums">
                       Error, {unit}
                     </TableHead>
                   </>
@@ -908,7 +861,7 @@ function Forecast({
             <TableBody>
               {data.intervals.map((interval) => (
                 <TableRow key={interval.start_time}>
-                  <TableHead scope="row" className="time-cell">
+                  <TableHead scope="row">
                     {hourText(interval.start_time)}
                     <span>
                       –{" "}
@@ -919,23 +872,21 @@ function Forecast({
                       )}
                     </span>
                   </TableHead>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {powerText(interval.forecast_mw, unit)}
                   </TableCell>
                   {actuals && (
                     <>
-                      <TableCell className="numeric">
+                      <TableCell className="text-right tabular-nums">
                         {powerText(interval.actual_mw, unit)}
                       </TableCell>
-                      <TableCell
-                        className={`numeric ${interval.error_mw !== null && interval.error_mw > 0 ? "positive-error" : ""}`}
-                      >
+                      <TableCell className="text-right">
                         {powerText(interval.error_mw, unit, true)}
                       </TableCell>
                     </>
                   )}
                   <TableCell>{issueText(interval.publish_time)}</TableCell>
-                  <TableCell className="source-cell">
+                  <TableCell>
                     {interval.forecast_source_id ?? "No eligible forecast"}
                     {actuals && interval.actual_half_hours.length > 0 && (
                       <Collapsible>
@@ -947,7 +898,7 @@ function Forecast({
                         <CollapsibleContent>
                           {interval.actual_half_hours.map((half) => (
                             <div
-                              className="half-hour"
+                              className="py-2"
                               key={`${half.start_time}-${half.source_id}`}
                             >
                               {hourText(half.start_time)} ·{" "}
@@ -987,11 +938,13 @@ function Forecast({
         </div>
       </section>
       {actuals && (
-        <section className="hindsight-summary">
-          <div className="section-heading">
+        <section className="mt-8">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2>What happened</h2>
-              <p>
+              <h2 className="text-lg font-semibold tracking-tight">
+                What happened
+              </h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 Retrospective actuals. These values were unavailable at the
                 decision cutoff.
               </p>
@@ -999,13 +952,14 @@ function Forecast({
           </div>
           {data.metrics && (
             <MetricsRow
+              layout="summary"
               metrics={data.metrics}
               unit={unit}
               coverage={data.matched_hours}
               expected={data.expected_hours}
             />
           )}
-          <p className="fine-print">
+          <p className="mt-3 max-w-prose text-sm text-muted-foreground">
             Positive bias means wind was overforecast, which can increase
             shortfall exposure. This is not a customer procurement calculation.
           </p>
@@ -1035,17 +989,17 @@ function AccuracyPage({
   }));
   return (
     <>
-      <div className="accuracy-intro">
-        <span className="small-source">WINDFOR + WIND</span>
+      <div className="mb-6 flex flex-wrap justify-between gap-3 text-sm text-muted-foreground">
+        <span>WINDFOR + WIND</span>
         <span>
           {data.matched_hours.toLocaleString()} /{" "}
           {data.expected_hours.toLocaleString()} hours paired ·{" "}
           {data.forecast_hours} forecast hours
         </span>
       </div>
-      <div className="analysis-layout">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(240px,1fr)]">
         {data.matched_hours === 0 && (
-          <Alert className="inline-notice">
+          <Alert className="col-span-full my-4">
             <CircleAlert />
             <AlertDescription>
               No forecast and actual pairs exist for this selection. Try a later
@@ -1053,17 +1007,23 @@ function AccuracyPage({
             </AlertDescription>
           </Alert>
         )}
-        <section className="chart-section">
-          <div className="section-heading">
+        <section className="min-w-0">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2>Daily forecast error</h2>
-              <p>By purchase decision date · next-day delivery</p>
+              <h2 className="text-lg font-semibold tracking-tight">
+                Daily forecast error
+              </h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                By purchase decision date · next-day delivery
+              </p>
             </div>
             <UnitControl unit={unit} setUnit={setUnit} />
           </div>
-          <p className="chart-unit">{unit}</p>
+          <p className="mt-4 text-right text-sm text-muted-foreground">
+            {unit}
+          </p>
           <div
-            className="chart-wrap accuracy-chart"
+            className="h-72 w-full sm:h-80"
             role="img"
             aria-label={`Daily mean absolute forecast error and bias in ${unit}. Exact values appear in the daily table.`}
           >
@@ -1076,43 +1036,20 @@ function AccuracyPage({
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
               >
-                <CartesianGrid
-                  vertical={false}
-                  stroke="var(--border)"
-                  strokeDasharray="3 4"
-                />
+                <CartesianGrid vertical={false} />
                 <XAxis
                   dataKey="day"
                   tickLine={false}
                   axisLine={false}
                   minTickGap={28}
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   dy={10}
                 />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  width={48}
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
-                />
+                <YAxis tickLine={false} axisLine={false} width={48} />
                 <ReferenceLine y={0} stroke="var(--muted-foreground)" />
                 <ChartTooltip
                   content={
                     <ChartTooltipContent
-                      formatter={(value, name) => (
-                        <div className="flex w-full items-center justify-between gap-6">
-                          <span className="text-muted-foreground">
-                            {name === "mae"
-                              ? accuracyChartConfig.mae.label
-                              : accuracyChartConfig.bias.label}
-                          </span>
-                          <span className="font-medium tabular-nums">
-                            {value === null || value === undefined
-                              ? "Unavailable"
-                              : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`}
-                          </span>
-                        </div>
-                      )}
+                      labelFormatter={(label) => `${String(label)} · ${unit}`}
                     />
                   }
                 />
@@ -1137,7 +1074,7 @@ function AccuracyPage({
               </ComposedChart>
             </ChartContainer>
           </div>
-          <div className="chart-bottom">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>Positive bias = wind overforecast</span>
             <span>Negative bias = wind underforecast</span>
           </div>
@@ -1149,25 +1086,25 @@ function AccuracyPage({
           expected={data.expected_hours}
         />
       </div>
-      <Alert role="note" className="vintage-note">
+      <Alert role="note" className="mt-6">
         <AlertDescription>
           <div>
             <strong>Historical evidence, with its limits</strong>
-            <p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Matched-hour metrics use retrospective, possibly revised actuals
               from January and describe in-sample errors, not future
               uncertainty.
             </p>
           </div>
-          <Badge variant="outline" className="vintage-chip">
+          <Badge variant="outline" className="mt-2">
             IN-SAMPLE
           </Badge>
         </AlertDescription>
       </Alert>
-      <section className="table-section">
-        <div className="section-heading">
+      <section className="mt-8">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2>Day by day</h2>
+            <h2 className="text-lg font-semibold tracking-tight">Day by day</h2>
           </div>
           <Button variant="link" size="sm" asChild>
             <a href={exportUrl} download>
@@ -1175,7 +1112,7 @@ function AccuracyPage({
             </a>
           </Button>
         </div>
-        <div className="table-scroll">
+        <div className="max-w-full">
           <Table
             containerProps={{
               tabIndex: 0,
@@ -1186,19 +1123,19 @@ function AccuracyPage({
               <TableRow>
                 <TableHead scope="col">Decision date</TableHead>
                 <TableHead scope="col">Delivery date</TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   MAE, {unit}
                 </TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   RMSE, {unit}
                 </TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   Bias, {unit}
                 </TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   WAPE
                 </TableHead>
-                <TableHead scope="col" className="numeric">
+                <TableHead scope="col" className="text-right tabular-nums">
                   Paired hours
                 </TableHead>
               </TableRow>
@@ -1226,21 +1163,21 @@ function AccuracyPage({
                       month: "short",
                     })}
                   </TableCell>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {powerText(day.metrics.mae_mw, unit)}
                   </TableCell>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {powerText(day.metrics.rmse_mw, unit)}
                   </TableCell>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {powerText(day.metrics.bias_mw, unit, true)}
                   </TableCell>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {day.metrics.wape_pct === null
                       ? "Unavailable"
                       : `${day.metrics.wape_pct.toFixed(1)}%`}
                   </TableCell>
-                  <TableCell className="numeric">
+                  <TableCell className="text-right tabular-nums">
                     {day.matched_hours} / {day.expected_hours}
                   </TableCell>
                 </TableRow>
@@ -1248,7 +1185,7 @@ function AccuracyPage({
             </TableBody>
           </Table>
         </div>
-        <p className="fine-print">
+        <p className="mt-3 max-w-prose text-sm text-muted-foreground">
           Pooled RMSE is calculated from all hourly errors. It is not the
           average of daily RMSE values. Power is shown in {unit}; WAPE remains a
           percentage.
@@ -1260,16 +1197,18 @@ function AccuracyPage({
 
 function Methodology({ meta }: { meta: Meta | null }) {
   return (
-    <div className="methodology">
-      <Card className="method-intro">
+    <div className="flex max-w-5xl flex-col gap-6">
+      <Card>
         <CardHeader>
           <CardTitle>
-            <h2>A decision-time reconstruction</h2>
+            <h2 className="text-lg font-semibold tracking-tight">
+              A decision-time reconstruction
+            </h2>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div>
-            <p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Northline reconstructs January 2026 purchase decisions using
               Elexon's national wind forecasts and actual generation. Each
               purchase date targets the next London calendar day, including 1
@@ -1278,12 +1217,14 @@ function Methodology({ meta }: { meta: Meta | null }) {
           </div>
         </CardContent>
       </Card>
-      <section className="method-section">
-        <h2>How the forecast is selected</h2>
-        <div className="method-columns">
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight">
+          How the forecast is selected
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
           <div>
-            <h3>One cutoff. Each delivery hour.</h3>
-            <p>
+            <h3 className="font-medium">One cutoff. Each delivery hour.</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               The cutoff is configurable from 00:00 to 23:59 in Europe/London.
               For each target hour, use the latest WINDFOR record published at
               or before that cutoff. Different hours may use different issues.
@@ -1291,8 +1232,8 @@ function Methodology({ meta }: { meta: Meta | null }) {
             </p>
           </div>
           <div>
-            <h3>An explicit application assumption</h3>
-            <p>
+            <h3 className="font-medium">An explicit application assumption</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               The default cutoff is 09:00. The assignment specifies no exchange
               or gate closure. This time is an application assumption, not a
               statement about a particular auction. Dates in this archive are in
@@ -1301,9 +1242,11 @@ function Methodology({ meta }: { meta: Meta | null }) {
           </div>
         </div>
       </section>
-      <section className="method-section">
-        <h2>Aligning forecast and actuals</h2>
-        <p>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight">
+          Aligning forecast and actuals
+        </h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           A forecast at an hourly timestamp represents the following one-hour
           interval for this analysis. This is an alignment assumption, not a
           guarantee that the source value is an interval average. Its actual is
@@ -1311,66 +1254,117 @@ function Methodology({ meta }: { meta: Meta | null }) {
           that hour has no paired actual or error. There is no interpolation and
           missing values never become zero.
         </p>
-        <div className="equation-box">
-          <span>Hourly actual</span>
-          <code>(first half-hour + second half-hour) / 2</code>
-          <span>Signed error</span>
-          <code>forecast − actual</code>
-        </div>
-        <p>
+        <Table
+          containerProps={{
+            tabIndex: 0,
+            "aria-label": "Forecast alignment formulas",
+          }}
+        >
+          <TableHeader>
+            <TableRow>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Calculation</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableHead scope="row">Hourly actual</TableHead>
+              <TableCell>
+                <code>(first half-hour + second half-hour) / 2</code>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead scope="row">Signed error</TableHead>
+              <TableCell>
+                <code>forecast − actual</code>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Actual generation is retrospective and can contain revisions. It
           appears only when you enable hindsight in Forecast, or in Accuracy.
           The interval table exposes each contributing half-hour and its source.
         </p>
       </section>
-      <section className="method-section">
-        <h2>Reading the error measures</h2>
-        <div className="formula-table">
-          <div>
-            <strong>MAE</strong>
-            <code>Σ |error| / n</code>
-            <p>The average absolute hourly miss.</p>
-          </div>
-          <div>
-            <strong>RMSE</strong>
-            <code>√(Σ error² / n)</code>
-            <p>Larger misses contribute more.</p>
-          </div>
-          <div>
-            <strong>Mean bias</strong>
-            <code>Σ error / n</code>
-            <p>Positive means wind was overforecast.</p>
-          </div>
-          <div>
-            <strong>WAPE</strong>
-            <code>100 × Σ |error| / Σ actual</code>
-            <p>Unavailable when summed actual power is zero.</p>
-          </div>
-        </div>
-        <p>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight">
+          Reading the error measures
+        </h2>
+        <Table
+          containerProps={{
+            tabIndex: 0,
+            "aria-label": "Error measure formulas",
+          }}
+        >
+          <TableHeader>
+            <TableRow>
+              <TableHead>Measure</TableHead>
+              <TableHead>Formula</TableHead>
+              <TableHead>Meaning</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableHead scope="row">MAE</TableHead>
+              <TableCell>
+                <code>Σ |error| / n</code>
+              </TableCell>
+              <TableCell>The average absolute hourly miss.</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead scope="row">RMSE</TableHead>
+              <TableCell>
+                <code>√(Σ error² / n)</code>
+              </TableCell>
+              <TableCell>Larger misses contribute more.</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead scope="row">Mean bias</TableHead>
+              <TableCell>
+                <code>Σ error / n</code>
+              </TableCell>
+              <TableCell>Positive means wind was overforecast.</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead scope="row">WAPE</TableHead>
+              <TableCell>
+                <code>100 × Σ |error| / Σ actual</code>
+              </TableCell>
+              <TableCell>
+                Unavailable when summed actual power is zero.
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Metrics use matched hours only. Range summaries pool individual hourly
           errors and never average daily RMSE. The 90th percentile absolute
           error uses linear interpolation. All power measures are stored in MW,
           and display units convert consistently.
         </p>
       </section>
-      <section className="method-section">
-        <h2>What this evidence supports</h2>
-        <p>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight">
+          What this evidence supports
+        </h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Overforecast wind can increase shortfall exposure, while underforecast
           wind can leave more generation than expected. National generation
           alone cannot determine a customer's electricity purchase. There is no
           customer demand, portfolio position or price feed in this dataset.
         </p>
-        <p>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           This is descriptive evaluation of the January archive. It is not a
           calibrated uncertainty interval, a fitted risk model or a buy
           instruction. No synthetic observations are used.
         </p>
       </section>
-      <section className="method-section">
-        <h2>Source provenance</h2>
-        <p>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight">
+          Source provenance
+        </h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           WINDFOR provides wind forecasts. WIND provides actual wind generation.
           Every source response is retained with its URL, retrieval timestamp
           and SHA-256 hash. CSV exports preserve the active cutoff, selected
@@ -1378,29 +1372,44 @@ function Methodology({ meta }: { meta: Meta | null }) {
         </p>
         {meta ? (
           <>
-            <dl className="snapshot-detail">
-              <div>
-                <dt>Snapshot retrieved</dt>
-                <dd>
-                  {new Date(meta.retrieved_at).toLocaleString("en-GB", {
-                    timeZone: "UTC",
-                  })}{" "}
-                  UTC
-                </dd>
-              </div>
-              <div>
-                <dt>Records in the snapshot</dt>
-                <dd>
-                  {meta.forecast_count.toLocaleString()} forecast ·{" "}
-                  {meta.actual_count.toLocaleString()} actual
-                </dd>
-              </div>
-              <div>
-                <dt>Snapshot SHA-256</dt>
-                <dd className="hash">{meta.snapshot_sha256}</dd>
-              </div>
-            </dl>
-            <div className="table-scroll source-table">
+            <Table
+              containerProps={{
+                tabIndex: 0,
+                "aria-label": "Snapshot metadata",
+              }}
+            >
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Property</TableHead>
+                  <TableHead>Value</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableHead scope="row">Snapshot retrieved</TableHead>
+                  <TableCell>
+                    {new Date(meta.retrieved_at).toLocaleString("en-GB", {
+                      timeZone: "UTC",
+                    })}{" "}
+                    UTC
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead scope="row">Records</TableHead>
+                  <TableCell>
+                    {meta.forecast_count.toLocaleString()} forecast ·{" "}
+                    {meta.actual_count.toLocaleString()} actual
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead scope="row">Snapshot SHA-256</TableHead>
+                  <TableCell className="break-all whitespace-normal">
+                    {meta.snapshot_sha256}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <div className="mt-6 max-w-full">
               <Table
                 containerProps={{
                   tabIndex: 0,
@@ -1411,7 +1420,7 @@ function Methodology({ meta }: { meta: Meta | null }) {
                   <TableRow>
                     <TableHead scope="col">Source request</TableHead>
                     <TableHead scope="col">Dataset</TableHead>
-                    <TableHead scope="col" className="numeric">
+                    <TableHead scope="col" className="text-right tabular-nums">
                       Records
                     </TableHead>
                     <TableHead scope="col">Retrieved</TableHead>
@@ -1425,12 +1434,12 @@ function Methodology({ meta }: { meta: Meta | null }) {
                         <Button asChild variant="link" size="xs">
                           <a href={source.url} target="_blank" rel="noreferrer">
                             {source.id}
-                            <ExternalLink />
+                            <ExternalLink data-icon="inline-end" />
                           </a>
                         </Button>
                       </TableHead>
                       <TableCell>{source.dataset}</TableCell>
-                      <TableCell className="numeric">
+                      <TableCell className="text-right tabular-nums">
                         {source.record_count.toLocaleString()}
                       </TableCell>
                       <TableCell>{issueText(source.retrieved_at)}</TableCell>
@@ -1442,9 +1451,13 @@ function Methodology({ meta }: { meta: Meta | null }) {
                             </Button>
                           </CollapsibleTrigger>
                           <CollapsibleContent>
-                            <span className="hash">{source.sha256}</span>
+                            <span className="break-all whitespace-normal">
+                              {source.sha256}
+                            </span>
                             <br />
-                            <span className="raw-path">{source.raw_path}</span>
+                            <span className="break-all whitespace-normal">
+                              {source.raw_path}
+                            </span>
                           </CollapsibleContent>
                         </Collapsible>
                       </TableCell>
@@ -1455,7 +1468,7 @@ function Methodology({ meta }: { meta: Meta | null }) {
             </div>
           </>
         ) : (
-          <Alert className="inline-notice">
+          <Alert className="col-span-full my-4">
             <AlertDescription>
               Source metadata is unavailable. Return to Forecast and retry
               loading the snapshot.

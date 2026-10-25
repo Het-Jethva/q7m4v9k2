@@ -5,25 +5,19 @@
   "extensions": {
     "colorMeta": {},
     "shadows": [],
-    "motion": [
-      {
-        "name": "Metric text",
-        "duration": "200ms",
-        "description": "Soft metric changes with reduced-motion support."
-      }
-    ],
+    "motion": [],
     "breakpoints": [
       {
-        "name": "wide-chart",
-        "value": "1500px"
+        "name": "sm",
+        "value": "640px"
       },
       {
-        "name": "compact-desktop",
-        "value": "1100px"
+        "name": "md",
+        "value": "768px"
       },
       {
-        "name": "mobile",
-        "value": "760px"
+        "name": "lg",
+        "value": "1024px"
       }
     ]
   },
@@ -44,7 +38,7 @@
       },
       {
         "name": "The Open Plot Rule",
-        "body": "Keep the plotting field on the white workspace. Use the adjacent tonal rail to collect measurements.",
+        "body": "Keep the plotting field on the workspace. Use stock small shadcn Cards for measurements.",
         "section": "elevation"
       }
     ],

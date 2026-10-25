@@ -17,7 +17,7 @@ Northline uses shadcn/ui Radix Vega components. `components.json` records the re
 
 ## Visual identity
 
-Use a white workspace, graphite text, restrained borders, and DM Sans. The active preset is `bInDwe3`. It supplies a green primary theme, neutral chart palette, variable DM Sans, Tabler icons, and inverted translucent menus. Forecast curves and error magnitude use `--chart-3`. Actual generation and signed bias use `--chart-2` and dashed lines. Preserve that series mapping across legends, charts, tooltips, and error text.
+Use a white workspace, graphite text, restrained borders, and DM Sans. The active preset is `bInDwe3`. It supplies a green primary theme, neutral chart palette, variable DM Sans, Tabler icons, and inverted translucent menus. Forecast curves and error magnitude use `--chart-3`. Actual generation and signed bias use `--chart-2` and dashed lines. Preserve that series mapping across legends, charts, and tooltips.
 
 Theme colors use shadcn roles such as background, foreground, muted, muted-foreground, border, input, primary, and ring. The base radius is 0.625rem. Components derive their corner sizes from that scale. Do not introduce a second set of custom button, input, table, badge, or tab styles.
 
@@ -32,17 +32,17 @@ Theme colors use shadcn roles such as background, foreground, muted, muted-foreg
 - Tables use the full Table composition. Quantities align right. The horizontal scrolling container owns its focus stop and accessible label.
 - Evidence and source hashes use Collapsible with Button triggers.
 - Provenance notices use Alert. Loading uses Skeleton. Request failures use Empty with a retry action.
-- Cards group filters and the methodology introduction. Metrics form one rail rather than separate cards.
+- Cards group filters, the methodology introduction, and each metric. All use the preset variants.
 
 ## Layout and type
 
-The desktop header is horizontal. The workspace has a maximum width of 1600px and 42px side padding. A 3.4-to-1 analysis grid places the chart before a narrow metric rail. At 1100px the grid and padding tighten. At 760px the analysis stacks vertically and the metric rail uses two columns. Wide evidence tables scroll within the page.
+The desktop header is horizontal. Tailwind layout utilities set a screen-2xl maximum workspace width, responsive padding, and a 3-to-1 analysis grid at the large breakpoint. Metrics use stock small Cards. Methodology formulas and snapshot metadata use Tables. Wide evidence tables scroll within the page. No application CSS selectors override generated components.
 
-DM Sans is self-hosted. Desktop page headings are 27px and phone headings are 24px. Section headings are 17px. Body text is 14px. Compact evidence and supporting labels use smaller type. Metrics use tabular numerals at 25px. Long forecast ranges use 21px, reducing further on phones.
+DM Sans is self-hosted. Page headings use text-2xl, section headings text-lg, and supporting prose text-sm. Component labels and tables retain their generated typography. Metric values use text-2xl with tabular numerals.
 
 ## Motion and accessibility
 
-Shadcn owns control interaction states. The previous custom sliding unit selector is removed. Metric text keeps its short soft transition. Reduced motion disables that transition and smooth drill-down scrolling.
+Shadcn owns control interaction states and animation. Custom metric transitions and their stylesheet are removed. Reduced motion disables smooth drill-down scrolling.
 
 Keep visible keyboard focus, meaningful labels, native input bounds, table headers, and named chart descriptions. Actuals begin disabled. Keep the London timezone, decision-time cutoff, missing-data explanation, retrospective caveat, and source evidence visible where relevant.
 
@@ -52,4 +52,4 @@ Use short labels. Add supporting copy when it explains a source assumption, a mi
 
 ## Verification
 
-The build runs `scripts/check-ui.mjs` to reject raw controls in the application. Browser checks cover forecast defaults, hindsight, unit conversion, midnight gaps, accuracy drill-down, disclosures, narrow layouts, and keyboard table scrolling.
+The build runs `scripts/check-ui.mjs` to reject raw controls, application CSS selectors, inline styles, extra stylesheets, and DOM animation in the application. Browser checks cover forecast defaults, hindsight, unit conversion, midnight gaps, accuracy drill-down, disclosures, narrow layouts, and keyboard table scrolling.
