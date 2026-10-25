@@ -1,6 +1,6 @@
 # Architecture
 
-Northline reconstructs a decision-time national wind forecast and evaluates its retrospective error. React owns controls and presentation. Python owns all data selection, alignment, metrics, and export logic.
+Northline reconstructs a decision-time national wind forecast and evaluates its retrospective error. React owns controls and presentation through shadcn/ui components. Python owns all data selection, alignment, metrics, and export logic.
 
 ## Design comparison
 
@@ -23,3 +23,11 @@ Purchase dates are January 1 through January 31, 2026. Next-day delivery spans J
 Hourly forecast timestamps do not establish that the value is an hourly interval mean. This pilot explicitly treats each value as representative of the hour beginning at startTime. It compares that value with the mean of the two actual WIND half-hours in the hour. Both halves are required. This convention avoids pretending the hourly forecast is two independent half-hour predictions. The methodology and UI disclose the assumption.
 
 Actuals are hindsight evidence and may be revised. They are hidden by default on the decision view. Evaluation metrics describe the selected historical sample. There is no fitted uncertainty model and no implied portfolio buy instruction.
+
+## UI component system
+
+`components.json` selects the Radix Nova shadcn registry style. Components live in `frontend/components/ui`. Tailwind CSS v4 runs through the Vite plugin. `frontend/styles.css` owns semantic colors, fonts, radius tokens, and responsive layout. Pages use component variants instead of a second set of custom control styles.
+
+Navigation uses Tabs. Filters use Field, Input, and InputGroup. Hindsight uses Checkbox. Units use ToggleGroup. Charts use ChartContainer and ChartTooltipContent around Recharts. Evidence uses Table and Collapsible. The Table component accepts containerProps so the horizontal scrolling container owns keyboard focus and its accessible label.
+
+`npm run check:ui` rejects raw controls in `frontend/main.tsx`. The production build runs this check before TypeScript and Vite. Date bounds, cutoff selection, unit conversions, and CSV parameters remain in the existing typed application state.

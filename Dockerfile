@@ -5,6 +5,7 @@ RUN npm ci
 COPY tsconfig.json vite.config.ts index.html ./
 COPY public ./public
 COPY frontend ./frontend
+COPY scripts/check-ui.mjs ./scripts/check-ui.mjs
 RUN npm run build
 
 FROM python:3.12-slim AS runtime

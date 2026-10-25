@@ -6,6 +6,8 @@ The app includes a forecast desk, explicit hindsight comparison, a quantitative 
 
 [Open the deployed app](https://q7m4v9k2.vercel.app) · [Public repository](https://github.com/Het-Jethva/q7m4v9k2) · [Demo script](docs/DEMO_SCRIPT.md)
 
+The interface uses shadcn/ui with the Radix Nova style, Tailwind CSS v4, and shared semantic theme tokens. Charts use the shadcn Recharts integration. DM Sans is self-hosted.
+
 ## Run with Docker
 
 Install Docker with Compose, then run:
@@ -120,7 +122,10 @@ Review the new manifest and source revisions before replacing the bundled files.
 
 | Path | Purpose |
 | --- | --- |
-| frontend/main.tsx | React workspace, forecast desk, accuracy lab, and methodology. |
+| frontend/main.tsx | React workspace, forecast, accuracy, and methodology. |
+| frontend/components/ui | Generated shadcn/ui components. |
+| frontend/styles.css | Shared theme tokens and responsive layouts. |
+| scripts/check-ui.mjs | Rejects raw controls in the application UI. |
 | frontend/api.ts | Runtime response schemas and request lifecycle. |
 | frontend/styles.css | Responsive design tokens, layout, chart, and table styling. |
 | backend/snapshot.py | Verified source loading and indexed publication histories. |

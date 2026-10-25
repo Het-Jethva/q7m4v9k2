@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T07:59:51.651115+00:00",
-  "title": "Design System: Northline",
+  "generatedAt": "2026-10-25T08:18:02.125303+00:00",
+  "title": "Northline shadcn/ui design system",
   "extensions": {
     "colorMeta": {
       "primary": {
@@ -148,34 +148,9 @@
     "shadows": [],
     "motion": [
       {
-        "name": "tabs-duration",
-        "value": "250ms",
-        "purpose": "Measured unit selection and label color."
-      },
-      {
-        "name": "tabs-ease",
-        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Sliding selection and text width changes."
-      },
-      {
-        "name": "text-soft-duration",
-        "value": "200ms",
-        "purpose": "Numeric opacity and blur changes."
-      },
-      {
-        "name": "text-soft-blur",
-        "value": "2px",
-        "purpose": "Transient numeric text blur."
-      },
-      {
-        "name": "text-soft-ease",
-        "value": "ease-in-out",
-        "purpose": "Numeric crossfade."
-      },
-      {
-        "name": "text-soft-resize-duration",
-        "value": "240ms",
-        "purpose": "Numeric text width adaptation."
+        "name": "Metric text",
+        "duration": "200ms",
+        "description": "Soft metric changes with reduced-motion support."
       }
     ],
     "breakpoints": [
@@ -185,7 +160,7 @@
       },
       {
         "name": "compact-desktop",
-        "value": "1050px"
+        "value": "1100px"
       },
       {
         "name": "mobile",
@@ -193,50 +168,10 @@
       }
     ]
   },
-  "components": [
-    {
-      "name": "Secondary button",
-      "kind": "button",
-      "description": "Secondary button from the shipped analyst workspace.",
-      "html": "<button class=\"ds-button\">Download data</button>",
-      "css": ".ds-button{font-family:\"DM Sans\",sans-serif;display:inline-flex;align-items:center;min-height:38px;padding:8px 12px;border:1px solid #cdd4df;border-radius:4px;background:#fff;color:var(--ink);font-size:12px;font-weight:500;cursor:pointer}.ds-button:hover{background:var(--rail);border-color:#a5afbf}.ds-button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}",
-      "refersTo": "button-secondary"
-    },
-    {
-      "name": "Date field",
-      "kind": "input",
-      "description": "Date field from the shipped analyst workspace.",
-      "html": "<label class=\"ds-field\">Purchase date<input type=\"date\" value=\"2026-01-15\"></label>",
-      "css": ".ds-field{font-family:\"DM Sans\",sans-serif;display:grid;gap:5px;font-size:12px;font-weight:500;color:var(--ink)}.ds-field input{font-family:\"DM Sans\",sans-serif;height:40px;border:1px solid #cdd4df;border-radius:4px;background:#fff;padding:7px 10px;font-size:13px;color:var(--ink);caret-color:var(--blue)}.ds-field input:focus-visible{outline:2px solid var(--blue);outline-offset:3px}",
-      "refersTo": "input"
-    },
-    {
-      "name": "Horizontal navigation",
-      "kind": "nav",
-      "description": "Horizontal navigation from the shipped analyst workspace.",
-      "html": "<nav class=\"ds-nav\"><button aria-current=\"page\">Forecast</button><button>Accuracy</button><button>Methodology</button></nav>",
-      "css": ".ds-nav{display:flex;gap:26px;height:68px;border-bottom:1px solid var(--line)}.ds-nav button{font-family:\"DM Sans\",sans-serif;border:0;border-bottom:2px solid transparent;background:none;padding:0 1px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer}.ds-nav button:hover,.ds-nav button[aria-current]{color:var(--blue)}.ds-nav button[aria-current]{border-bottom-color:var(--blue)}.ds-nav button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}"
-    },
-    {
-      "name": "Metric rail",
-      "kind": "card",
-      "description": "Metric rail from the shipped analyst workspace.",
-      "html": "<section class=\"ds-rail\"><div class=\"ds-metric\"><div class=\"ds-label\">Peak forecast</div><div class=\"ds-value\">14,250 <span>MW</span></div><div class=\"ds-detail\">Selected delivery day</div></div></section>",
-      "css": ".ds-rail{font-family:\"DM Sans\",sans-serif;background:var(--rail);padding:0 20px;border-radius:4px;color:var(--ink)}.ds-metric{padding:14px 0}.ds-label{color:#566171;font-size:12px;margin-bottom:4px}.ds-value{font-size:24px;line-height:1.25;font-weight:500;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.ds-value span{font-size:12px;font-weight:400;letter-spacing:0;color:var(--muted)}.ds-detail{font-size:11px;color:var(--muted);margin-top:3px}",
-      "refersTo": "metrics-rail"
-    },
-    {
-      "name": "Unit selector",
-      "kind": "custom",
-      "description": "Unit selector from the shipped analyst workspace.",
-      "html": "<div class=\"ds-units\" role=\"group\" aria-label=\"Power unit\"><button aria-pressed=\"true\">MW</button><button aria-pressed=\"false\">GW</button></div>",
-      "css": ".ds-units{display:inline-flex;gap:3px;padding:3px;border-radius:48px;background:var(--tabs-bar-bg)}.ds-units button{font-family:\"DM Sans\",sans-serif;height:30px;padding:4px 12px;border:0;border-radius:48px;background:transparent;color:var(--tabs-text-muted);font-size:12px;cursor:pointer;transition:color var(--tabs-dur) var(--tabs-ease)}.ds-units button[aria-pressed=\"true\"]{background:var(--tabs-pill-bg);color:var(--tabs-text-active)}.ds-units button:hover{color:var(--tabs-text-active)}.ds-units button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-units button{transition:none}}",
-      "refersTo": "unit-segment"
-    }
-  ],
+  "components": [],
   "narrative": {
     "northStar": "The Forecast Bulletin",
-    "overview": "An open, precise workspace for reading national wind forecasts and checking their evidence. White plotting space, graphite text and cool gray subdivisions keep the data prominent. Sparse copy identifies the decision, units and source limits.",
+    "overview": "A chart-first workspace built with shadcn/ui Radix Nova and shared semantic theme tokens.",
     "keyCharacteristics": [
       "Open charts with adjacent measurements.",
       "Compact horizontal navigation and rectangular controls.",
@@ -264,7 +199,8 @@
       "**Do** preserve cobalt and amber series identities across charts and legends.",
       "**Do** keep units, coverage and source limits readable beside the evidence.",
       "**Do** use sparse labels and the shared DM Sans hierarchy.",
-      "**Do** preserve visible keyboard focus and reduced-motion behavior."
+      "**Do** preserve visible keyboard focus and reduced-motion behavior.",
+      "Use generated shadcn components and built-in variants for controls, tables, feedback, and navigation."
     ],
     "donts": [
       "**Don't** restore the green sidebar or Manrope display hierarchy.",

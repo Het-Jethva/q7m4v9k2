@@ -106,7 +106,7 @@ A separate verification script independently reconstructs expected values from t
 
 Show frontend/api.ts and Dockerfile, then return to the deployed application.
 
-"The frontend validates API responses before displaying them. Requests cancel when filters change, and the interface avoids showing old values under new date labels. Controls include date, cutoff, unit conversion, explicit hindsight comparison, and data exports. There are visible loading, error, and missing-data states.
+"The interface uses shadcn components with one shared theme. The frontend validates API responses before displaying them. Requests cancel when filters change, and the interface avoids showing old values under new date labels. Controls include date, cutoff, unit conversion, explicit hindsight comparison, and data exports. There are visible loading, error, and missing-data states.
 
 Docker builds the React assets and serves the complete app through Python. Vercel serves the frontend and Python API from one project. Production reads the tested snapshot rather than calling Elexon during user requests. This keeps the demonstration reproducible and avoids upstream outages changing a demo."
 

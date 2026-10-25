@@ -7,8 +7,6 @@ import {
   ComposedChart,
   Line,
   ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -22,7 +20,6 @@ import {
   CircleAlert,
   Clock3,
   ExternalLink,
-  LoaderCircle,
   RefreshCw,
   Wind,
 } from "lucide-react";
@@ -41,6 +38,50 @@ import "@fontsource/dm-sans/latin-600.css";
 import "@fontsource/dm-sans/latin-700.css";
 import "./motion.css";
 import "./styles.css";
+
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type Tab = "forecast" | "accuracy" | "methodology";
 type Unit = "GW" | "MW";
@@ -122,11 +163,27 @@ function App() {
     setDecision(date);
     setActuals(true);
     setTab("forecast");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
   };
 
   return (
-    <div className="app-shell">
+    <Tabs
+      className="app-shell"
+      value={tab}
+      onValueChange={(value) => {
+        if (
+          value === "forecast" ||
+          value === "accuracy" ||
+          value === "methodology"
+        )
+          setTab(value);
+      }}
+    >
       <header className="app-header">
         <a
           className="brand"
@@ -134,33 +191,29 @@ function App() {
           aria-label="Northline home"
           onClick={() => setTab("forecast")}
         >
-          <Wind size={24} strokeWidth={1.8} /> northline
+          <Wind strokeWidth={1.8} /> northline
           <span className="brand-dot">.</span>
         </a>
-        <nav aria-label="Main navigation">
+        <TabsList
+          variant="line"
+          aria-label="Main navigation"
+          className="main-navigation"
+        >
           {nav.map((item) => (
-            <button
-              key={item.id}
-              className={`nav-item ${tab === item.id ? "active" : ""}`}
-              aria-current={tab === item.id ? "page" : undefined}
-              onClick={() => setTab(item.id)}
-            >
+            <TabsTrigger key={item.id} value={item.id}>
               {item.label}
-            </button>
+            </TabsTrigger>
           ))}
-        </nav>
+        </TabsList>
         <div className="archive-status">
-          <span className="archive-mark">January 2026 archive</span>
-          <span className="source-status">
-            <span
-              className={`status-dot ${meta.kind === "error" ? "failed" : ""}`}
-            />
+          <Badge variant="secondary">January 2026 archive</Badge>
+          <Badge variant={meta.kind === "error" ? "destructive" : "outline"}>
             {meta.kind === "ready"
               ? "Elexon snapshot loaded"
               : meta.kind === "error"
                 ? "Source unavailable"
                 : "Loading source snapshot"}
-          </span>
+          </Badge>
         </div>
       </header>
       <div className="workspace">
@@ -176,165 +229,185 @@ function App() {
               </h1>
             </div>
             {tab !== "methodology" && (
-              <a
-                className="button secondary export-button"
-                href={exportUrl}
-                download
-              >
-                <ArrowDownToLine size={16} />
-                Export CSV
-              </a>
+              <Button asChild variant="outline">
+                <a className="export-button" href={exportUrl} download>
+                  <ArrowDownToLine data-icon="inline-start" />
+                  Export CSV
+                </a>
+              </Button>
             )}
           </div>
           {tab !== "methodology" && (
-            <section className="filter-bar" aria-label="Forecast filters">
-              {tab === "forecast" ? (
-                <div className="field decision-field">
-                  <label htmlFor="decision-date">Purchase decision</label>
-                  <div className="date-control">
-                    <button
-                      className="icon-button"
-                      aria-label="Previous decision day"
-                      disabled={decision <= JAN_FIRST}
-                      onClick={() => setDecision(shiftDate(decision, -1))}
-                    >
-                      <ChevronLeft size={17} />
-                    </button>
-                    <input
-                      id="decision-date"
-                      type="date"
-                      min={JAN_FIRST}
-                      max={JAN_LAST}
-                      value={decision}
-                      onChange={changeDecision}
-                      onInput={changeDecision}
-                    />
-                    <button
-                      className="icon-button"
-                      aria-label="Next decision day"
-                      disabled={decision >= JAN_LAST}
-                      onClick={() => setDecision(shiftDate(decision, 1))}
-                    >
-                      <ChevronRight size={17} />
-                    </button>
+            <Card className="filter-card">
+              <CardContent>
+                <FieldGroup
+                  className="filter-bar"
+                  aria-label="Forecast filters"
+                >
+                  {tab === "forecast" ? (
+                    <Field className="decision-field">
+                      <FieldLabel htmlFor="decision-date">
+                        Purchase decision
+                      </FieldLabel>
+                      <InputGroup className="date-control">
+                        <InputGroupAddon>
+                          <InputGroupButton
+                            size="icon-xs"
+                            aria-label="Previous decision day"
+                            disabled={decision <= JAN_FIRST}
+                            onClick={() => setDecision(shiftDate(decision, -1))}
+                          >
+                            <ChevronLeft />
+                          </InputGroupButton>
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          id="decision-date"
+                          type="date"
+                          min={JAN_FIRST}
+                          max={JAN_LAST}
+                          value={decision}
+                          onChange={changeDecision}
+                          onInput={changeDecision}
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <InputGroupButton
+                            size="icon-xs"
+                            aria-label="Next decision day"
+                            disabled={decision >= JAN_LAST}
+                            onClick={() => setDecision(shiftDate(decision, 1))}
+                          >
+                            <ChevronRight />
+                          </InputGroupButton>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </Field>
+                  ) : (
+                    <>
+                      <Field>
+                        <FieldLabel htmlFor="from-date">
+                          First decision
+                        </FieldLabel>
+                        <Input
+                          id="from-date"
+                          type="date"
+                          min={JAN_FIRST}
+                          max={to}
+                          value={from}
+                          onChange={changeFrom}
+                          onInput={changeFrom}
+                        />
+                      </Field>
+                      <span className="range-arrow">
+                        <ArrowRight />
+                      </span>
+                      <Field>
+                        <FieldLabel htmlFor="to-date">Last decision</FieldLabel>
+                        <Input
+                          id="to-date"
+                          type="date"
+                          min={from}
+                          max={JAN_LAST}
+                          value={to}
+                          onChange={changeTo}
+                          onInput={changeTo}
+                        />
+                      </Field>
+                    </>
+                  )}
+                  <Field className="cutoff-field">
+                    <FieldLabel htmlFor="cutoff-time">
+                      Decision cutoff <span>London time</span>
+                    </FieldLabel>
+                    <div className="time-control">
+                      <Input
+                        id="cutoff-time"
+                        type="time"
+                        value={cutoff}
+                        required
+                        onChange={changeCutoff}
+                        onInput={changeCutoff}
+                      />
+                    </div>
+                  </Field>
+                  <div className="filter-explanation">
+                    {tab === "forecast" ? (
+                      <>
+                        <span className="delivery-icon">
+                          <ArrowRight />
+                        </span>
+                        <div>
+                          Next-day delivery
+                          <strong>
+                            {dateText(shiftDate(decision, 1), {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </strong>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span className="delivery-icon">
+                          <BarChart3 />
+                        </span>
+                        <div>
+                          Historical comparison
+                          <strong>Hourly, matched observations</strong>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </div>
+                </FieldGroup>
+              </CardContent>
+            </Card>
+          )}
+          <TabsContent value="forecast">
+            {tab === "forecast" &&
+              (replay.kind === "ready" ? (
+                <Forecast
+                  data={replay.data}
+                  actuals={actuals}
+                  setActuals={setActuals}
+                  unit={unit}
+                  setUnit={setUnit}
+                  exportUrl={exportUrl}
+                />
               ) : (
-                <>
-                  <div className="field">
-                    <label htmlFor="from-date">First decision</label>
-                    <input
-                      id="from-date"
-                      type="date"
-                      min={JAN_FIRST}
-                      max={to}
-                      value={from}
-                      onChange={changeFrom}
-                      onInput={changeFrom}
-                    />
-                  </div>
-                  <span className="range-arrow">
-                    <ArrowRight size={17} />
-                  </span>
-                  <div className="field">
-                    <label htmlFor="to-date">Last decision</label>
-                    <input
-                      id="to-date"
-                      type="date"
-                      min={from}
-                      max={JAN_LAST}
-                      value={to}
-                      onChange={changeTo}
-                      onInput={changeTo}
-                    />
-                  </div>
-                </>
-              )}
-              <div className="field cutoff-field">
-                <label htmlFor="cutoff-time">
-                  Decision cutoff <span>London time</span>
-                </label>
-                <div className="time-control">
-                  <input
-                    id="cutoff-time"
-                    type="time"
-                    value={cutoff}
-                    required
-                    onChange={changeCutoff}
-                    onInput={changeCutoff}
-                  />
-                </div>
-              </div>
-              <div className="filter-explanation">
-                {tab === "forecast" ? (
-                  <>
-                    <span className="delivery-icon">
-                      <ArrowRight size={17} />
-                    </span>
-                    <div>
-                      Next-day delivery
-                      <strong>
-                        {dateText(shiftDate(decision, 1), {
-                          weekday: "short",
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </strong>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <span className="delivery-icon">
-                      <BarChart3 size={17} />
-                    </span>
-                    <div>
-                      Historical comparison
-                      <strong>Hourly, matched observations</strong>
-                    </div>
-                  </>
-                )}
-              </div>
-            </section>
-          )}
-          {tab === "forecast" &&
-            (replay.kind === "ready" ? (
-              <Forecast
-                data={replay.data}
-                actuals={actuals}
-                setActuals={setActuals}
-                unit={unit}
-                setUnit={setUnit}
-                exportUrl={exportUrl}
-              />
-            ) : (
-              <RequestState
-                kind={replay.kind}
-                message={replay.kind === "error" ? replay.message : ""}
-                retry={retry}
-                label="Loading the selected forecast"
-              />
-            ))}
-          {tab === "accuracy" &&
-            (accuracy.kind === "ready" ? (
-              <AccuracyPage
-                data={accuracy.data}
-                unit={unit}
-                setUnit={setUnit}
-                openDay={openDay}
-                exportUrl={exportUrl}
-              />
-            ) : (
-              <RequestState
-                kind={accuracy.kind}
-                message={accuracy.kind === "error" ? accuracy.message : ""}
-                retry={retry}
-                label="Calculating historical errors"
-              />
-            ))}
-          {tab === "methodology" && (
-            <Methodology meta={meta.kind === "ready" ? meta.data : null} />
-          )}
+                <RequestState
+                  kind={replay.kind}
+                  message={replay.kind === "error" ? replay.message : ""}
+                  retry={retry}
+                  label="Loading the selected forecast"
+                />
+              ))}
+          </TabsContent>
+          <TabsContent value="accuracy">
+            {tab === "accuracy" &&
+              (accuracy.kind === "ready" ? (
+                <AccuracyPage
+                  data={accuracy.data}
+                  unit={unit}
+                  setUnit={setUnit}
+                  openDay={openDay}
+                  exportUrl={exportUrl}
+                />
+              ) : (
+                <RequestState
+                  kind={accuracy.kind}
+                  message={accuracy.kind === "error" ? accuracy.message : ""}
+                  retry={retry}
+                  label="Calculating historical errors"
+                />
+              ))}
+          </TabsContent>
+          <TabsContent value="methodology">
+            {tab === "methodology" && (
+              <Methodology meta={meta.kind === "ready" ? meta.data : null} />
+            )}
+          </TabsContent>
+          <Separator className="footer-separator" />
           <footer className="page-footer">
             <span>
               Northline <span>·</span> GB wind intelligence
@@ -343,14 +416,18 @@ function App() {
               {meta.kind === "ready"
                 ? `Source snapshot retrieved ${dateText(meta.data.retrieved_at, { day: "numeric", month: "short", year: "numeric" })}`
                 : "Source snapshot information pending"}{" "}
-              <button onClick={() => setTab("methodology")}>
-                View provenance <ArrowUpRight size={12} />
-              </button>
+              <Button
+                variant="link"
+                size="xs"
+                onClick={() => setTab("methodology")}
+              >
+                View provenance <ArrowUpRight data-icon="inline-end" />
+              </Button>
             </span>
           </footer>
         </main>
       </div>
-    </div>
+    </Tabs>
   );
 }
 
@@ -365,32 +442,34 @@ function RequestState({
   retry: () => void;
   label: string;
 }) {
+  if (kind === "loading")
+    return (
+      <div className="request-state" role="status" aria-label={label}>
+        <span className="sr-only">{label}</span>
+        <Skeleton className="h-5 w-48" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+    );
   return (
-    <div
-      className={`request-state ${kind}`}
-      role={kind === "error" ? "alert" : "status"}
-    >
-      {kind === "loading" ? (
-        <>
-          <LoaderCircle className="spinner" size={26} />
-          <h2>{label}</h2>
-          <p>Reading the archived Elexon observations.</p>
-        </>
-      ) : (
-        <>
-          <CircleAlert size={26} />
-          <h2>We couldn't load this view</h2>
-          <p>
-            {message} Confirm the API is running and the data snapshot is
-            available.
-          </p>
-          <button className="button secondary" onClick={retry}>
-            <RefreshCw size={15} />
-            Retry loading
-          </button>
-        </>
-      )}
-    </div>
+    <Empty className="request-state" role="alert">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <CircleAlert />
+        </EmptyMedia>
+        <EmptyTitle>We couldn't load this view</EmptyTitle>
+        <EmptyDescription>
+          {message} Confirm the API is running and the data snapshot is
+          available.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" onClick={retry}>
+          <RefreshCw data-icon="inline-start" />
+          Retry loading
+        </Button>
+      </EmptyContent>
+    </Empty>
   );
 }
 function UnitControl({
@@ -400,67 +479,25 @@ function UnitControl({
   unit: Unit;
   setUnit: (unit: Unit) => void;
 }) {
-  const bar = useRef<HTMLDivElement>(null);
-  const initialized = useRef(false);
-  useLayoutEffect(() => {
-    const container = bar.current;
-    const pill = container?.querySelector<HTMLElement>(".t-tabs-pill");
-    if (!container || !pill) return;
-    const move = (animate: boolean) => {
-      const selected = container.querySelector<HTMLButtonElement>(
-        '[aria-pressed="true"]',
-      );
-      if (!selected) return;
-      const previous = pill.style.transition;
-      if (!animate) pill.style.transition = "none";
-      pill.style.transform = `translateX(${selected.offsetLeft}px)`;
-      pill.style.width = `${selected.offsetWidth}px`;
-      if (!animate) {
-        void pill.offsetWidth;
-        pill.style.transition = previous;
-      }
-    };
-    move(initialized.current);
-    initialized.current = true;
-  }, [unit]);
-  useLayoutEffect(() => {
-    const container = bar.current;
-    if (!container) return;
-    const observer = new ResizeObserver(() => {
-      const pill = container.querySelector<HTMLElement>(".t-tabs-pill");
-      const selected = container.querySelector<HTMLButtonElement>(
-        '[aria-pressed="true"]',
-      );
-      if (!pill || !selected) return;
-      const previous = pill.style.transition;
-      pill.style.transition = "none";
-      pill.style.transform = `translateX(${selected.offsetLeft}px)`;
-      pill.style.width = `${selected.offsetWidth}px`;
-      void pill.offsetWidth;
-      pill.style.transition = previous;
-    });
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
   return (
-    <div
-      ref={bar}
-      className="segmented t-tabs"
-      role="group"
+    <ToggleGroup
+      type="single"
+      variant="outline"
+      size="sm"
+      spacing={0}
+      value={unit}
       aria-label="Power unit"
+      onValueChange={(value) => {
+        if (value === "GW" || value === "MW") setUnit(value);
+      }}
     >
-      <span className="t-tabs-pill" aria-hidden="true" />
-      {(["GW", "MW"] satisfies Unit[]).map((value) => (
-        <button
-          key={value}
-          aria-pressed={unit === value}
-          className={`t-tab ${unit === value ? "selected" : ""}`}
-          onClick={() => setUnit(value)}
-        >
-          {value}
-        </button>
-      ))}
-    </div>
+      <ToggleGroupItem value="GW" aria-label="Gigawatts">
+        GW
+      </ToggleGroupItem>
+      <ToggleGroupItem value="MW" aria-label="Megawatts">
+        MW
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 }
 function SoftValue({ value }: { value: string }) {
@@ -611,17 +648,18 @@ function Forecast({
               <p>National wind generation, hourly · London time</p>
             </div>
             <div className="chart-controls">
-              <label className="toggle-label">
-                <input
-                  type="checkbox"
-                  checked={actuals}
-                  onChange={(event) => setActuals(event.target.checked)}
-                />
-                <span className="switch" />
-                <span>
-                  Show actuals <span className="hindsight-tag">Hindsight</span>
-                </span>
-              </label>
+              <FieldGroup className="actuals-control">
+                <Field orientation="horizontal">
+                  <Checkbox
+                    id="show-actuals"
+                    checked={actuals}
+                    onCheckedChange={(checked) => setActuals(checked === true)}
+                  />
+                  <FieldLabel htmlFor="show-actuals">
+                    Show actuals <Badge variant="secondary">Hindsight</Badge>
+                  </FieldLabel>
+                </Field>
+              </FieldGroup>
               <UnitControl unit={unit} setUnit={setUnit} />
             </div>
           </div>
@@ -639,18 +677,28 @@ function Forecast({
             <span className="axis-unit">{unit}</span>
           </div>
           {data.forecast_hours === 0 && (
-            <div className="inline-notice">
-              <CircleAlert size={17} />
-              No eligible forecast was published before this cutoff. Choose a
-              later cutoff to inspect another vintage.
-            </div>
+            <Alert className="inline-notice">
+              <CircleAlert />
+              <AlertDescription>
+                No eligible forecast was published before this cutoff. Choose a
+                later cutoff to inspect another vintage.
+              </AlertDescription>
+            </Alert>
           )}
           <div
             className="chart-wrap"
             role="img"
             aria-label={`Hourly wind forecast for ${dateText(data.delivery_date)} in ${unit}${actuals ? ", compared with retrospective actual generation" : ""}. Exact values appear in the interval table below.`}
           >
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              className="h-full w-full aspect-auto"
+              config={{
+                forecast: { label: "Forecast", color: "var(--chart-1)" },
+                actual: { label: "Actual", color: "var(--chart-2)" },
+                mae: { label: "MAE", color: "var(--chart-1)" },
+                bias: { label: "Mean bias", color: "var(--chart-2)" },
+              }}
+            >
               <ComposedChart
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
@@ -663,16 +711,20 @@ function Forecast({
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="0%" stopColor="#275ee7" stopOpacity={0.22} />
+                    <stop
+                      offset="0%"
+                      stopColor="var(--chart-1)"
+                      stopOpacity={0.22}
+                    />
                     <stop
                       offset="100%"
-                      stopColor="#275ee7"
+                      stopColor="var(--chart-1)"
                       stopOpacity={0.015}
                     />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
-                  stroke="#e6e9ee"
+                  stroke="var(--border)"
                   vertical={false}
                   strokeDasharray="3 4"
                 />
@@ -680,31 +732,35 @@ function Forecast({
                   dataKey="hour"
                   tickLine={false}
                   axisLine={false}
-                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   minTickGap={45}
                   dy={12}
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   width={48}
                   domain={[0, "auto"]}
                 />
-                <Tooltip
-                  contentStyle={{
-                    border: "1px solid #dce1e8",
-                    borderRadius: 4,
-                    boxShadow: "0 6px 22px #17213614",
-                    fontSize: 12,
-                  }}
-                  labelFormatter={(label) => `${String(label)} · London`}
-                  formatter={(value, name) => [
-                    value === null || value === undefined
-                      ? "Unavailable"
-                      : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
-                    name === "forecast" ? "Forecast" : "Actual",
-                  ]}
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      labelFormatter={(label) => `${String(label)} · London`}
+                      formatter={(value, name) => (
+                        <div className="flex w-full items-center justify-between gap-6">
+                          <span className="text-muted-foreground">
+                            {name === "forecast" ? "Forecast" : "Actual"}
+                          </span>
+                          <span className="font-medium tabular-nums">
+                            {value === null || value === undefined
+                              ? "Unavailable"
+                              : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`}
+                          </span>
+                        </div>
+                      )}
+                    />
+                  }
                 />
                 <Area
                   type="linear"
@@ -718,10 +774,14 @@ function Forecast({
                 <Line
                   type="linear"
                   dataKey="forecast"
-                  stroke="#275ee7"
+                  stroke="var(--chart-1)"
                   strokeWidth={2.6}
                   dot={false}
-                  activeDot={{ r: 4, stroke: "#fff", strokeWidth: 2 }}
+                  activeDot={{
+                    r: 4,
+                    stroke: "var(--background)",
+                    strokeWidth: 2,
+                  }}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
@@ -729,7 +789,7 @@ function Forecast({
                   <Line
                     type="linear"
                     dataKey="actual"
-                    stroke="#c17a19"
+                    stroke="var(--chart-2)"
                     strokeWidth={2.2}
                     dot={false}
                     connectNulls={false}
@@ -737,11 +797,11 @@ function Forecast({
                   />
                 )}
               </ComposedChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="chart-bottom">
             <span>
-              <Clock3 size={13} />
+              <Clock3 />
               00:00 to 23:00, hourly delivery starts
             </span>
             <span>
@@ -786,66 +846,72 @@ function Forecast({
           />
         </div>
       </div>
-      <div className="vintage-note">
-        <div>
-          <strong>
-            {data.latest_publish_time
-              ? `Selected issue ${issueText(data.latest_publish_time)}`
-              : "No eligible forecast issue"}
-          </strong>
-          <p>
-            Each hour uses its latest forecast available by {data.cutoff} on{" "}
-            {dateText(data.decision_date, { day: "numeric", month: "short" })},
-            {data.oldest_publish_time &&
-            data.oldest_publish_time !== data.latest_publish_time
-              ? ` with issues starting ${issueText(data.oldest_publish_time)} and no later updates filling gaps.`
-              : " with no later updates filling gaps."}
-          </p>
-        </div>
-        <span className="vintage-chip">
-          WINDFOR <ArrowUpRight size={12} />
-        </span>
-      </div>
+      <Alert role="note" className="vintage-note">
+        <AlertDescription>
+          <div>
+            <strong>
+              {data.latest_publish_time
+                ? `Selected issue ${issueText(data.latest_publish_time)}`
+                : "No eligible forecast issue"}
+            </strong>
+            <p>
+              Each hour uses its latest forecast available by {data.cutoff} on{" "}
+              {dateText(data.decision_date, { day: "numeric", month: "short" })}
+              ,
+              {data.oldest_publish_time &&
+              data.oldest_publish_time !== data.latest_publish_time
+                ? ` with issues starting ${issueText(data.oldest_publish_time)} and no later updates filling gaps.`
+                : " with no later updates filling gaps."}
+            </p>
+          </div>
+          <Badge variant="outline" className="vintage-chip">
+            WINDFOR <ArrowUpRight />
+          </Badge>
+        </AlertDescription>
+      </Alert>
       <section className="table-section">
         <div className="section-heading">
           <div>
             <h2>Interval detail</h2>
           </div>
-          <a className="text-link" href={exportUrl} download>
-            Download data <ArrowDownToLine size={14} />
-          </a>
+          <Button variant="link" size="sm" asChild>
+            <a href={exportUrl} download>
+              Download data <ArrowDownToLine data-icon="inline-end" />
+            </a>
+          </Button>
         </div>
-        <div
-          className="table-scroll"
-          tabIndex={0}
-          aria-label="Hourly forecast interval table"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Delivery hour</th>
-                <th scope="col" className="numeric">
+        <div className="table-scroll">
+          <Table
+            containerProps={{
+              tabIndex: 0,
+              "aria-label": "Hourly forecast interval table",
+            }}
+          >
+            <TableHeader>
+              <TableRow>
+                <TableHead scope="col">Delivery hour</TableHead>
+                <TableHead scope="col" className="numeric">
                   Forecast, {unit}
-                </th>
+                </TableHead>
                 {actuals && (
                   <>
-                    <th scope="col" className="numeric">
+                    <TableHead scope="col" className="numeric">
                       Actual, {unit}
-                    </th>
-                    <th scope="col" className="numeric">
+                    </TableHead>
+                    <TableHead scope="col" className="numeric">
                       Error, {unit}
-                    </th>
+                    </TableHead>
                   </>
                 )}
-                <th scope="col">Forecast issued</th>
-                <th scope="col">Source evidence</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
+                <TableHead scope="col">Forecast issued</TableHead>
+                <TableHead scope="col">Source evidence</TableHead>
+                <TableHead scope="col">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {data.intervals.map((interval) => (
-                <tr key={interval.start_time}>
-                  <th scope="row" className="time-cell">
+                <TableRow key={interval.start_time}>
+                  <TableHead scope="row" className="time-cell">
                     {hourText(interval.start_time)}
                     <span>
                       –{" "}
@@ -855,47 +921,58 @@ function Forecast({
                         ).toISOString(),
                       )}
                     </span>
-                  </th>
-                  <td className="numeric">
+                  </TableHead>
+                  <TableCell className="numeric">
                     {powerText(interval.forecast_mw, unit)}
-                  </td>
+                  </TableCell>
                   {actuals && (
                     <>
-                      <td className="numeric">
+                      <TableCell className="numeric">
                         {powerText(interval.actual_mw, unit)}
-                      </td>
-                      <td
+                      </TableCell>
+                      <TableCell
                         className={`numeric ${interval.error_mw !== null && interval.error_mw > 0 ? "positive-error" : ""}`}
                       >
                         {powerText(interval.error_mw, unit, true)}
-                      </td>
+                      </TableCell>
                     </>
                   )}
-                  <td>{issueText(interval.publish_time)}</td>
-                  <td className="source-cell">
+                  <TableCell>{issueText(interval.publish_time)}</TableCell>
+                  <TableCell className="source-cell">
                     {interval.forecast_source_id ?? "No eligible forecast"}
                     {actuals && interval.actual_half_hours.length > 0 && (
-                      <details>
-                        <summary>Actual half-hour evidence</summary>
-                        {interval.actual_half_hours.map((half) => (
-                          <div
-                            className="half-hour"
-                            key={`${half.start_time}-${half.source_id}`}
-                          >
-                            {hourText(half.start_time)} ·{" "}
-                            {powerText(half.generation_mw, unit)} {unit}
-                            <br />
-                            {half.source_id}
-                            <br />
-                            Published {issueText(half.publish_time)}
-                          </div>
-                        ))}
-                      </details>
+                      <Collapsible>
+                        <CollapsibleTrigger asChild>
+                          <Button variant="link" size="xs" className="px-0">
+                            Actual half-hour evidence
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          {interval.actual_half_hours.map((half) => (
+                            <div
+                              className="half-hour"
+                              key={`${half.start_time}-${half.source_id}`}
+                            >
+                              {hourText(half.start_time)} ·{" "}
+                              {powerText(half.generation_mw, unit)} {unit}
+                              <br />
+                              {half.source_id}
+                              <br />
+                              Published {issueText(half.publish_time)}
+                            </div>
+                          ))}
+                        </CollapsibleContent>
+                      </Collapsible>
                     )}
-                  </td>
-                  <td>
-                    <span
-                      className={`table-status ${interval.status === "matched" || interval.status === "forecast_only" ? "available" : "missing"}`}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        interval.status === "matched" ||
+                        interval.status === "forecast_only"
+                          ? "secondary"
+                          : "outline"
+                      }
                     >
                       {interval.status === "matched"
                         ? "Paired"
@@ -904,12 +981,12 @@ function Forecast({
                           : interval.status === "missing_forecast"
                             ? "Missing forecast"
                             : "Missing actual"}
-                    </span>
-                  </td>
-                </tr>
+                    </Badge>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </section>
       {actuals && (
@@ -971,11 +1048,13 @@ function AccuracyPage({
       </div>
       <div className="analysis-layout">
         {data.matched_hours === 0 && (
-          <div className="inline-notice">
-            <CircleAlert size={17} />
-            No forecast and actual pairs exist for this selection. Try a later
-            cutoff or another date range.
-          </div>
+          <Alert className="inline-notice">
+            <CircleAlert />
+            <AlertDescription>
+              No forecast and actual pairs exist for this selection. Try a later
+              cutoff or another date range.
+            </AlertDescription>
+          </Alert>
         )}
         <section className="chart-section">
           <div className="section-heading">
@@ -1001,14 +1080,22 @@ function AccuracyPage({
             role="img"
             aria-label={`Daily mean absolute forecast error and bias in ${unit}. Exact values appear in the daily table.`}
           >
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              className="h-full w-full aspect-auto"
+              config={{
+                forecast: { label: "Forecast", color: "var(--chart-1)" },
+                actual: { label: "Actual", color: "var(--chart-2)" },
+                mae: { label: "MAE", color: "var(--chart-1)" },
+                bias: { label: "Mean bias", color: "var(--chart-2)" },
+              }}
+            >
               <ComposedChart
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
               >
                 <CartesianGrid
                   vertical={false}
-                  stroke="#e6e9ee"
+                  stroke="var(--border)"
                   strokeDasharray="3 4"
                 />
                 <XAxis
@@ -1016,32 +1103,37 @@ function AccuracyPage({
                   tickLine={false}
                   axisLine={false}
                   minTickGap={28}
-                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   dy={10}
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   width={48}
-                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                 />
-                <ReferenceLine y={0} stroke="#a9b1bf" />
-                <Tooltip
-                  contentStyle={{
-                    border: "1px solid #dce1e8",
-                    borderRadius: 4,
-                    fontSize: 12,
-                  }}
-                  formatter={(value, name) => [
-                    value === null || value === undefined
-                      ? "Unavailable"
-                      : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
-                    name === "mae" ? "MAE" : "Mean bias",
-                  ]}
+                <ReferenceLine y={0} stroke="var(--muted-foreground)" />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      formatter={(value, name) => (
+                        <div className="flex w-full items-center justify-between gap-6">
+                          <span className="text-muted-foreground">
+                            {name === "mae" ? "MAE" : "Mean bias"}
+                          </span>
+                          <span className="font-medium tabular-nums">
+                            {value === null || value === undefined
+                              ? "Unavailable"
+                              : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`}
+                          </span>
+                        </div>
+                      )}
+                    />
+                  }
                 />
                 <Bar
                   dataKey="mae"
-                  fill="#275ee7"
+                  fill="var(--chart-1)"
                   radius={[3, 3, 0, 0]}
                   maxBarSize={25}
                   isAnimationActive={false}
@@ -1049,14 +1141,14 @@ function AccuracyPage({
                 <Line
                   type="linear"
                   dataKey="bias"
-                  stroke="#c17a19"
+                  stroke="var(--chart-2)"
                   strokeWidth={2}
                   dot={false}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
               </ComposedChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="chart-bottom">
             <span>Positive bias = wind overforecast</span>
@@ -1070,94 +1162,104 @@ function AccuracyPage({
           expected={data.expected_hours}
         />
       </div>
-      <div className="vintage-note">
-        <div>
-          <strong>Historical evidence, with its limits</strong>
-          <p>
-            Matched-hour metrics use retrospective, possibly revised actuals
-            from January and describe in-sample errors, not future uncertainty.
-          </p>
-        </div>
-        <span className="vintage-chip">IN-SAMPLE</span>
-      </div>
+      <Alert role="note" className="vintage-note">
+        <AlertDescription>
+          <div>
+            <strong>Historical evidence, with its limits</strong>
+            <p>
+              Matched-hour metrics use retrospective, possibly revised actuals
+              from January and describe in-sample errors, not future
+              uncertainty.
+            </p>
+          </div>
+          <Badge variant="outline" className="vintage-chip">
+            IN-SAMPLE
+          </Badge>
+        </AlertDescription>
+      </Alert>
       <section className="table-section">
         <div className="section-heading">
           <div>
             <h2>Day by day</h2>
           </div>
-          <a className="text-link" href={exportUrl} download>
-            Download data <ArrowDownToLine size={14} />
-          </a>
+          <Button variant="link" size="sm" asChild>
+            <a href={exportUrl} download>
+              Download data <ArrowDownToLine data-icon="inline-end" />
+            </a>
+          </Button>
         </div>
-        <div
-          className="table-scroll"
-          tabIndex={0}
-          aria-label="Daily forecast accuracy table"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Decision date</th>
-                <th scope="col">Delivery date</th>
-                <th scope="col" className="numeric">
+        <div className="table-scroll">
+          <Table
+            containerProps={{
+              tabIndex: 0,
+              "aria-label": "Daily forecast accuracy table",
+            }}
+          >
+            <TableHeader>
+              <TableRow>
+                <TableHead scope="col">Decision date</TableHead>
+                <TableHead scope="col">Delivery date</TableHead>
+                <TableHead scope="col" className="numeric">
                   MAE, {unit}
-                </th>
-                <th scope="col" className="numeric">
+                </TableHead>
+                <TableHead scope="col" className="numeric">
                   RMSE, {unit}
-                </th>
-                <th scope="col" className="numeric">
+                </TableHead>
+                <TableHead scope="col" className="numeric">
                   Bias, {unit}
-                </th>
-                <th scope="col" className="numeric">
+                </TableHead>
+                <TableHead scope="col" className="numeric">
                   WAPE
-                </th>
-                <th scope="col" className="numeric">
+                </TableHead>
+                <TableHead scope="col" className="numeric">
                   Paired hours
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {data.daily.map((day) => (
-                <tr key={day.decision_date}>
-                  <th scope="row">
-                    <button
-                      className="table-day"
+                <TableRow key={day.decision_date}>
+                  <TableHead scope="row">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="px-0"
                       onClick={() => openDay(day.decision_date)}
                     >
                       {dateText(day.decision_date, {
                         day: "numeric",
                         month: "short",
                       })}
-                      <ArrowUpRight size={13} />
-                    </button>
-                  </th>
-                  <td>
+                      <ArrowUpRight />
+                    </Button>
+                  </TableHead>
+                  <TableCell>
                     {dateText(day.delivery_date, {
                       day: "numeric",
                       month: "short",
                     })}
-                  </td>
-                  <td className="numeric">
+                  </TableCell>
+                  <TableCell className="numeric">
                     {powerText(day.metrics.mae_mw, unit)}
-                  </td>
-                  <td className="numeric">
+                  </TableCell>
+                  <TableCell className="numeric">
                     {powerText(day.metrics.rmse_mw, unit)}
-                  </td>
-                  <td className="numeric">
+                  </TableCell>
+                  <TableCell className="numeric">
                     {powerText(day.metrics.bias_mw, unit, true)}
-                  </td>
-                  <td className="numeric">
+                  </TableCell>
+                  <TableCell className="numeric">
                     {day.metrics.wape_pct === null
                       ? "Unavailable"
                       : `${day.metrics.wape_pct.toFixed(1)}%`}
-                  </td>
-                  <td className="numeric">
+                  </TableCell>
+                  <TableCell className="numeric">
                     {day.matched_hours} / {day.expected_hours}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
         <p className="fine-print">
           Pooled RMSE is calculated from all hourly errors. It is not the
@@ -1172,17 +1274,23 @@ function AccuracyPage({
 function Methodology({ meta }: { meta: Meta | null }) {
   return (
     <div className="methodology">
-      <section className="method-intro">
-        <div>
-          <h2>A decision-time reconstruction</h2>
-          <p>
-            Northline reconstructs January 2026 purchase decisions using
-            Elexon's national wind forecasts and actual generation. Each
-            purchase date targets the next London calendar day, including 1
-            February for the 31 January decision.
-          </p>
-        </div>
-      </section>
+      <Card className="method-intro">
+        <CardHeader>
+          <CardTitle>
+            <h2>A decision-time reconstruction</h2>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>
+            <p>
+              Northline reconstructs January 2026 purchase decisions using
+              Elexon's national wind forecasts and actual generation. Each
+              purchase date targets the next London calendar day, including 1
+              February for the 31 January decision.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
       <section className="method-section">
         <h2>How the forecast is selected</h2>
         <div className="method-columns">
@@ -1305,61 +1413,67 @@ function Methodology({ meta }: { meta: Meta | null }) {
                 <dd className="hash">{meta.snapshot_sha256}</dd>
               </div>
             </dl>
-            <div
-              className="table-scroll source-table"
-              tabIndex={0}
-              aria-label="Retained source manifests"
-            >
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Source request</th>
-                    <th scope="col">Dataset</th>
-                    <th scope="col" className="numeric">
+            <div className="table-scroll source-table">
+              <Table
+                containerProps={{
+                  tabIndex: 0,
+                  "aria-label": "Retained source manifests",
+                }}
+              >
+                <TableHeader>
+                  <TableRow>
+                    <TableHead scope="col">Source request</TableHead>
+                    <TableHead scope="col">Dataset</TableHead>
+                    <TableHead scope="col" className="numeric">
                       Records
-                    </th>
-                    <th scope="col">Retrieved</th>
-                    <th scope="col">Response hash</th>
-                  </tr>
-                </thead>
-                <tbody>
+                    </TableHead>
+                    <TableHead scope="col">Retrieved</TableHead>
+                    <TableHead scope="col">Response hash</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {meta.sources.map((source) => (
-                    <tr key={source.id}>
-                      <th scope="row">
-                        <a
-                          className="source-link"
-                          href={source.url}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {source.id}
-                          <ExternalLink size={12} />
-                        </a>
-                      </th>
-                      <td>{source.dataset}</td>
-                      <td className="numeric">
+                    <TableRow key={source.id}>
+                      <TableHead scope="row">
+                        <Button asChild variant="link" size="xs">
+                          <a href={source.url} target="_blank" rel="noreferrer">
+                            {source.id}
+                            <ExternalLink />
+                          </a>
+                        </Button>
+                      </TableHead>
+                      <TableCell>{source.dataset}</TableCell>
+                      <TableCell className="numeric">
                         {source.record_count.toLocaleString()}
-                      </td>
-                      <td>{issueText(source.retrieved_at)}</td>
-                      <td>
-                        <details>
-                          <summary>SHA-256</summary>
-                          <span className="hash">{source.sha256}</span>
-                          <br />
-                          <span className="raw-path">{source.raw_path}</span>
-                        </details>
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell>{issueText(source.retrieved_at)}</TableCell>
+                      <TableCell>
+                        <Collapsible>
+                          <CollapsibleTrigger asChild>
+                            <Button variant="link" size="xs" className="px-0">
+                              SHA-256
+                            </Button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <span className="hash">{source.sha256}</span>
+                            <br />
+                            <span className="raw-path">{source.raw_path}</span>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </>
         ) : (
-          <p className="inline-notice">
-            Source metadata is unavailable. Return to Forecast and retry loading
-            the snapshot.
-          </p>
+          <Alert className="inline-notice">
+            <AlertDescription>
+              Source metadata is unavailable. Return to Forecast and retry
+              loading the snapshot.
+            </AlertDescription>
+          </Alert>
         )}
       </section>
     </div>
