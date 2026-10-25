@@ -1,121 +1,195 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T04:32:10.1252519Z",
+  "generatedAt": "2026-10-25T07:59:51.651115+00:00",
   "title": "Design System: Northline",
   "extensions": {
     "colorMeta": {
       "primary": {
         "role": "primary",
-        "displayName": "Forecast green"
-      },
-      "evergreen": {
-        "role": "primary",
-        "displayName": "Shell evergreen"
+        "displayName": "Primary",
+        "tonalRamp": [
+          "oklch(15% 0.0520 260)",
+          "oklch(27% 0.1300 260)",
+          "oklch(39% 0.1300 260)",
+          "oklch(51% 0.1300 260)",
+          "oklch(63% 0.1300 260)",
+          "oklch(75% 0.1300 260)",
+          "oklch(87% 0.1300 260)",
+          "oklch(95% 0.0520 260)"
+        ]
       },
       "actual": {
         "role": "secondary",
-        "displayName": "Retrospective orange"
-      },
-      "neutral-bg": {
-        "role": "neutral",
-        "displayName": "Warm off-white"
-      },
-      "paper": {
-        "role": "neutral",
-        "displayName": "Paper"
+        "displayName": "Actual",
+        "tonalRamp": [
+          "oklch(15% 0.0320 70)",
+          "oklch(27% 0.0800 70)",
+          "oklch(39% 0.0800 70)",
+          "oklch(51% 0.0800 70)",
+          "oklch(63% 0.0800 70)",
+          "oklch(75% 0.0800 70)",
+          "oklch(87% 0.0800 70)",
+          "oklch(95% 0.0320 70)"
+        ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Evergreen ink"
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted text"
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
       },
-      "border": {
+      "paper": {
         "role": "neutral",
-        "displayName": "Divider"
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
       },
-      "note": {
+      "rail": {
         "role": "neutral",
-        "displayName": "Vintage note"
+        "displayName": "Rail",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
       },
-      "focus": {
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
+      },
+      "control-border": {
+        "role": "neutral",
+        "displayName": "Control Border",
+        "tonalRamp": [
+          "oklch(15% 0.0032 255)",
+          "oklch(27% 0.0080 255)",
+          "oklch(39% 0.0080 255)",
+          "oklch(51% 0.0080 255)",
+          "oklch(63% 0.0080 255)",
+          "oklch(75% 0.0080 255)",
+          "oklch(87% 0.0080 255)",
+          "oklch(95% 0.0032 255)"
+        ]
+      },
+      "warning": {
         "role": "secondary",
-        "displayName": "Keyboard focus"
+        "displayName": "Warning",
+        "tonalRamp": [
+          "oklch(15% 0.0320 70)",
+          "oklch(27% 0.0800 70)",
+          "oklch(39% 0.0800 70)",
+          "oklch(51% 0.0800 70)",
+          "oklch(63% 0.0800 70)",
+          "oklch(75% 0.0800 70)",
+          "oklch(87% 0.0800 70)",
+          "oklch(95% 0.0320 70)"
+        ]
       },
-      "available": {
-        "role": "primary",
-        "displayName": "Available status text"
-      },
-      "missing": {
-        "role": "secondary",
-        "displayName": "Missing status text"
+      "tabs-bar": {
+        "role": "neutral",
+        "displayName": "Tabs Bar",
+        "tonalRamp": [
+          "oklch(15% 0.0032 260)",
+          "oklch(27% 0.0080 260)",
+          "oklch(39% 0.0080 260)",
+          "oklch(51% 0.0080 260)",
+          "oklch(63% 0.0080 260)",
+          "oklch(75% 0.0080 260)",
+          "oklch(87% 0.0080 260)",
+          "oklch(95% 0.0032 260)"
+        ]
       }
     },
-    "typographyMeta": {
-      "headline": {
-        "displayName": "Page heading",
-        "purpose": "Delivery-day and page headings. Reduces to 30px at the mobile breakpoint."
-      },
-      "title": {
-        "displayName": "Section heading",
-        "purpose": "Chart and table headings."
-      },
-      "body": {
-        "displayName": "Body and controls",
-        "purpose": "Explanations, filters, tables, and navigation."
-      },
-      "metric": {
-        "displayName": "Metric value",
-        "purpose": "Decision totals and accuracy values with tabular numerals."
-      }
-    },
-    "shadows": [
-      {
-        "name": "switch-thumb",
-        "value": "0 1px 3px #253e3230",
-        "purpose": "Separates the white thumb from the switch track."
-      },
-      {
-        "name": "selected-unit",
-        "value": "0 1px 4px #253e3210",
-        "purpose": "Marks the selected unit button."
-      },
-      {
-        "name": "chart-tooltip",
-        "value": "0 6px 22px #183e2910",
-        "purpose": "Separates a chart tooltip from the plot."
-      }
-    ],
+    "shadows": [],
     "motion": [
       {
-        "name": "hover",
-        "value": "background 0.18s",
-        "purpose": "Navigation and button hover states."
+        "name": "tabs-duration",
+        "value": "250ms",
+        "purpose": "Measured unit selection and label color."
       },
       {
-        "name": "switch",
-        "value": "transform 0.2s",
-        "purpose": "Moves the switch thumb. Reduced motion disables transitions and animations."
+        "name": "tabs-ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Sliding selection and text width changes."
+      },
+      {
+        "name": "text-soft-duration",
+        "value": "200ms",
+        "purpose": "Numeric opacity and blur changes."
+      },
+      {
+        "name": "text-soft-blur",
+        "value": "2px",
+        "purpose": "Transient numeric text blur."
+      },
+      {
+        "name": "text-soft-ease",
+        "value": "ease-in-out",
+        "purpose": "Numeric crossfade."
+      },
+      {
+        "name": "text-soft-resize-duration",
+        "value": "240ms",
+        "purpose": "Numeric text width adaptation."
       }
     ],
     "breakpoints": [
       {
-        "name": "wide-min",
-        "value": "1450px"
+        "name": "wide-chart",
+        "value": "1500px"
       },
       {
-        "name": "compact-max",
-        "value": "1150px"
+        "name": "compact-desktop",
+        "value": "1050px"
       },
       {
-        "name": "tablet-max",
-        "value": "900px"
-      },
-      {
-        "name": "mobile-max",
-        "value": "650px"
+        "name": "mobile",
+        "value": "760px"
       }
     ]
   },
@@ -123,63 +197,79 @@
     {
       "name": "Secondary button",
       "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "Bordered actions such as CSV export.",
-      "html": "<button class=\"ds-secondary\">Download CSV</button>",
-      "css": ".ds-secondary{font:600 11px 'DM Sans',sans-serif;color:var(--ink,#253e32);background:var(--paper,#fff);border:1px solid #d8dfd3;border-radius:6px;min-height:37px;padding:9px 13px;cursor:pointer;transition:background .18s}.ds-secondary:hover{background:#eff4e9;border-color:#becdbb}.ds-secondary:focus-visible{outline:2px solid #b27436;outline-offset:4px}.ds-secondary:disabled{opacity:.35;cursor:not-allowed}"
+      "description": "Secondary button from the shipped analyst workspace.",
+      "html": "<button class=\"ds-button\">Download data</button>",
+      "css": ".ds-button{font-family:\"DM Sans\",sans-serif;display:inline-flex;align-items:center;min-height:38px;padding:8px 12px;border:1px solid #cdd4df;border-radius:4px;background:#fff;color:var(--ink);font-size:12px;font-weight:500;cursor:pointer}.ds-button:hover{background:var(--rail);border-color:#a5afbf}.ds-button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}",
+      "refersTo": "button-secondary"
     },
     {
       "name": "Date field",
       "kind": "input",
-      "refersTo": "input",
-      "description": "A labeled native date field used in accuracy filters.",
-      "html": "<label class=\"ds-field\" for=\"ds-date\">From date<input id=\"ds-date\" type=\"date\" value=\"2026-01-01\" min=\"2026-01-01\" max=\"2026-01-31\"></label>",
-      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:600 10px 'DM Sans',sans-serif;color:#4f6154}.ds-field input{font:400 12px 'DM Sans',sans-serif;color:var(--ink,#253e32);background:var(--paper,#fff);border:1px solid #dce3d7;border-radius:5px;padding:8px;height:34px}.ds-field input:focus-visible{outline:2px solid #b27436;outline-offset:4px}"
+      "description": "Date field from the shipped analyst workspace.",
+      "html": "<label class=\"ds-field\">Purchase date<input type=\"date\" value=\"2026-01-15\"></label>",
+      "css": ".ds-field{font-family:\"DM Sans\",sans-serif;display:grid;gap:5px;font-size:12px;font-weight:500;color:var(--ink)}.ds-field input{font-family:\"DM Sans\",sans-serif;height:40px;border:1px solid #cdd4df;border-radius:4px;background:#fff;padding:7px 10px;font-size:13px;color:var(--ink);caret-color:var(--blue)}.ds-field input:focus-visible{outline:2px solid var(--blue);outline-offset:3px}",
+      "refersTo": "input"
     },
     {
-      "name": "Desktop navigation item",
+      "name": "Horizontal navigation",
       "kind": "nav",
-      "refersTo": "navigation-active",
-      "description": "The active page in the evergreen desktop shell.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Preview navigation\"><button class=\"ds-nav-item\" aria-current=\"page\">Forecast desk</button></nav>",
-      "css": ".ds-nav{padding:18px;background:var(--sidebar,#193d30)}.ds-nav-item{font:600 13px 'DM Sans',sans-serif;text-align:left;border:0;border-radius:6px;padding:13px;width:100%;color:#f2f5df;background:#315241;cursor:pointer;transition:background .18s}.ds-nav-item:hover{background:#234a3b}.ds-nav-item:focus-visible{outline:2px solid #b27436;outline-offset:4px}"
+      "description": "Horizontal navigation from the shipped analyst workspace.",
+      "html": "<nav class=\"ds-nav\"><button aria-current=\"page\">Forecast</button><button>Accuracy</button><button>Methodology</button></nav>",
+      "css": ".ds-nav{display:flex;gap:26px;height:68px;border-bottom:1px solid var(--line)}.ds-nav button{font-family:\"DM Sans\",sans-serif;border:0;border-bottom:2px solid transparent;background:none;padding:0 1px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer}.ds-nav button:hover,.ds-nav button[aria-current]{color:var(--blue)}.ds-nav button[aria-current]{border-bottom-color:var(--blue)}.ds-nav button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}"
     },
     {
-      "name": "Vintage chip",
-      "kind": "chip",
-      "refersTo": "vintage-chip",
-      "description": "A compact, non-interactive source-vintage label.",
-      "html": "<span class=\"ds-chip\">DECISION VINTAGE</span>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;font:400 8px 'DM Sans',sans-serif;letter-spacing:.04em;color:#5b7752;border:1px solid #d2ddc8;white-space:nowrap;padding:5px 7px;border-radius:4px}"
-    },
-    {
-      "name": "Chart container",
+      "name": "Metric rail",
       "kind": "card",
-      "refersTo": "chart-container",
-      "description": "A bordered container for a forecast chart and its controls.",
-      "html": "<section class=\"ds-chart\"><h2>Wind generation <span>Next-day delivery</span></h2><p>Forecast at cutoff</p><div class=\"ds-legend\"><span></span>Forecast</div></section>",
-      "css": ".ds-chart{background:var(--paper,#fff);border:1px solid var(--border,#e1e6de);border-radius:10px;padding:23px 24px 15px;color:var(--ink,#253e32)}.ds-chart h2{margin:0;font:700 17px/1.4 Manrope,sans-serif;letter-spacing:-.025em}.ds-chart h2 span{font:400 12px 'DM Sans',sans-serif;color:#61715c;letter-spacing:0;margin-left:9px}.ds-chart p{font:400 10px/1.7 'DM Sans',sans-serif;color:#61715c;margin:5px 0}.ds-legend{display:flex;align-items:center;gap:6px;margin-top:25px;font:400 10px 'DM Sans',sans-serif;color:#61715c}.ds-legend span{width:18px;height:2px;background:var(--green,#2d7658)}"
+      "description": "Metric rail from the shipped analyst workspace.",
+      "html": "<section class=\"ds-rail\"><div class=\"ds-metric\"><div class=\"ds-label\">Peak forecast</div><div class=\"ds-value\">14,250 <span>MW</span></div><div class=\"ds-detail\">Selected delivery day</div></div></section>",
+      "css": ".ds-rail{font-family:\"DM Sans\",sans-serif;background:var(--rail);padding:0 20px;border-radius:4px;color:var(--ink)}.ds-metric{padding:14px 0}.ds-label{color:#566171;font-size:12px;margin-bottom:4px}.ds-value{font-size:24px;line-height:1.25;font-weight:500;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.ds-value span{font-size:12px;font-weight:400;letter-spacing:0;color:var(--muted)}.ds-detail{font-size:11px;color:var(--muted);margin-top:3px}",
+      "refersTo": "metrics-rail"
+    },
+    {
+      "name": "Unit selector",
+      "kind": "custom",
+      "description": "Unit selector from the shipped analyst workspace.",
+      "html": "<div class=\"ds-units\" role=\"group\" aria-label=\"Power unit\"><button aria-pressed=\"true\">MW</button><button aria-pressed=\"false\">GW</button></div>",
+      "css": ".ds-units{display:inline-flex;gap:3px;padding:3px;border-radius:48px;background:var(--tabs-bar-bg)}.ds-units button{font-family:\"DM Sans\",sans-serif;height:30px;padding:4px 12px;border:0;border-radius:48px;background:transparent;color:var(--tabs-text-muted);font-size:12px;cursor:pointer;transition:color var(--tabs-dur) var(--tabs-ease)}.ds-units button[aria-pressed=\"true\"]{background:var(--tabs-pill-bg);color:var(--tabs-text-active)}.ds-units button:hover{color:var(--tabs-text-active)}.ds-units button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-units button{transition:none}}",
+      "refersTo": "unit-segment"
     }
   ],
   "narrative": {
-    "northStar": "Ordnance Survey analytical workspace",
-    "overview": "Northline is a compact analyst workspace. Evergreen navigation frames a warm off-white work area. Charts and aligned numeric tables carry the evidence, with source context beside the values. The chosen identity is recorded in docs/DESIGN_DIRECTION.md with concept-seed reference seed:0c8db3b6dd8a642a.",
+    "northStar": "The Forecast Bulletin",
+    "overview": "An open, precise workspace for reading national wind forecasts and checking their evidence. White plotting space, graphite text and cool gray subdivisions keep the data prominent. Sparse copy identifies the decision, units and source limits.",
     "keyCharacteristics": [
-      "Evergreen shell and warm off-white workspace.",
-      "Manrope headings with DM Sans controls and tables.",
-      "Green forecasts, orange retrospective actuals, and visible missing-data gaps."
+      "Open charts with adjacent measurements.",
+      "Compact horizontal navigation and rectangular controls.",
+      "Cobalt forecasts and amber retrospective observations.",
+      "One sans family with tabular numerals for measurement."
     ],
-    "rules": [],
+    "rules": [
+      {
+        "name": "The Series Identity Rule",
+        "body": "Keep forecast and error magnitude cobalt; keep actuals and signed bias amber. Legends and units identify the meaning of each series.",
+        "section": "colors"
+      },
+      {
+        "name": "The Numeric Alignment Rule",
+        "body": "Use tabular numerals for metric values and tables, and right-align quantitative table columns. Keep units next to the values or in the column heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Open Plot Rule",
+        "body": "Keep the plotting field on the white workspace. Use the adjacent tonal rail to collect measurements.",
+        "section": "elevation"
+      }
+    ],
     "dos": [
-      "Do keep forecast green and actual orange consistent across charts and legends.",
-      "Do show units and London time beside the values or controls they qualify.",
-      "Do retain keyboard focus, selected control states, null gaps, and textual status labels.",
-      "Do keep source explanations beside the evidence they describe."
+      "**Do** preserve cobalt and amber series identities across charts and legends.",
+      "**Do** keep units, coverage and source limits readable beside the evidence.",
+      "**Do** use sparse labels and the shared DM Sans hierarchy.",
+      "**Do** preserve visible keyboard focus and reduced-motion behavior."
     ],
     "donts": [
-      "Don't connect missing observations or substitute a zero for a gap.",
-      "Don't enable retrospective actuals by default.",
-      "Don't add decorative map illustrations or a decorative grid to express the identity."
+      "**Don't** restore the green sidebar or Manrope display hierarchy.",
+      "**Don't** wrap open plots in decorative rounded cards.",
+      "**Don't** replace source gaps with visual certainty."
     ]
   }
 }

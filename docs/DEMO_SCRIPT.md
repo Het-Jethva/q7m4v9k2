@@ -16,7 +16,7 @@ No video is created by this deliverable. Record the following script when ready.
 
 ### 0:00 to 0:40, introduce the purchasing problem
 
-Show the Forecast desk.
+Show the Forecast view.
 
 "When your team buys tomorrow's power, the wind forecast is one of the inputs that determines how much other generation may be needed. The difficult question is not what the forecast says now. It is what forecast was available when you had to make the decision, and how much trust to place in it.
 
@@ -52,7 +52,7 @@ The representative-hour convention is an assumption documented in the methodolog
 
 ### 3:10 to 4:00, evaluate the full pilot
 
-Open Accuracy lab. Use the full January purchase-date range and 09:00 cutoff.
+Open Accuracy. Use the full January purchase-date range and 09:00 cutoff.
 
 "Across the full month, we have 744 matched hourly observations. Mean absolute error is about 2.04 GW and RMSE is about 2.50 GW. Positive bias is about 1.75 GW, so wind was overforecast on average in this sample. WAPE is about 18.07 percent.
 

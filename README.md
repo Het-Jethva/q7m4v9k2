@@ -62,10 +62,10 @@ Open [the development frontend](http://localhost:5173). Vite proxies /api reques
 
 ## Explore the pilot
 
-1. Choose a **Purchase decision** date and **Decision cutoff** on the Forecast desk.
+1. Choose a **Purchase decision** date and **Decision cutoff** in **Forecast**.
 2. Read the next-day delivery date, coverage, selected source issue, and interval table.
 3. Enable **Show actuals** to reveal retrospective actuals and errors.
-4. Open **Accuracy lab** to compare a decision-date range at the same cutoff.
+4. Open **Accuracy** to compare a decision-date range at the same cutoff.
 5. Export the selected observations as CSV or open **Methodology** to inspect assumptions and provenance.
 
 The initial decision date is January 15 and the initial cutoff is 09:00 Europe/London. The cutoff is an application assumption, not an asserted deadline for a particular auction. January purchase dates produce delivery dates from January 2 through February 1. MW and GW display switches do not alter the source values. CSV always uses MW.

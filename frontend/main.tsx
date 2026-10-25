@@ -17,13 +17,10 @@ import {
   ArrowRight,
   ArrowUpRight,
   BarChart3,
-  BookOpen,
-  Check,
   ChevronLeft,
   ChevronRight,
   CircleAlert,
   Clock3,
-  Database,
   ExternalLink,
   LoaderCircle,
   RefreshCw,
@@ -42,19 +39,16 @@ import "@fontsource/dm-sans/latin-400.css";
 import "@fontsource/dm-sans/latin-500.css";
 import "@fontsource/dm-sans/latin-600.css";
 import "@fontsource/dm-sans/latin-700.css";
-import "@fontsource/manrope/latin-500.css";
-import "@fontsource/manrope/latin-600.css";
-import "@fontsource/manrope/latin-700.css";
 import "./motion.css";
 import "./styles.css";
 
 type Tab = "forecast" | "accuracy" | "methodology";
 type Unit = "GW" | "MW";
 const nav = [
-  { id: "forecast", label: "Forecast desk", icon: Wind },
-  { id: "accuracy", label: "Accuracy lab", icon: BarChart3 },
-  { id: "methodology", label: "Methodology", icon: BookOpen },
-] satisfies { id: Tab; label: string; icon: typeof Wind }[];
+  { id: "forecast", label: "Forecast" },
+  { id: "accuracy", label: "Accuracy" },
+  { id: "methodology", label: "Methodology" },
+] satisfies { id: Tab; label: string }[];
 const JAN_FIRST = "2026-01-01";
 const JAN_LAST = "2026-01-31";
 const dateText = (
@@ -133,17 +127,15 @@ function App() {
 
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      <header className="app-header">
         <a
           className="brand"
           href="#main"
           aria-label="Northline home"
           onClick={() => setTab("forecast")}
         >
-          <span className="brand-symbol">
-            <Wind size={23} strokeWidth={1.7} />
-          </span>
-          northline<span className="brand-dot">.</span>
+          <Wind size={24} strokeWidth={1.8} /> northline
+          <span className="brand-dot">.</span>
         </a>
         <nav aria-label="Main navigation">
           {nav.map((item) => (
@@ -153,37 +145,25 @@ function App() {
               aria-current={tab === item.id ? "page" : undefined}
               onClick={() => setTab(item.id)}
             >
-              <item.icon size={18} strokeWidth={1.6} />
               {item.label}
-              {tab === item.id && <span className="nav-dot" />}
             </button>
           ))}
         </nav>
-        <div className="sidebar-bottom">
-          <div className="archive-mark">
-            <Database size={17} />
-            <span>January 2026 archive</span>
-          </div>
-          <p>GB national wind.</p>
-        </div>
-      </aside>
-      <div className="workspace">
-        <header className="topbar">
-          <div className="breadcrumbs">
-            Workspace <span>/</span>{" "}
-            <strong>{nav.find((item) => item.id === tab)?.label}</strong>
-          </div>
-          <div className="source-status">
+        <div className="archive-status">
+          <span className="archive-mark">January 2026 archive</span>
+          <span className="source-status">
             <span
               className={`status-dot ${meta.kind === "error" ? "failed" : ""}`}
             />
             {meta.kind === "ready"
-              ? "Elexon data · Snapshot loaded"
+              ? "Elexon snapshot loaded"
               : meta.kind === "error"
                 ? "Source unavailable"
                 : "Loading source snapshot"}
-          </div>
-        </header>
+          </span>
+        </div>
+      </header>
+      <div className="workspace">
         <main id="main" tabIndex={-1}>
           <div className="page-heading">
             <div>
@@ -275,7 +255,6 @@ function App() {
                   Decision cutoff <span>London time</span>
                 </label>
                 <div className="time-control">
-                  <Clock3 size={16} />
                   <input
                     id="cutoff-time"
                     type="time"
@@ -616,189 +595,198 @@ function Forecast({
   }));
   return (
     <>
-      <div className="metrics-row">
-        <Metric
-          label="Average forecast"
-          value={powerText(data.mean_forecast_mw, unit)}
-          unit={data.mean_forecast_mw === null ? "" : unit}
-          detail="Across available delivery hours"
-        />
-        <Metric
-          label="Peak forecast"
-          value={powerText(data.peak_forecast_mw, unit)}
-          unit={data.peak_forecast_mw === null ? "" : unit}
-          detail=""
-        />
-        <Metric
-          label="Forecast range"
-          value={
-            data.min_forecast_mw === null || data.peak_forecast_mw === null
-              ? "Unavailable"
-              : `${powerText(data.min_forecast_mw, unit)} – ${powerText(data.peak_forecast_mw, unit)}`
-          }
-          unit={data.min_forecast_mw === null ? "" : unit}
-          detail=""
-        />
-        <Metric
-          label="Forecast coverage"
-          value={`${data.forecast_hours}/${data.expected_hours}`}
-          unit="hrs"
-          detail={
-            data.forecast_hours === data.expected_hours
-              ? "All delivery hours available"
-              : "Missing intervals remain gaps"
-          }
-        />
-      </div>
-      <section className="chart-section">
-        <div className="section-heading">
-          <div>
-            <h2>
-              Delivery profile{" "}
-              <span>
-                {dateText(data.delivery_date, {
-                  day: "numeric",
-                  month: "short",
-                })}
-              </span>
-            </h2>
-            <p>National wind generation, hourly · London time</p>
+      <div className="analysis-layout">
+        <section className="chart-section">
+          <div className="section-heading">
+            <div>
+              <h2>
+                Delivery profile{" "}
+                <span>
+                  {dateText(data.delivery_date, {
+                    day: "numeric",
+                    month: "short",
+                  })}
+                </span>
+              </h2>
+              <p>National wind generation, hourly · London time</p>
+            </div>
+            <div className="chart-controls">
+              <label className="toggle-label">
+                <input
+                  type="checkbox"
+                  checked={actuals}
+                  onChange={(event) => setActuals(event.target.checked)}
+                />
+                <span className="switch" />
+                <span>
+                  Show actuals <span className="hindsight-tag">Hindsight</span>
+                </span>
+              </label>
+              <UnitControl unit={unit} setUnit={setUnit} />
+            </div>
           </div>
-          <div className="chart-controls">
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={actuals}
-                onChange={(event) => setActuals(event.target.checked)}
-              />
-              <span className="switch" />
-              <span>
-                Show actuals <span className="hindsight-tag">Hindsight</span>
-              </span>
-            </label>
-            <UnitControl unit={unit} setUnit={setUnit} />
-          </div>
-        </div>
-        <div className="chart-legend">
-          <span>
-            <i className="legend-line forecast-line" />
-            Forecast at cutoff
-          </span>
-          {actuals && (
+          <div className="chart-legend">
             <span>
-              <i className="legend-line actual-line" />
-              Actual generation
+              <i className="legend-line forecast-line" />
+              Forecast at cutoff
             </span>
-          )}
-          <span className="axis-unit">{unit}</span>
-        </div>
-        {data.forecast_hours === 0 && (
-          <div className="inline-notice">
-            <CircleAlert size={17} />
-            No eligible forecast was published before this cutoff. Choose a
-            later cutoff to inspect another vintage.
+            {actuals && (
+              <span>
+                <i className="legend-line actual-line" />
+                Actual generation
+              </span>
+            )}
+            <span className="axis-unit">{unit}</span>
           </div>
-        )}
-        <div
-          className="chart-wrap"
-          role="img"
-          aria-label={`Hourly wind forecast for ${dateText(data.delivery_date)} in ${unit}${actuals ? ", compared with retrospective actual generation" : ""}. Exact values appear in the interval table below.`}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart
-              data={chart}
-              margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
-            >
-              <defs>
-                <linearGradient id="forecast-fill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#31a46c" stopOpacity={0.22} />
-                  <stop offset="100%" stopColor="#31a46c" stopOpacity={0.015} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid
-                stroke="#e6e9e3"
-                vertical={false}
-                strokeDasharray="3 4"
-              />
-              <XAxis
-                dataKey="hour"
-                tickLine={false}
-                axisLine={false}
-                tick={{ fill: "#6b756d", fontSize: 11 }}
-                minTickGap={45}
-                dy={12}
-              />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                tick={{ fill: "#6b756d", fontSize: 11 }}
-                width={48}
-                domain={[0, "auto"]}
-              />
-              <Tooltip
-                contentStyle={{
-                  border: "1px solid #dce2d9",
-                  borderRadius: 8,
-                  boxShadow: "0 6px 22px #183e2910",
-                  fontSize: 12,
-                }}
-                labelFormatter={(label) => `${String(label)} · London`}
-                formatter={(value, name) => [
-                  value === null || value === undefined
-                    ? "Unavailable"
-                    : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
-                  name === "forecast" ? "Forecast" : "Actual",
-                ]}
-              />
-              <Area
-                type="linear"
-                dataKey="forecast"
-                stroke="none"
-                fill="url(#forecast-fill)"
-                isAnimationActive={false}
-                connectNulls={false}
-                tooltipType="none"
-              />
-              <Line
-                type="linear"
-                dataKey="forecast"
-                stroke="#187b55"
-                strokeWidth={2.6}
-                dot={false}
-                activeDot={{ r: 4, stroke: "#fff", strokeWidth: 2 }}
-                connectNulls={false}
-                isAnimationActive={false}
-              />
-              {actuals && (
+          {data.forecast_hours === 0 && (
+            <div className="inline-notice">
+              <CircleAlert size={17} />
+              No eligible forecast was published before this cutoff. Choose a
+              later cutoff to inspect another vintage.
+            </div>
+          )}
+          <div
+            className="chart-wrap"
+            role="img"
+            aria-label={`Hourly wind forecast for ${dateText(data.delivery_date)} in ${unit}${actuals ? ", compared with retrospective actual generation" : ""}. Exact values appear in the interval table below.`}
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                data={chart}
+                margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
+              >
+                <defs>
+                  <linearGradient
+                    id="forecast-fill"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#275ee7" stopOpacity={0.22} />
+                    <stop
+                      offset="100%"
+                      stopColor="#275ee7"
+                      stopOpacity={0.015}
+                    />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  stroke="#e6e9ee"
+                  vertical={false}
+                  strokeDasharray="3 4"
+                />
+                <XAxis
+                  dataKey="hour"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  minTickGap={45}
+                  dy={12}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  width={48}
+                  domain={[0, "auto"]}
+                />
+                <Tooltip
+                  contentStyle={{
+                    border: "1px solid #dce1e8",
+                    borderRadius: 4,
+                    boxShadow: "0 6px 22px #17213614",
+                    fontSize: 12,
+                  }}
+                  labelFormatter={(label) => `${String(label)} · London`}
+                  formatter={(value, name) => [
+                    value === null || value === undefined
+                      ? "Unavailable"
+                      : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
+                    name === "forecast" ? "Forecast" : "Actual",
+                  ]}
+                />
+                <Area
+                  type="linear"
+                  dataKey="forecast"
+                  stroke="none"
+                  fill="url(#forecast-fill)"
+                  isAnimationActive={false}
+                  connectNulls={false}
+                  tooltipType="none"
+                />
                 <Line
                   type="linear"
-                  dataKey="actual"
-                  stroke="#c47736"
-                  strokeWidth={2.2}
+                  dataKey="forecast"
+                  stroke="#275ee7"
+                  strokeWidth={2.6}
                   dot={false}
+                  activeDot={{ r: 4, stroke: "#fff", strokeWidth: 2 }}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
-              )}
-            </ComposedChart>
-          </ResponsiveContainer>
+                {actuals && (
+                  <Line
+                    type="linear"
+                    dataKey="actual"
+                    stroke="#c17a19"
+                    strokeWidth={2.2}
+                    dot={false}
+                    connectNulls={false}
+                    isAnimationActive={false}
+                  />
+                )}
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="chart-bottom">
+            <span>
+              <Clock3 size={13} />
+              00:00 to 23:00, hourly delivery starts
+            </span>
+            <span>
+              {actuals
+                ? `${data.matched_hours}/${data.expected_hours} hours paired with actuals`
+                : "Decision-time view · Later updates excluded"}
+            </span>
+          </div>
+        </section>
+        <div className="metrics-row">
+          <Metric
+            label="Average forecast"
+            value={powerText(data.mean_forecast_mw, unit)}
+            unit={data.mean_forecast_mw === null ? "" : unit}
+            detail="Across available delivery hours"
+          />
+          <Metric
+            label="Peak forecast"
+            value={powerText(data.peak_forecast_mw, unit)}
+            unit={data.peak_forecast_mw === null ? "" : unit}
+            detail=""
+          />
+          <Metric
+            label="Forecast range"
+            value={
+              data.min_forecast_mw === null || data.peak_forecast_mw === null
+                ? "Unavailable"
+                : `${powerText(data.min_forecast_mw, unit)} – ${powerText(data.peak_forecast_mw, unit)}`
+            }
+            unit={data.min_forecast_mw === null ? "" : unit}
+            detail=""
+          />
+          <Metric
+            label="Forecast coverage"
+            value={`${data.forecast_hours}/${data.expected_hours}`}
+            unit="hrs"
+            detail={
+              data.forecast_hours === data.expected_hours
+                ? "All delivery hours available"
+                : "Missing intervals remain gaps"
+            }
+          />
         </div>
-        <div className="chart-bottom">
-          <span>
-            <Clock3 size={13} />
-            00:00 to 23:00, hourly delivery starts
-          </span>
-          <span>
-            {actuals
-              ? `${data.matched_hours}/${data.expected_hours} hours paired with actuals`
-              : "Decision-time view · Later updates excluded"}
-          </span>
-        </div>
-      </section>
+      </div>
       <div className="vintage-note">
-        <span className="note-icon">
-          <Check size={19} />
-        </span>
         <div>
           <strong>
             {data.latest_publish_time
@@ -818,31 +806,6 @@ function Forecast({
           WINDFOR <ArrowUpRight size={12} />
         </span>
       </div>
-      {actuals && (
-        <section className="hindsight-summary">
-          <div className="section-heading">
-            <div>
-              <h2>What happened</h2>
-              <p>
-                Retrospective actuals. These values were unavailable at the
-                decision cutoff.
-              </p>
-            </div>
-          </div>
-          {data.metrics && (
-            <MetricsRow
-              metrics={data.metrics}
-              unit={unit}
-              coverage={data.matched_hours}
-              expected={data.expected_hours}
-            />
-          )}
-          <p className="fine-print">
-            Positive bias means wind was overforecast, which can increase
-            shortfall exposure. This is not a customer procurement calculation.
-          </p>
-        </section>
-      )}
       <section className="table-section">
         <div className="section-heading">
           <div>
@@ -949,6 +912,31 @@ function Forecast({
           </table>
         </div>
       </section>
+      {actuals && (
+        <section className="hindsight-summary">
+          <div className="section-heading">
+            <div>
+              <h2>What happened</h2>
+              <p>
+                Retrospective actuals. These values were unavailable at the
+                decision cutoff.
+              </p>
+            </div>
+          </div>
+          {data.metrics && (
+            <MetricsRow
+              metrics={data.metrics}
+              unit={unit}
+              coverage={data.matched_hours}
+              expected={data.expected_hours}
+            />
+          )}
+          <p className="fine-print">
+            Positive bias means wind was overforecast, which can increase
+            shortfall exposure. This is not a customer procurement calculation.
+          </p>
+        </section>
+      )}
     </>
   );
 }
@@ -974,119 +962,115 @@ function AccuracyPage({
   return (
     <>
       <div className="accuracy-intro">
-        <span className="small-source">
-          <Database size={13} />
-          WINDFOR + WIND
-        </span>
+        <span className="small-source">WINDFOR + WIND</span>
         <span>
           {data.matched_hours.toLocaleString()} /{" "}
           {data.expected_hours.toLocaleString()} hours paired ·{" "}
           {data.forecast_hours} forecast hours
         </span>
       </div>
-      <MetricsRow
-        metrics={data.metrics}
-        unit={unit}
-        coverage={data.matched_hours}
-        expected={data.expected_hours}
-      />
-      {data.matched_hours === 0 && (
-        <div className="inline-notice">
-          <CircleAlert size={17} />
-          No forecast and actual pairs exist for this selection. Try a later
-          cutoff or another date range.
-        </div>
-      )}
-      <section className="chart-section">
-        <div className="section-heading">
-          <div>
-            <h2>Daily forecast error</h2>
-            <p>By purchase decision date · next-day delivery</p>
+      <div className="analysis-layout">
+        {data.matched_hours === 0 && (
+          <div className="inline-notice">
+            <CircleAlert size={17} />
+            No forecast and actual pairs exist for this selection. Try a later
+            cutoff or another date range.
           </div>
-          <UnitControl unit={unit} setUnit={setUnit} />
-        </div>
-        <div className="chart-legend">
-          <span>
-            <i className="legend-bar" />
-            Mean absolute error
-          </span>
-          <span>
-            <i className="legend-line actual-line" />
-            Mean bias
-          </span>
-          <span className="axis-unit">{unit}</span>
-        </div>
-        <div
-          className="chart-wrap accuracy-chart"
-          role="img"
-          aria-label={`Daily mean absolute forecast error and bias in ${unit}. Exact values appear in the daily table.`}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart
-              data={chart}
-              margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid
-                vertical={false}
-                stroke="#e6e9e3"
-                strokeDasharray="3 4"
-              />
-              <XAxis
-                dataKey="day"
-                tickLine={false}
-                axisLine={false}
-                minTickGap={28}
-                tick={{ fill: "#6b756d", fontSize: 11 }}
-                dy={10}
-              />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                width={48}
-                tick={{ fill: "#6b756d", fontSize: 11 }}
-              />
-              <ReferenceLine y={0} stroke="#a9b3aa" />
-              <Tooltip
-                contentStyle={{
-                  border: "1px solid #dce2d9",
-                  borderRadius: 8,
-                  fontSize: 12,
-                }}
-                formatter={(value, name) => [
-                  value === null || value === undefined
-                    ? "Unavailable"
-                    : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
-                  name === "mae" ? "MAE" : "Mean bias",
-                ]}
-              />
-              <Bar
-                dataKey="mae"
-                fill="#4c8167"
-                radius={[3, 3, 0, 0]}
-                maxBarSize={25}
-                isAnimationActive={false}
-              />
-              <Line
-                type="linear"
-                dataKey="bias"
-                stroke="#c47736"
-                strokeWidth={2}
-                dot={false}
-                connectNulls={false}
-                isAnimationActive={false}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="chart-bottom">
-          <span>Positive bias = wind overforecast</span>
-          <span>Negative bias = wind underforecast</span>
-        </div>
-      </section>
+        )}
+        <section className="chart-section">
+          <div className="section-heading">
+            <div>
+              <h2>Daily forecast error</h2>
+              <p>By purchase decision date · next-day delivery</p>
+            </div>
+            <UnitControl unit={unit} setUnit={setUnit} />
+          </div>
+          <div className="chart-legend">
+            <span>
+              <i className="legend-bar" />
+              Mean absolute error
+            </span>
+            <span>
+              <i className="legend-line actual-line" />
+              Mean bias
+            </span>
+            <span className="axis-unit">{unit}</span>
+          </div>
+          <div
+            className="chart-wrap accuracy-chart"
+            role="img"
+            aria-label={`Daily mean absolute forecast error and bias in ${unit}. Exact values appear in the daily table.`}
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                data={chart}
+                margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid
+                  vertical={false}
+                  stroke="#e6e9ee"
+                  strokeDasharray="3 4"
+                />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  axisLine={false}
+                  minTickGap={28}
+                  tick={{ fill: "#68717f", fontSize: 11 }}
+                  dy={10}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  width={48}
+                  tick={{ fill: "#68717f", fontSize: 11 }}
+                />
+                <ReferenceLine y={0} stroke="#a9b1bf" />
+                <Tooltip
+                  contentStyle={{
+                    border: "1px solid #dce1e8",
+                    borderRadius: 4,
+                    fontSize: 12,
+                  }}
+                  formatter={(value, name) => [
+                    value === null || value === undefined
+                      ? "Unavailable"
+                      : `${Number(value).toLocaleString("en-GB", { maximumFractionDigits: 2 })} ${unit}`,
+                    name === "mae" ? "MAE" : "Mean bias",
+                  ]}
+                />
+                <Bar
+                  dataKey="mae"
+                  fill="#275ee7"
+                  radius={[3, 3, 0, 0]}
+                  maxBarSize={25}
+                  isAnimationActive={false}
+                />
+                <Line
+                  type="linear"
+                  dataKey="bias"
+                  stroke="#c17a19"
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls={false}
+                  isAnimationActive={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="chart-bottom">
+            <span>Positive bias = wind overforecast</span>
+            <span>Negative bias = wind underforecast</span>
+          </div>
+        </section>
+        <MetricsRow
+          metrics={data.metrics}
+          unit={unit}
+          coverage={data.matched_hours}
+          expected={data.expected_hours}
+        />
+      </div>
       <div className="vintage-note">
-        <span className="note-icon">
-          <BookOpen size={18} />
-        </span>
         <div>
           <strong>Historical evidence, with its limits</strong>
           <p>
@@ -1189,9 +1173,6 @@ function Methodology({ meta }: { meta: Meta | null }) {
   return (
     <div className="methodology">
       <section className="method-intro">
-        <div className="method-symbol">
-          <Wind size={40} strokeWidth={1.3} />
-        </div>
         <div>
           <h2>A decision-time reconstruction</h2>
           <p>
@@ -1243,9 +1224,8 @@ function Methodology({ meta }: { meta: Meta | null }) {
         </div>
         <p>
           Actual generation is retrospective and can contain revisions. It
-          appears only when you enable hindsight in Forecast desk, or in
-          Accuracy lab. The interval table exposes each contributing half-hour
-          and its source.
+          appears only when you enable hindsight in Forecast, or in Accuracy.
+          The interval table exposes each contributing half-hour and its source.
         </p>
       </section>
       <section className="method-section">
@@ -1377,8 +1357,8 @@ function Methodology({ meta }: { meta: Meta | null }) {
           </>
         ) : (
           <p className="inline-notice">
-            Source metadata is unavailable. Return to Forecast desk and retry
-            loading the snapshot.
+            Source metadata is unavailable. Return to Forecast and retry loading
+            the snapshot.
           </p>
         )}
       </section>
