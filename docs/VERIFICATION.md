@@ -43,13 +43,17 @@ The time-field synchronization issue found during browser testing was fixed by h
 
 Separate GPT-6.1 Sol reviewers inspected analytical correctness and the rendered interface. The correctness reviewer independently recomputed the default monthly metrics from raw data. It found a cached-download timestamp bug, now fixed with a regression that changes a raw file's modification time to the year 2000. Retrieval metadata remains the original source timestamp.
 
-The interface reviewer requested larger mobile controls, darker status text, and a corrected accuracy capture. Its verdict on those fixes is resolved. Date navigation targets are 40 by 40 pixels. Unit controls are at least 44 pixels wide and 40 pixels high. The available and missing status colors exceed 4.5:1 contrast on white. The final disposition is ship at the scope of that review.
+The earlier interface review requested larger mobile controls and a corrected accuracy capture. A later shadcn migration regressed the control sizes. The UI audit and fixes below supersede that review's size and styling claims.
 
 The mechanical interface detector reported no findings. Screenshots and the local decision trail are working artifacts under .impeccable/review and .audit.
 
 ## Known tool warnings
 
-The Python suite emits an upstream FastAPI TestClient warning about Starlette's httpx adapter. Tests pass. Vite reports that the chart-inclusive JavaScript chunk exceeds its default 500 KB advisory threshold. Neither warning is treated as a functional test failure. No performance benchmark or speedup claim is made.
+The Python suite emits an upstream FastAPI TestClient warning about Starlette's httpx adapter. Tests pass. The latest split build has no chunk above Vite's default 500 kB advisory threshold. No performance benchmark or speedup claim is made.
+
+## UI audit fixes
+
+The October 25 UI audit identified eight findings. All eight have local fixes and browser verification. [Post-fix evidence](UI_AUDIT_FIXES.md) records reproduction, recovery checks, bundle observations, and testing limits. The original report remains under `.audit/ui-2026-10-25/report.md` as a local working artifact.
 
 ## Scope of evidence
 

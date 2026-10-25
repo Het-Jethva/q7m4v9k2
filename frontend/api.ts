@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 
 const nullableNumber = z.number().nullable();
@@ -109,7 +109,7 @@ export type Accuracy = z.infer<typeof accuracySchema>;
 export type Meta = z.infer<typeof metaSchema>;
 export type Metrics = z.infer<typeof metricsSchema>;
 
-type Resource<T> =
+export type Resource<T> =
   | { kind: "loading" }
   | { kind: "error"; message: string }
   | { kind: "ready"; data: T };
@@ -118,22 +118,34 @@ const errorSchema = z.object({
 });
 
 export function useApi<T>(
-  url: string,
+  url: string | null,
   schema: z.ZodType<T>,
   revision = 0,
 ): Resource<T> {
+  const cache = useRef(new Map<string, { revision: number; data: T }>());
   const [result, setResult] = useState<{
-    url: string;
+    url: string | null;
     revision: number;
     resource: Resource<T>;
   }>({ url, revision, resource: { kind: "loading" } });
   useEffect(() => {
+    if (url === null) return;
+    const requestUrl = url;
+    const cached = cache.current.get(url);
+    if (cached?.revision === revision) {
+      setResult({
+        url,
+        revision,
+        resource: { kind: "ready", data: cached.data },
+      });
+      return;
+    }
     const controller = new AbortController();
     let active = true;
     setResult({ url, revision, resource: { kind: "loading" } });
     async function fetchData() {
       try {
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(requestUrl, { signal: controller.signal });
         const body: unknown = await response.json();
         if (!response.ok) {
           const parsed = errorSchema.safeParse(body);
@@ -151,12 +163,14 @@ export function useApi<T>(
           throw new Error(
             "The data response has an unexpected format. Check the API and bundled snapshot, then retry.",
           );
-        if (active)
+        if (active) {
+          cache.current.set(requestUrl, { revision, data: parsed.data });
           setResult({
             url,
             revision,
             resource: { kind: "ready", data: parsed.data },
           });
+        }
       } catch (error) {
         if (active && !controller.signal.aborted)
           setResult({

@@ -30,4 +30,14 @@ Actuals are hindsight evidence and may be revised. They are hidden by default on
 
 Navigation uses Tabs. Filters use Field, Input, and InputGroup. Hindsight uses Checkbox. Units use ToggleGroup. Charts use ChartContainer and ChartTooltipContent around Recharts. Evidence uses Table and Collapsible. The Table component accepts containerProps so the horizontal scrolling container owns keyboard focus and its accessible label.
 
-`npm run check:ui` rejects raw controls in `frontend/main.tsx`. The production build runs this check before TypeScript and Vite. Date bounds, cutoff selection, unit conversions, and CSV parameters remain in the existing typed application state.
+`npm run check:ui` rejects raw controls, inline styles, and extra stylesheets in the top-level application TSX files, including both chart modules. The production build runs this check before TypeScript and Vite. Date bounds, cutoff selection, unit conversions, and CSV parameters remain in the existing typed application state.
+
+## Request and chart lifecycle
+
+App owns the shared cutoff, selected dates, units, hindsight state, and resource hooks. Forecast and Accuracy controls remain mounted while their result region loads or fails. Daily drill-down focuses the persistent Forecast heading after React commits the navigation. Normal tab navigation retains Radix's focus behavior.
+
+Each resource has an independent retry revision. The API hook parses responses with Zod, aborts superseded requests, and checks URL and revision before returning a result. Successful responses are cached by full URL within the mounted hook, with revision checks to bypass cached results on retry. Accuracy uses a null URL outside its active tab, so it first fetches on entry and reuses a completed selection on return. Changes to the shared cutoff apply when Accuracy is next opened.
+
+ForecastChart and AccuracyChart are separate lazy modules. Shared Recharts and shadcn chart code form a common asynchronous chunk. Suspense covers each chart alone. A chart error boundary preserves filters, summaries, and exact-value tables if a module download fails. Its Reload page action starts a fresh module request. This split changes request timing and packaging; it does not establish a measured page-load improvement.
+
+Shared shadcn components include accessible tab-panel focus, larger day-navigation and unit variants, and static reduced-motion skeletons. The light input-border token is separate from the lighter decorative border token.

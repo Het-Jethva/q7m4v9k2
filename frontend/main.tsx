@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React, {
+  lazy,
+  Suspense,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { createRoot } from "react-dom/client";
-import {
-  Area,
-  Bar,
-  CartesianGrid,
-  ComposedChart,
-  Line,
-  ReferenceLine,
-  XAxis,
-  YAxis,
-} from "recharts";
+
 import {
   IconDownload as ArrowDownToLine,
   IconArrowRight as ArrowRight,
@@ -31,7 +28,9 @@ import {
   replaySchema,
   useApi,
 } from "./api";
-import type { Accuracy, Meta, Metrics, Replay } from "./api";
+import { dateText, hourText } from "./format";
+import type { Unit } from "./format";
+import type { Accuracy, Meta, Metrics, Replay, Resource } from "./api";
 import "./styles.css";
 
 import { cn } from "@/lib/utils";
@@ -66,14 +65,7 @@ import {
   EmptyContent,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  type ChartConfig,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -88,17 +80,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-const forecastChartConfig = {
-  forecast: { label: "Forecast at cutoff", color: "var(--chart-3)" },
-  actual: { label: "Actual generation", color: "var(--chart-2)" },
-} satisfies ChartConfig;
-const accuracyChartConfig = {
-  mae: { label: "Mean absolute error", color: "var(--chart-3)" },
-  bias: { label: "Mean bias", color: "var(--chart-2)" },
-} satisfies ChartConfig;
+const ForecastChart = lazy(() => import("./forecast-chart"));
+const AccuracyChart = lazy(() => import("./accuracy-chart"));
 
 type Tab = "forecast" | "accuracy" | "methodology";
-type Unit = "GW" | "MW";
+
 const nav = [
   { id: "forecast", label: "Forecast" },
   { id: "accuracy", label: "Accuracy" },
@@ -106,30 +92,10 @@ const nav = [
 ] satisfies { id: Tab; label: string }[];
 const JAN_FIRST = "2026-01-01";
 const JAN_LAST = "2026-01-31";
-const dateText = (
-  date: string,
-  options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  },
-) =>
-  new Date(date.includes("T") ? date : `${date}T00:00:00Z`).toLocaleDateString(
-    "en-GB",
-    { ...options, timeZone: "Europe/London" },
-  );
-const hourText = (date: string) =>
-  new Date(date).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/London",
-  });
 const issueText = (date: string | null) =>
   date
     ? `${dateText(date, { day: "numeric", month: "short" })}, ${hourText(date)}`
     : "Unavailable";
-const unitValue = (value: number | null, unit: Unit) =>
-  value === null ? null : value / (unit === "GW" ? 1000 : 1);
 const powerText = (value: number | null, unit: Unit, signed = false) =>
   value === null
     ? "Unavailable"
@@ -148,17 +114,37 @@ function App() {
   const [unit, setUnit] = useState<Unit>("GW");
   const [from, setFrom] = useState(JAN_FIRST);
   const [to, setTo] = useState(JAN_LAST);
-  const [revision, setRevision] = useState(0);
-  const meta = useApi("/api/meta", metaSchema, revision);
+  const [metaRevision, setMetaRevision] = useState(0);
+  const [replayRevision, setReplayRevision] = useState(0);
+  const [accuracyRevision, setAccuracyRevision] = useState(0);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const [focusDestination, setFocusDestination] = useState(0);
+  useLayoutEffect(() => {
+    if (focusDestination === 0) return;
+    heading.current?.focus({ preventScroll: true });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }, [focusDestination]);
+  const meta = useApi("/api/meta", metaSchema, metaRevision);
   const replayQuery = replayParams(decision, cutoff, actuals);
   const accuracyQuery = accuracyParams(from, to, cutoff);
-  const replay = useApi(`/api/replay?${replayQuery}`, replaySchema, revision);
-  const accuracy = useApi(
-    `/api/accuracy?${accuracyQuery}`,
-    accuracySchema,
-    revision,
+  const replay = useApi(
+    `/api/replay?${replayQuery}`,
+    replaySchema,
+    replayRevision,
   );
-  const retry = () => setRevision((current) => current + 1);
+  const accuracy = useApi(
+    tab === "accuracy" ? `/api/accuracy?${accuracyQuery}` : null,
+    accuracySchema,
+    accuracyRevision,
+  );
+  const retryReplay = () => setReplayRevision((current) => current + 1);
+  const retryAccuracy = () => setAccuracyRevision((current) => current + 1);
+  const retryMetadata = () => setMetaRevision((current) => current + 1);
   const commitInput =
     (setValue: (value: string) => void) =>
     (event: React.SyntheticEvent<HTMLInputElement>) => {
@@ -177,12 +163,7 @@ function App() {
     setDecision(date);
     setActuals(true);
     setTab("forecast");
-    window.scrollTo({
-      top: 0,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
+    setFocusDestination((current) => current + 1);
   };
 
   return (
@@ -225,8 +206,8 @@ function App() {
             {meta.kind === "ready"
               ? "Elexon snapshot loaded"
               : meta.kind === "error"
-                ? "Source unavailable"
-                : "Loading source snapshot"}
+                ? "Snapshot metadata unavailable"
+                : "Loading snapshot metadata"}
           </Badge>
         </div>
       </header>
@@ -234,7 +215,11 @@ function App() {
         <main id="main" tabIndex={-1}>
           <div className="mb-6 flex items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">
+              <h1
+                ref={heading}
+                tabIndex={-1}
+                className="text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4"
+              >
                 {tab === "forecast"
                   ? "Wind forecast"
                   : tab === "accuracy"
@@ -263,10 +248,10 @@ function App() {
                       <FieldLabel htmlFor="decision-date">
                         Purchase decision
                       </FieldLabel>
-                      <InputGroup>
+                      <InputGroup className="h-12">
                         <InputGroupAddon>
                           <InputGroupButton
-                            size="icon-xs"
+                            size="icon-lg"
                             aria-label="Previous decision day"
                             disabled={decision <= JAN_FIRST}
                             onClick={() => setDecision(shiftDate(decision, -1))}
@@ -285,7 +270,7 @@ function App() {
                         />
                         <InputGroupAddon align="inline-end">
                           <InputGroupButton
-                            size="icon-xs"
+                            size="icon-lg"
                             aria-label="Next decision day"
                             disabled={decision >= JAN_LAST}
                             onClick={() => setDecision(shiftDate(decision, 1))}
@@ -380,32 +365,75 @@ function App() {
             </Card>
           )}
           <TabsContent value="forecast">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight">
+                  Delivery profile{" "}
+                  <span>
+                    {dateText(shiftDate(decision, 1), {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  National wind generation, hourly · London time
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-4">
+                <FieldGroup className="w-auto min-w-52 shrink-0">
+                  <Field orientation="horizontal">
+                    <Checkbox
+                      id="show-actuals"
+                      checked={actuals}
+                      onCheckedChange={(checked) =>
+                        setActuals(checked === true)
+                      }
+                    />
+                    <FieldLabel htmlFor="show-actuals">
+                      Show actuals <Badge variant="secondary">Hindsight</Badge>
+                    </FieldLabel>
+                  </Field>
+                </FieldGroup>
+                <UnitControl unit={unit} setUnit={setUnit} />
+              </div>
+            </div>
+
             {tab === "forecast" &&
               (replay.kind === "ready" ? (
                 <Forecast
                   data={replay.data}
                   actuals={actuals}
-                  setActuals={setActuals}
                   unit={unit}
-                  setUnit={setUnit}
                   exportUrl={exportUrl}
                 />
               ) : (
                 <RequestState
                   kind={replay.kind}
                   message={replay.kind === "error" ? replay.message : ""}
-                  retry={retry}
+                  retry={retryReplay}
                   label="Loading the selected forecast"
                 />
               ))}
           </TabsContent>
           <TabsContent value="accuracy">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight">
+                  Daily forecast error
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  By purchase decision date · next-day delivery
+                </p>
+              </div>
+              <UnitControl unit={unit} setUnit={setUnit} />
+            </div>
+
             {tab === "accuracy" &&
               (accuracy.kind === "ready" ? (
                 <AccuracyPage
                   data={accuracy.data}
                   unit={unit}
-                  setUnit={setUnit}
                   openDay={openDay}
                   exportUrl={exportUrl}
                 />
@@ -413,14 +441,14 @@ function App() {
                 <RequestState
                   kind={accuracy.kind}
                   message={accuracy.kind === "error" ? accuracy.message : ""}
-                  retry={retry}
+                  retry={retryAccuracy}
                   label="Calculating historical errors"
                 />
               ))}
           </TabsContent>
           <TabsContent value="methodology">
             {tab === "methodology" && (
-              <Methodology meta={meta.kind === "ready" ? meta.data : null} />
+              <Methodology metadata={meta} retryMetadata={retryMetadata} />
             )}
           </TabsContent>
           <Separator className="mt-8" />
@@ -431,7 +459,9 @@ function App() {
             <span>
               {meta.kind === "ready"
                 ? `Source snapshot retrieved ${dateText(meta.data.retrieved_at, { day: "numeric", month: "short", year: "numeric" })}`
-                : "Source snapshot information pending"}{" "}
+                : meta.kind === "error"
+                  ? "Snapshot metadata unavailable"
+                  : "Loading snapshot metadata"}{" "}
               <Button
                 variant="link"
                 size="xs"
@@ -445,6 +475,37 @@ function App() {
       </div>
     </Tabs>
   );
+}
+
+class ChartBoundary extends React.Component<
+  React.PropsWithChildren,
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    if (this.state.failed)
+      return (
+        <Alert>
+          <CircleAlert />
+          <AlertDescription>
+            <p>
+              The chart could not be loaded. Exact values remain in the table
+              below.
+            </p>
+            <Button variant="outline" onClick={() => window.location.reload()}>
+              <RefreshCw data-icon="inline-start" />
+              Reload page
+            </Button>
+          </AlertDescription>
+        </Alert>
+      );
+    return this.props.children;
+  }
 }
 
 function RequestState({
@@ -506,7 +567,7 @@ function UnitControl({
     <ToggleGroup
       type="single"
       variant="outline"
-      size="sm"
+      size="lg"
       spacing={0}
       value={unit}
       aria-label="Power unit"
@@ -605,58 +666,18 @@ function MetricsRow({
 function Forecast({
   data,
   actuals,
-  setActuals,
   unit,
-  setUnit,
   exportUrl,
 }: {
   data: Replay;
   actuals: boolean;
-  setActuals: (value: boolean) => void;
   unit: Unit;
-  setUnit: (value: Unit) => void;
   exportUrl: string;
 }) {
-  const chart = data.intervals.map((interval) => ({
-    hour: hourText(interval.start_time),
-    forecast: unitValue(interval.forecast_mw, unit),
-    actual: unitValue(interval.actual_mw, unit),
-  }));
   return (
     <>
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(240px,1fr)]">
         <section className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold tracking-tight">
-                Delivery profile{" "}
-                <span>
-                  {dateText(data.delivery_date, {
-                    day: "numeric",
-                    month: "short",
-                  })}
-                </span>
-              </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                National wind generation, hourly · London time
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-4">
-              <FieldGroup className="w-auto min-w-52 shrink-0">
-                <Field orientation="horizontal">
-                  <Checkbox
-                    id="show-actuals"
-                    checked={actuals}
-                    onCheckedChange={(checked) => setActuals(checked === true)}
-                  />
-                  <FieldLabel htmlFor="show-actuals">
-                    Show actuals <Badge variant="secondary">Hindsight</Badge>
-                  </FieldLabel>
-                </Field>
-              </FieldGroup>
-              <UnitControl unit={unit} setUnit={setUnit} />
-            </div>
-          </div>
           <p className="mt-4 text-right text-sm text-muted-foreground">
             {unit}
           </p>
@@ -674,78 +695,19 @@ function Forecast({
             role="img"
             aria-label={`Hourly wind forecast for ${dateText(data.delivery_date)} in ${unit}${actuals ? ", compared with retrospective actual generation" : ""}. Exact values appear in the interval table below.`}
           >
-            <ChartContainer
-              className="h-full w-full aspect-auto"
-              config={forecastChartConfig}
-            >
-              <ComposedChart
-                accessibilityLayer
-                data={chart}
-                margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="hour"
-                  tickLine={false}
-                  axisLine={false}
-                  minTickGap={45}
-                  dy={12}
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  width={48}
-                  domain={[0, "auto"]}
-                />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      labelFormatter={(label) =>
-                        `${String(label)} · London · ${unit}`
-                      }
-                    />
-                  }
-                />
-                <Area
-                  type="linear"
-                  dataKey="forecast"
-                  stroke="none"
-                  fill="var(--color-forecast)"
-                  fillOpacity={0.15}
-                  isAnimationActive={false}
-                  connectNulls={false}
-                  tooltipType="none"
-                  legendType="none"
-                />
-                <Line
-                  type="linear"
-                  dataKey="forecast"
-                  stroke="var(--color-forecast)"
-                  strokeWidth={2.6}
-                  dot={false}
-                  activeDot={{
-                    r: 4,
-                    stroke: "var(--background)",
-                    strokeWidth: 2,
-                  }}
-                  connectNulls={false}
-                  isAnimationActive={false}
-                />
-                {actuals && (
-                  <Line
-                    type="linear"
-                    dataKey="actual"
-                    strokeDasharray="5 3"
-                    stroke="var(--color-actual)"
-                    strokeWidth={2.2}
-                    dot={false}
-                    connectNulls={false}
-                    isAnimationActive={false}
+            <ChartBoundary>
+              <Suspense
+                fallback={
+                  <Skeleton
+                    className="h-full w-full"
+                    role="status"
+                    aria-label="Loading chart"
                   />
-                )}
-                <ChartLegend content={<ChartLegendContent />} />
-              </ComposedChart>
-            </ChartContainer>
+                }
+              >
+                <ForecastChart data={data} unit={unit} actuals={actuals} />
+              </Suspense>
+            </ChartBoundary>
           </div>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>
@@ -972,21 +934,14 @@ function Forecast({
 function AccuracyPage({
   data,
   unit,
-  setUnit,
   openDay,
   exportUrl,
 }: {
   data: Accuracy;
   unit: Unit;
-  setUnit: (value: Unit) => void;
   openDay: (date: string) => void;
   exportUrl: string;
 }) {
-  const chart = data.daily.map((day) => ({
-    day: dateText(day.decision_date, { day: "numeric", month: "short" }),
-    mae: unitValue(day.metrics.mae_mw, unit),
-    bias: unitValue(day.metrics.bias_mw, unit),
-  }));
   return (
     <>
       <div className="mb-6 flex flex-wrap justify-between gap-3 text-sm text-muted-foreground">
@@ -1008,17 +963,6 @@ function AccuracyPage({
           </Alert>
         )}
         <section className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold tracking-tight">
-                Daily forecast error
-              </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                By purchase decision date · next-day delivery
-              </p>
-            </div>
-            <UnitControl unit={unit} setUnit={setUnit} />
-          </div>
           <p className="mt-4 text-right text-sm text-muted-foreground">
             {unit}
           </p>
@@ -1027,52 +971,19 @@ function AccuracyPage({
             role="img"
             aria-label={`Daily mean absolute forecast error and bias in ${unit}. Exact values appear in the daily table.`}
           >
-            <ChartContainer
-              className="h-full w-full aspect-auto"
-              config={accuracyChartConfig}
-            >
-              <ComposedChart
-                accessibilityLayer
-                data={chart}
-                margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
+            <ChartBoundary>
+              <Suspense
+                fallback={
+                  <Skeleton
+                    className="h-full w-full"
+                    role="status"
+                    aria-label="Loading chart"
+                  />
+                }
               >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="day"
-                  tickLine={false}
-                  axisLine={false}
-                  minTickGap={28}
-                  dy={10}
-                />
-                <YAxis tickLine={false} axisLine={false} width={48} />
-                <ReferenceLine y={0} stroke="var(--muted-foreground)" />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      labelFormatter={(label) => `${String(label)} · ${unit}`}
-                    />
-                  }
-                />
-                <Bar
-                  dataKey="mae"
-                  fill="var(--color-mae)"
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={25}
-                  isAnimationActive={false}
-                />
-                <Line
-                  type="linear"
-                  dataKey="bias"
-                  strokeDasharray="5 3"
-                  stroke="var(--color-bias)"
-                  strokeWidth={2}
-                  dot={false}
-                  connectNulls={false}
-                  isAnimationActive={false}
-                />
-                <ChartLegend content={<ChartLegendContent />} />
-              </ComposedChart>
-            </ChartContainer>
+                <AccuracyChart data={data} unit={unit} />
+              </Suspense>
+            </ChartBoundary>
           </div>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>Positive bias = wind overforecast</span>
@@ -1195,7 +1106,14 @@ function AccuracyPage({
   );
 }
 
-function Methodology({ meta }: { meta: Meta | null }) {
+function Methodology({
+  metadata,
+  retryMetadata,
+}: {
+  metadata: Resource<Meta>;
+  retryMetadata: () => void;
+}) {
+  const meta = metadata.kind === "ready" ? metadata.data : null;
   return (
     <div className="flex max-w-5xl flex-col gap-6">
       <Card>
@@ -1467,11 +1385,27 @@ function Methodology({ meta }: { meta: Meta | null }) {
               </Table>
             </div>
           </>
+        ) : metadata.kind === "loading" ? (
+          <div
+            role="status"
+            aria-label="Loading snapshot metadata"
+            className="flex flex-col gap-4"
+          >
+            <span>Loading snapshot metadata</span>
+            <Skeleton className="h-32 w-full" />
+          </div>
         ) : (
-          <Alert className="col-span-full my-4">
+          <Alert variant="destructive">
+            <CircleAlert />
             <AlertDescription>
-              Source metadata is unavailable. Return to Forecast and retry
-              loading the snapshot.
+              <p>
+                Snapshot metadata could not be loaded.{" "}
+                {metadata.kind === "error" ? metadata.message : ""}
+              </p>
+              <Button variant="outline" onClick={retryMetadata}>
+                <RefreshCw data-icon="inline-start" />
+                Retry metadata
+              </Button>
             </AlertDescription>
           </Alert>
         )}
