@@ -6,7 +6,7 @@ The app includes a forecast desk, explicit hindsight comparison, a quantitative 
 
 [Open the deployed app](https://q7m4v9k2.vercel.app) · [Public repository](https://github.com/Het-Jethva/q7m4v9k2) · [Demo script](docs/DEMO_SCRIPT.md)
 
-The interface uses shadcn/ui with the Radix Nova style, Tailwind CSS v4, and shared semantic theme tokens. Charts use the shadcn Recharts integration. DM Sans is self-hosted.
+The interface uses shadcn/ui with the Radix Vega style, Tailwind CSS v4, and shared semantic theme tokens. Charts use the shadcn Recharts integration. Variable DM Sans is self-hosted. Preset `bInDwe3` supplies the green theme, neutral charts, and Tabler icons.
 
 ## Run with Docker
 

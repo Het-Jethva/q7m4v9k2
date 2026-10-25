@@ -2,24 +2,24 @@
 name: Northline
 description: A wind forecast workspace built with shadcn/ui.
 colors:
-  primary: "#275ee7"
-  actual: "#a26513"
-  ink: "#202631"
-  muted: "#626e7e"
+  primary: "oklch(0.527 0.154 150.069)"
+  actual: "oklch(0.556 0 0)"
+  ink: "oklch(0.145 0 0)"
+  muted: "oklch(0.556 0 0)"
   paper: "#ffffff"
-  rail: "#f4f6f9"
-  line: "#dfe4eb"
+  rail: "oklch(0.97 0 0)"
+  line: "oklch(0.922 0 0)"
 ---
 
 # Northline design system
 
-Northline uses shadcn/ui Radix Nova components. `components.json` records the registry style and aliases. `frontend/components/ui` contains the generated source. Tailwind CSS v4 and `frontend/styles.css` supply one shared theme.
+Northline uses shadcn/ui Radix Vega components. `components.json` records the registry style and aliases. `frontend/components/ui` contains the generated source. Tailwind CSS v4 and `frontend/styles.css` supply one shared theme.
 
 ## Visual identity
 
-Use a white workspace, graphite text, restrained borders, and DM Sans. Forecast curves and error magnitude use `--chart-1`, the cobalt primary color. Actual generation and signed bias use `--chart-2`, the amber observation color. Preserve that series mapping across legends, charts, tooltips, and error text.
+Use a white workspace, graphite text, restrained borders, and DM Sans. The active preset is `bInDwe3`. It supplies a green primary theme, neutral chart palette, variable DM Sans, Tabler icons, and inverted translucent menus. Forecast curves and error magnitude use `--chart-3`. Actual generation and signed bias use `--chart-2` and dashed lines. Preserve that series mapping across legends, charts, tooltips, and error text.
 
-Theme colors use shadcn roles such as background, foreground, muted, muted-foreground, border, input, primary, and ring. The base radius is 0.5rem. Components derive their corner sizes from that scale. Do not introduce a second set of custom button, input, table, badge, or tab styles.
+Theme colors use shadcn roles such as background, foreground, muted, muted-foreground, border, input, primary, and ring. The base radius is 0.625rem. Components derive their corner sizes from that scale. Do not introduce a second set of custom button, input, table, badge, or tab styles.
 
 ## Components
 

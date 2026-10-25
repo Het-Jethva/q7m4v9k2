@@ -26,7 +26,7 @@ Actuals are hindsight evidence and may be revised. They are hidden by default on
 
 ## UI component system
 
-`components.json` selects the Radix Nova shadcn registry style. Components live in `frontend/components/ui`. Tailwind CSS v4 runs through the Vite plugin. `frontend/styles.css` owns semantic colors, fonts, radius tokens, and responsive layout. Pages use component variants instead of a second set of custom control styles.
+`components.json` selects the Radix Vega shadcn registry style. Components live in `frontend/components/ui`. Tailwind CSS v4 runs through the Vite plugin. `frontend/styles.css` owns semantic colors, fonts, radius tokens, and responsive layout. Pages use component variants instead of a second set of custom control styles.
 
 Navigation uses Tabs. Filters use Field, Input, and InputGroup. Hindsight uses Checkbox. Units use ToggleGroup. Charts use ChartContainer and ChartTooltipContent around Recharts. Evidence uses Table and Collapsible. The Table component accepts containerProps so the horizontal scrolling container owns keyboard focus and its accessible label.
 

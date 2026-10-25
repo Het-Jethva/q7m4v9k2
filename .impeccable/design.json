@@ -3,148 +3,7 @@
   "generatedAt": "2026-10-25T08:18:02.125303+00:00",
   "title": "Northline shadcn/ui design system",
   "extensions": {
-    "colorMeta": {
-      "primary": {
-        "role": "primary",
-        "displayName": "Primary",
-        "tonalRamp": [
-          "oklch(15% 0.0520 260)",
-          "oklch(27% 0.1300 260)",
-          "oklch(39% 0.1300 260)",
-          "oklch(51% 0.1300 260)",
-          "oklch(63% 0.1300 260)",
-          "oklch(75% 0.1300 260)",
-          "oklch(87% 0.1300 260)",
-          "oklch(95% 0.0520 260)"
-        ]
-      },
-      "actual": {
-        "role": "secondary",
-        "displayName": "Actual",
-        "tonalRamp": [
-          "oklch(15% 0.0320 70)",
-          "oklch(27% 0.0800 70)",
-          "oklch(39% 0.0800 70)",
-          "oklch(51% 0.0800 70)",
-          "oklch(63% 0.0800 70)",
-          "oklch(75% 0.0800 70)",
-          "oklch(87% 0.0800 70)",
-          "oklch(95% 0.0320 70)"
-        ]
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Ink",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "muted": {
-        "role": "neutral",
-        "displayName": "Muted",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "paper": {
-        "role": "neutral",
-        "displayName": "Paper",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "rail": {
-        "role": "neutral",
-        "displayName": "Rail",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "line": {
-        "role": "neutral",
-        "displayName": "Line",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "control-border": {
-        "role": "neutral",
-        "displayName": "Control Border",
-        "tonalRamp": [
-          "oklch(15% 0.0032 255)",
-          "oklch(27% 0.0080 255)",
-          "oklch(39% 0.0080 255)",
-          "oklch(51% 0.0080 255)",
-          "oklch(63% 0.0080 255)",
-          "oklch(75% 0.0080 255)",
-          "oklch(87% 0.0080 255)",
-          "oklch(95% 0.0032 255)"
-        ]
-      },
-      "warning": {
-        "role": "secondary",
-        "displayName": "Warning",
-        "tonalRamp": [
-          "oklch(15% 0.0320 70)",
-          "oklch(27% 0.0800 70)",
-          "oklch(39% 0.0800 70)",
-          "oklch(51% 0.0800 70)",
-          "oklch(63% 0.0800 70)",
-          "oklch(75% 0.0800 70)",
-          "oklch(87% 0.0800 70)",
-          "oklch(95% 0.0320 70)"
-        ]
-      },
-      "tabs-bar": {
-        "role": "neutral",
-        "displayName": "Tabs Bar",
-        "tonalRamp": [
-          "oklch(15% 0.0032 260)",
-          "oklch(27% 0.0080 260)",
-          "oklch(39% 0.0080 260)",
-          "oklch(51% 0.0080 260)",
-          "oklch(63% 0.0080 260)",
-          "oklch(75% 0.0080 260)",
-          "oklch(87% 0.0080 260)",
-          "oklch(95% 0.0032 260)"
-        ]
-      }
-    },
+    "colorMeta": {},
     "shadows": [],
     "motion": [
       {
@@ -171,19 +30,13 @@
   "components": [],
   "narrative": {
     "northStar": "The Forecast Bulletin",
-    "overview": "A chart-first workspace built with shadcn/ui Radix Nova and shared semantic theme tokens.",
+    "overview": "A chart-first workspace built with shadcn/ui Radix Vega preset bInDwe3.",
     "keyCharacteristics": [
-      "Open charts with adjacent measurements.",
-      "Compact horizontal navigation and rectangular controls.",
-      "Cobalt forecasts and amber retrospective observations.",
-      "One sans family with tabular numerals for measurement."
+      "Green accents and neutral chart series.",
+      "Variable DM Sans and Tabler icons.",
+      "Responsive chart-first layout."
     ],
     "rules": [
-      {
-        "name": "The Series Identity Rule",
-        "body": "Keep forecast and error magnitude cobalt; keep actuals and signed bias amber. Legends and units identify the meaning of each series.",
-        "section": "colors"
-      },
       {
         "name": "The Numeric Alignment Rule",
         "body": "Use tabular numerals for metric values and tables, and right-align quantitative table columns. Keep units next to the values or in the column heading.",
@@ -196,14 +49,12 @@
       }
     ],
     "dos": [
-      "**Do** preserve cobalt and amber series identities across charts and legends.",
       "**Do** keep units, coverage and source limits readable beside the evidence.",
       "**Do** use sparse labels and the shared DM Sans hierarchy.",
       "**Do** preserve visible keyboard focus and reduced-motion behavior.",
       "Use generated shadcn components and built-in variants for controls, tables, feedback, and navigation."
     ],
     "donts": [
-      "**Don't** restore the green sidebar or Manrope display hierarchy.",
       "**Don't** wrap open plots in decorative rounded cards.",
       "**Don't** replace source gaps with visual certainty."
     ]

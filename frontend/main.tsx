@@ -11,18 +11,18 @@ import {
   YAxis,
 } from "recharts";
 import {
-  ArrowDownToLine,
-  ArrowRight,
-  ArrowUpRight,
-  BarChart3,
-  ChevronLeft,
-  ChevronRight,
-  CircleAlert,
-  Clock3,
-  ExternalLink,
-  RefreshCw,
-  Wind,
-} from "lucide-react";
+  IconDownload as ArrowDownToLine,
+  IconArrowRight as ArrowRight,
+  IconArrowUpRight as ArrowUpRight,
+  IconChartBar as BarChart3,
+  IconChevronLeft as ChevronLeft,
+  IconChevronRight as ChevronRight,
+  IconAlertCircle as CircleAlert,
+  IconClock as Clock3,
+  IconExternalLink as ExternalLink,
+  IconRefresh as RefreshCw,
+  IconWind as Wind,
+} from "@tabler/icons-react";
 import {
   accuracyParams,
   accuracySchema,
@@ -32,10 +32,6 @@ import {
   useApi,
 } from "./api";
 import type { Accuracy, Meta, Metrics, Replay } from "./api";
-import "@fontsource/dm-sans/latin-400.css";
-import "@fontsource/dm-sans/latin-500.css";
-import "@fontsource/dm-sans/latin-600.css";
-import "@fontsource/dm-sans/latin-700.css";
 import "./motion.css";
 import "./styles.css";
 
@@ -693,9 +689,9 @@ function Forecast({
             <ChartContainer
               className="h-full w-full aspect-auto"
               config={{
-                forecast: { label: "Forecast", color: "var(--chart-1)" },
+                forecast: { label: "Forecast", color: "var(--chart-3)" },
                 actual: { label: "Actual", color: "var(--chart-2)" },
-                mae: { label: "MAE", color: "var(--chart-1)" },
+                mae: { label: "MAE", color: "var(--chart-3)" },
                 bias: { label: "Mean bias", color: "var(--chart-2)" },
               }}
             >
@@ -713,12 +709,12 @@ function Forecast({
                   >
                     <stop
                       offset="0%"
-                      stopColor="var(--chart-1)"
+                      stopColor="var(--chart-3)"
                       stopOpacity={0.22}
                     />
                     <stop
                       offset="100%"
-                      stopColor="var(--chart-1)"
+                      stopColor="var(--chart-3)"
                       stopOpacity={0.015}
                     />
                   </linearGradient>
@@ -774,7 +770,7 @@ function Forecast({
                 <Line
                   type="linear"
                   dataKey="forecast"
-                  stroke="var(--chart-1)"
+                  stroke="var(--chart-3)"
                   strokeWidth={2.6}
                   dot={false}
                   activeDot={{
@@ -789,6 +785,7 @@ function Forecast({
                   <Line
                     type="linear"
                     dataKey="actual"
+                    strokeDasharray="5 3"
                     stroke="var(--chart-2)"
                     strokeWidth={2.2}
                     dot={false}
@@ -1083,9 +1080,9 @@ function AccuracyPage({
             <ChartContainer
               className="h-full w-full aspect-auto"
               config={{
-                forecast: { label: "Forecast", color: "var(--chart-1)" },
+                forecast: { label: "Forecast", color: "var(--chart-3)" },
                 actual: { label: "Actual", color: "var(--chart-2)" },
-                mae: { label: "MAE", color: "var(--chart-1)" },
+                mae: { label: "MAE", color: "var(--chart-3)" },
                 bias: { label: "Mean bias", color: "var(--chart-2)" },
               }}
             >
@@ -1133,7 +1130,7 @@ function AccuracyPage({
                 />
                 <Bar
                   dataKey="mae"
-                  fill="var(--chart-1)"
+                  fill="var(--chart-3)"
                   radius={[3, 3, 0, 0]}
                   maxBarSize={25}
                   isAnimationActive={false}
@@ -1141,6 +1138,7 @@ function AccuracyPage({
                 <Line
                   type="linear"
                   dataKey="bias"
+                  strokeDasharray="5 3"
                   stroke="var(--chart-2)"
                   strokeWidth={2}
                   dot={false}
