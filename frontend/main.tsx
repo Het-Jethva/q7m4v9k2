@@ -68,6 +68,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -78,6 +81,15 @@ import {
 } from "@/components/ui/collapsible";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
+const forecastChartConfig = {
+  forecast: { label: "Forecast at cutoff", color: "var(--chart-3)" },
+  actual: { label: "Actual generation", color: "var(--chart-2)" },
+} satisfies ChartConfig;
+const accuracyChartConfig = {
+  mae: { label: "Mean absolute error", color: "var(--chart-3)" },
+  bias: { label: "Mean bias", color: "var(--chart-2)" },
+} satisfies ChartConfig;
 
 type Tab = "forecast" | "accuracy" | "methodology";
 type Unit = "GW" | "MW";
@@ -659,19 +671,7 @@ function Forecast({
               <UnitControl unit={unit} setUnit={setUnit} />
             </div>
           </div>
-          <div className="chart-legend">
-            <span>
-              <i className="legend-line forecast-line" />
-              Forecast at cutoff
-            </span>
-            {actuals && (
-              <span>
-                <i className="legend-line actual-line" />
-                Actual generation
-              </span>
-            )}
-            <span className="axis-unit">{unit}</span>
-          </div>
+          <p className="chart-unit">{unit}</p>
           {data.forecast_hours === 0 && (
             <Alert className="inline-notice">
               <CircleAlert />
@@ -688,14 +688,10 @@ function Forecast({
           >
             <ChartContainer
               className="h-full w-full aspect-auto"
-              config={{
-                forecast: { label: "Forecast", color: "var(--chart-3)" },
-                actual: { label: "Actual", color: "var(--chart-2)" },
-                mae: { label: "MAE", color: "var(--chart-3)" },
-                bias: { label: "Mean bias", color: "var(--chart-2)" },
-              }}
+              config={forecastChartConfig}
             >
               <ComposedChart
+                accessibilityLayer
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
               >
@@ -709,12 +705,12 @@ function Forecast({
                   >
                     <stop
                       offset="0%"
-                      stopColor="var(--chart-3)"
+                      stopColor="var(--color-forecast)"
                       stopOpacity={0.22}
                     />
                     <stop
                       offset="100%"
-                      stopColor="var(--chart-3)"
+                      stopColor="var(--color-forecast)"
                       stopOpacity={0.015}
                     />
                   </linearGradient>
@@ -746,7 +742,9 @@ function Forecast({
                       formatter={(value, name) => (
                         <div className="flex w-full items-center justify-between gap-6">
                           <span className="text-muted-foreground">
-                            {name === "forecast" ? "Forecast" : "Actual"}
+                            {name === "forecast"
+                              ? forecastChartConfig.forecast.label
+                              : forecastChartConfig.actual.label}
                           </span>
                           <span className="font-medium tabular-nums">
                             {value === null || value === undefined
@@ -766,11 +764,12 @@ function Forecast({
                   isAnimationActive={false}
                   connectNulls={false}
                   tooltipType="none"
+                  legendType="none"
                 />
                 <Line
                   type="linear"
                   dataKey="forecast"
-                  stroke="var(--chart-3)"
+                  stroke="var(--color-forecast)"
                   strokeWidth={2.6}
                   dot={false}
                   activeDot={{
@@ -786,13 +785,14 @@ function Forecast({
                     type="linear"
                     dataKey="actual"
                     strokeDasharray="5 3"
-                    stroke="var(--chart-2)"
+                    stroke="var(--color-actual)"
                     strokeWidth={2.2}
                     dot={false}
                     connectNulls={false}
                     isAnimationActive={false}
                   />
                 )}
+                <ChartLegend content={<ChartLegendContent />} />
               </ComposedChart>
             </ChartContainer>
           </div>
@@ -1061,17 +1061,7 @@ function AccuracyPage({
             </div>
             <UnitControl unit={unit} setUnit={setUnit} />
           </div>
-          <div className="chart-legend">
-            <span>
-              <i className="legend-bar" />
-              Mean absolute error
-            </span>
-            <span>
-              <i className="legend-line actual-line" />
-              Mean bias
-            </span>
-            <span className="axis-unit">{unit}</span>
-          </div>
+          <p className="chart-unit">{unit}</p>
           <div
             className="chart-wrap accuracy-chart"
             role="img"
@@ -1079,14 +1069,10 @@ function AccuracyPage({
           >
             <ChartContainer
               className="h-full w-full aspect-auto"
-              config={{
-                forecast: { label: "Forecast", color: "var(--chart-3)" },
-                actual: { label: "Actual", color: "var(--chart-2)" },
-                mae: { label: "MAE", color: "var(--chart-3)" },
-                bias: { label: "Mean bias", color: "var(--chart-2)" },
-              }}
+              config={accuracyChartConfig}
             >
               <ComposedChart
+                accessibilityLayer
                 data={chart}
                 margin={{ top: 10, right: 8, left: 0, bottom: 0 }}
               >
@@ -1116,7 +1102,9 @@ function AccuracyPage({
                       formatter={(value, name) => (
                         <div className="flex w-full items-center justify-between gap-6">
                           <span className="text-muted-foreground">
-                            {name === "mae" ? "MAE" : "Mean bias"}
+                            {name === "mae"
+                              ? accuracyChartConfig.mae.label
+                              : accuracyChartConfig.bias.label}
                           </span>
                           <span className="font-medium tabular-nums">
                             {value === null || value === undefined
@@ -1130,7 +1118,7 @@ function AccuracyPage({
                 />
                 <Bar
                   dataKey="mae"
-                  fill="var(--chart-3)"
+                  fill="var(--color-mae)"
                   radius={[3, 3, 0, 0]}
                   maxBarSize={25}
                   isAnimationActive={false}
@@ -1139,12 +1127,13 @@ function AccuracyPage({
                   type="linear"
                   dataKey="bias"
                   strokeDasharray="5 3"
-                  stroke="var(--chart-2)"
+                  stroke="var(--color-bias)"
                   strokeWidth={2}
                   dot={false}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
+                <ChartLegend content={<ChartLegendContent />} />
               </ComposedChart>
             </ChartContainer>
           </div>

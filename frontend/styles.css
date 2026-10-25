@@ -268,35 +268,11 @@
   font-size: 12px;
   font-weight: 400;
 }
-.chart-legend {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  font-size: 11px;
+.chart-unit {
   margin: 20px 0 4px;
+  text-align: right;
+  font-size: 11px;
   color: var(--muted-foreground);
-}
-.chart-legend > span {
-  display: flex;
-  gap: 7px;
-  align-items: center;
-}
-.legend-line {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: var(--chart-3);
-}
-.actual-line {
-  background: repeating-linear-gradient(to right, var(--chart-2) 0 5px, transparent 5px 8px);
-}
-.legend-bar {
-  width: 9px;
-  height: 10px;
-  background: var(--chart-3);
-}
-.chart-legend .axis-unit {
-  margin-left: auto;
 }
 .chart-wrap {
   height: 285px;
@@ -658,10 +634,6 @@ dd {
   .chart-controls {
     width: 100%;
     justify-content: space-between;
-  }
-  .chart-legend {
-    gap: 14px;
-    font-size: 10px;
   }
   .chart-wrap {
     height: 245px;
